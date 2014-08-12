@@ -17,6 +17,7 @@
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/nvd3/src/nv.d3.css" />
   <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css({.tmp,app}) styles/main.css -->
@@ -38,6 +39,7 @@
     </div>
     <ul class="nav navbar-nav">
       <li ng-class="{active: isActive('/')}"><a href="#/">Home</a></li>
+      <li ng-class="{active: isActive('/map')}"><a href="#/map">Map</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li ng-show="currentUser" class="dropdown">
@@ -86,6 +88,7 @@
 <script src="bower_components/leaflet/dist/leaflet.js"></script>
 <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
 <script src="bower_components/underscore/underscore.js"></script>
+<script src="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
@@ -97,6 +100,7 @@
 <script src="scripts/services/couchdb.js"></script>
 <script src="scripts/controllers/login.js"></script>
 <script src="scripts/controllers/home.js"></script>
+<script src="scripts/controllers/map.js"></script>
 <!-- endbuild -->
 </body>
 </html>

@@ -16,6 +16,10 @@ angular
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl'
       })
+      .when('/map', {
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl'
+      })
       .when('/login', {
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
