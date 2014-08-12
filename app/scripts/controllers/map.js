@@ -39,7 +39,7 @@ angular.module('sedApp')
 
       function selectIcon(event_class, event_type) {
         switch (event_type) {
-          case 4:
+          case 'case':
             return markers[event_class].purple;
           case 3:
             return markers[event_class].red;
@@ -60,6 +60,7 @@ angular.module('sedApp')
       }
 
       function createEventsLayer(events) {
+        console.log(events);
         return L.geoJson(events, {
           style: {
             "weight": 1,
@@ -118,24 +119,36 @@ angular.module('sedApp')
       // }
 
       // Facilities GeoJSON Layer
-      var events = requestUpdatedJson('followUp'),
-        clonedEvents = _.clone(events),
-        eventsLayer = createEventsLayer(events);//,
+      var events, clonedEvents, eventsLayer;
+
+      requestUpdatedJson('followUp', function (events) {
+        clonedEvents = _.clone(events);
+        eventsLayer = createEventsLayer(events);
+        eventsLayer.addTo(map);
+        var overlayMaps = {
+          "Events": eventsLayer,
+//        "Vehicle positions": vehiclePositionsLayer,
+        };
+//      map.fitBounds(eventsLayer.getBounds());
+        L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
+      });//,
         //vehiclePositions = requestUpdatedJson('/latest_vehicle_locations/600/'),
         //clonedVehiclePositions = _.clone(vehiclePositions),
         //vehiclePositionsLayer = createVehicleDriveLayer(vehiclePositions);
 
       setInterval(function() {
-        var newEvents = requestUpdatedJson('followUp');
-        if (!(_.isEqual(clonedEvents, newEvents))) {
-          console.log('events have changed');
-          events = newEvents;
-          clonedEvents = _.clone(events);
-          map.removeLayer(eventsLayer);
-          eventsLayer = createEventsLayer(events);
-          eventsLayer.addTo(map);
-        }
-      }, 5000);
+        requestUpdatedJson('followUp', function (newEvents) {
+          if (!(_.isEqual(clonedEvents, newEvents))) {
+            console.log('events have changed');
+            events = newEvents;
+            clonedEvents = _.clone(events);
+            map.removeLayer(eventsLayer);
+            eventsLayer = createEventsLayer(events);
+            eventsLayer.addTo(map);
+            L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
+          }
+        });
+      }, 300000);
 
       // setInterval(function() {
       //   var newVehiclePositions = requestUpdatedJson('/latest_vehicle_locations/600/');
@@ -154,18 +167,13 @@ angular.module('sedApp')
         zoom: 10,
         minZoom: 1,
         maxZoom: 18,
-        layers: [osm, eventsLayer]
+        layers: [osm]
       });
 
       var baseMaps = {
         "Map": osm
       };
-      var overlayMaps = {
-        "Events": eventsLayer,
-//        "Vehicle positions": vehiclePositionsLayer,
-      };
-//      map.fitBounds(eventsLayer.getBounds());
-      L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
+
     }
 
 
@@ -177,9 +185,9 @@ angular.module('sedApp')
 //      return ""//"Driver: " + "<b>" + f.driver_phone + "</b>" + "<br>" + f.lat + ", " + f.lon + "<br>" + "Event Code: " + f.event_code + "<br>" + f.event_name + "<br>" + new Date(f.timestamp * 1000);
 //    }
 
-    function requestUpdatedJson(unusedVariable) {
+    function requestUpdatedJson(unusedVariable, callback) {
       FollowUp.all().then(function(response) {
-        return parseResponseJsonData(response);
+        callback(parseResponseJsonData(response));
       });
     }
 
@@ -196,7 +204,7 @@ angular.module('sedApp')
         };
         item.geometry = {
           type: "Point",
-          coordinates: [parseFloat(f["_geolocation"][0]), parseFloat(f["_geolocation"][1])]
+          coordinates: [parseFloat(f["_geolocation"][1]), parseFloat(f["_geolocation"][0])]
         };
         item.type = "Feature";
         items.push(item);
