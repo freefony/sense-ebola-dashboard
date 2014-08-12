@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisApp')
+angular.module('sedApp')
   .controller('LoginCtrl', function ($scope, $location, Auth) {
     var back = ($location.search() && $location.search().back) || '/';
     var scope = $scope.scope = {

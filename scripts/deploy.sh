@@ -13,24 +13,24 @@ decode_ssh_key() {
 }
 
 # Only deploy on non-forks
-[[ "TRAVIS_REPO_SLUG" == "eHealthAfrica/LMIS-Dashboard" ]] || exit 1
+[[ "TRAVIS_REPO_SLUG" == "eHealthAfrica/sense-ebola-dashboard" ]] || exit 1
 
 dist="dist"
 [[ -d "$dist" ]] || error "$dist: no such directory"
 
 if [[ "$TRAVIS_TAG" ]]; then
   deploy "release"
-  host="lomis.ehealth.org.ng"
+  host="54.75.128.38"
 else
   deploy "snapshot"
-  host="dev.lomis.ehealth.org.ng"
+  host="54.75.128.38"
 fi
 
 decode_ssh_key "$host"
 
 now="$(date -u "+%Y%m%d%H%M%S")"
 user="travisci"
-root="/home/$user/lmis-dashboard"
+root="/home/$user/sense-ebola-dashboard"
 
 rsync -avz -e ssh "$dist/" $user@$host:$root/$now/
 ssh $user@$host ln -fsn "$root/$now" "$root/latest"

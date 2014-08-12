@@ -3,7 +3,7 @@
 /**
  * Utility class for using the UI Bootstrap pagination component.
  */
-angular.module('lmisApp')
+angular.module('sedApp')
   .service('Pagination', function () {
 
     function Pagination() {

@@ -1,8 +1,8 @@
 {
-  "name": "lmis-dashboard",
+  "name": "sense-ebola-dashboard",
   "version": "0.1.0",
-  "description": "Lightweight dashboard for LoMIS database views.",
-  "homepage": "https://github.com/eHealthAfrica/LMIS-Dashboard",
+  "description": "Dashboard for Ebola sensed data.",
+  "homepage": "https://github.com/eHealthAfrica/sense-ebola-dashboard",
   "author": "eHealth Africa <http://ehealthafrica.org>",
   "license": "ISC",
   "private": true,
@@ -52,14 +52,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/eHealthAfrica/LMIS-Dashboard.git"
+    "url": "https://github.com/eHealthAfrica/sense-ebola-dashboard.git"
   },
   "keywords": [
-    "lmis",
+    "ebola",
     "dashboard",
     "ehealth"
   ],
   "bugs": {
-    "url": "https://github.com/eHealthAfrica/LMIS-Dashboard/issues"
+    "url": "https://github.com/eHealthAfrica/sense-ebola-dashboard/issues"
   }
 }

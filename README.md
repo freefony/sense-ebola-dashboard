@@ -1,4 +1,4 @@
-LMIS-Dashboard
-==============
+sense-ebola-dashboard
+=====================
 
-Lightweight dashboard for LoMIS database views
+Dashboard for Ebola sensed data.

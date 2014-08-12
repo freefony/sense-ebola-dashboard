@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisApp')
+angular.module('sedApp')
   .factory('couchdb', function ($resource, SETTINGS) {
     return $resource(SETTINGS.dbUrl + ':_db/:_action/:_param/:_sub/:_sub_param',
       {
