@@ -361,14 +361,16 @@ module.exports = function (grunt) {
       dev: {
         constants: {
           SETTINGS: {
-            dbUrl: 'http://dev.lomis.ehealth.org.ng:5984/'
+            dbUrl: 'http://dev.lomis.ehealth.org.ng:5984/',
+            formHubUrl: 'http://forms.eocng.org/api/v1/data/ebola/'
           }
         }
       },
       prod: {
         constants: {
           SETTINGS: {
-            dbUrl: 'http://lomis.ehealth.org.ng:5984/'
+            dbUrl: 'http://lomis.ehealth.org.ng:5984/',
+            formHubUrl: 'http://forms.eocng.org/api/v1/data/ebola/'
           }
         }
       }
