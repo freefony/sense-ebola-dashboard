@@ -6,6 +6,7 @@ angular
     'ngSanitize',
     'ngRoute',
     'ngResource',
+    'ngTable',
     'nvd3ChartDirectives',
     'ui.bootstrap'
   ])
@@ -20,6 +21,10 @@ angular
         templateUrl: 'views/map.html',
         controller: 'MapCtrl'
       })
+      .when('/follow-ups', {
+        templateUrl: 'views/follow-ups.html',
+        controller: 'FollowUpsCtrl'
+      })
       .when('/login', {
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
@@ -30,8 +35,15 @@ angular
 
     // Intercept 401s and redirect user to login
     $httpProvider.interceptors.push([
-      '$q', '$location', function($q, $location) {
+      '$rootScope', '$q', '$location', function($rootScope, $q, $location) {
         return {
+          'request': function(config) {
+            var username = $rootScope.currentUser ? $rootScope.currentUser.username : '';
+            var password = $rootScope.currentUser ? $rootScope.currentUser.password : '';
+
+            config.headers['Authorization'] = 'Basic ' + btoa(username + ':' + password);
+            return config;
+          },
           'responseError': function(response) {
             switch (response.status) {
               case 401:
@@ -50,10 +62,8 @@ angular
     $rootScope.SETTINGS = SETTINGS;
 
     $rootScope.logout = function() {
-      Auth.logout()
-        .then(function() {
-          $route.reload();
-        })
+      Auth.logout();
+      $route.reload();
     };
   })
   .controller('NavBar', function($scope, $location) {

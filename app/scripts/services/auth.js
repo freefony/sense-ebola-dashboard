@@ -1,89 +1,37 @@
 'use strict';
 
 angular.module('sedApp')
-  .factory('Auth', function Auth($rootScope, couchdb) {
+  .factory('Auth', function Auth($rootScope, $q) {
     $rootScope.currentUser = null;
     $rootScope.app = $rootScope.app || {
       init: false
     };
 
-    // Get current user
-    couchdb.session().$promise
-      .then(function (data) {
-        set((data.userCtx && data.userCtx.name) ? data.userCtx : null);
-      })
-      .catch(function (err) {
-        console.log(err);
-        set(null);
-      })
-      .finally(function () {
-        $rootScope.app.init = true;
-      });
+    // no async operation, so set init to true right away
+    $rootScope.app.init = true;
 
     function set(user) {
-      if (user != $rootScope.currentUser)
-      {
+      if (user != $rootScope.currentUser) {
         $rootScope.currentUser = user;
         $rootScope.$emit('currentUserChanged', user);
       }
     }
 
     return {
-
       /**
        * Authenticate user
        *
        * @param  {Object}   user     - login info
-       * @param  {Function} callback - optional
-       * @return {Promise}
        */
-      login: function (user, callback) {
-        var cb = callback || angular.noop;
-
-        var promise = couchdb.login({
-          name: user.username,
-          password: user.password
-        }).$promise;
-
-        promise
-          .then(function (data) {
-            if (data.ok) {
-              set({
-                name: user.username,
-                roles: data.roles
-              });
-            }
-            cb();
-          })
-          .catch(function (err) {
-            cb(err);
-          });
-
-        return promise;
+      login: function(user) {
+        set(user);
       },
 
       /**
        * Unauthenticate user
-       *
-       * @param  {Function} callback - optional
-       * @return {Promise}
        */
-      logout: function (callback) {
-        var cb = callback || angular.noop;
-
-        var promise = couchdb.logout().$promise;
-        promise
-          .then(function (data) {
-            if (data.ok)
-              set(null);
-
-            cb();
-          })
-          .catch(function (err) {
-            cb(err);
-          });
-
-        return promise;
+      logout: function() {
+        set(null);
       },
 
       /**
@@ -91,7 +39,7 @@ angular.module('sedApp')
        *
        * @return {Object} user
        */
-      currentUser: function () {
+      currentUser: function() {
         return $rootScope.currentUser;
       },
 
@@ -100,7 +48,7 @@ angular.module('sedApp')
        *
        * @return {Boolean}
        */
-      isLoggedIn: function () {
+      isLoggedIn: function() {
         return !!$rootScope.currentUser;
       }
     };
