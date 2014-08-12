@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sedApp')
-  .controller('LoginCtrl', function ($scope, $location, Auth) {
+  .controller('LoginCtrl', function($scope, $location, Auth) {
     var back = ($location.search() && $location.search().back) || '/';
     var scope = $scope.scope = {
       user: {},
@@ -9,19 +9,14 @@ angular.module('sedApp')
       submitted: false
     };
 
-    $scope.login = function (form) {
+    $scope.login = function(form) {
       scope.submitted = true;
       scope.error = '';
 
       if (form.$valid) {
-        Auth.login(scope.user)
-          .then(function () {
-            $location.search('back', null);
-            $location.path(back);
-          })
-          .catch(function (err) {
-            scope.error = err.data.reason;
-          });
+        Auth.login(scope.user);
+        $location.search('back', null);
+        $location.path(back);
       }
     };
   });
