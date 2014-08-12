@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('lmisApp')
+angular.module('sedApp')
   .factory('Auth', function Auth($rootScope, couchdb) {
     $rootScope.currentUser = null;
     $rootScope.app = $rootScope.app || {

@@ -1,8 +1,8 @@
 {
-  "name": "lmis-dashboard",
+  "name": "sense-ebola-dashboard",
   "version": "0.1.0",
-  "description": "Lightweight dashboard for LoMIS database views.",
-  "homepage": "https://github.com/eHealthAfrica/LMIS-Dashboard",
+  "description": "Dashboard for Ebola sensed data.",
+  "homepage": "https://github.com/eHealthAfrica/sense-ebola-dashboard",
   "authors": [
     "eHealth Africa <http://ehealthafrica.org>"
   ],
@@ -27,7 +27,7 @@
     "angular-scenario": "1.2.21"
   },
   "keywords": [
-    "lmis",
+    "ebola",
     "dashboard",
     "ehealth"
   ],
