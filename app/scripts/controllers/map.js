@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('sedApp')
-  .controller('MapCtrl', function($scope) {
+  .controller('MapCtrl', function($scope, FollowUp) {
     $scope.title = 'Map';
-
     initiateMap();
+
+
 
     function initiateMap() {
       var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -38,7 +39,7 @@ angular.module('sedApp')
 
       function selectIcon(event_class, event_type) {
         switch (event_type) {
-          case 4:
+          case 'case':
             return markers[event_class].purple;
           case 3:
             return markers[event_class].red;
@@ -59,6 +60,7 @@ angular.module('sedApp')
       }
 
       function createEventsLayer(events) {
+        console.log(events);
         return L.geoJson(events, {
           style: {
             "weight": 1,
@@ -82,127 +84,111 @@ angular.module('sedApp')
         });
       }
 
-      function createVehicleDriveLayer(data) {
-        var locations = data.features, polylines = [];
-        if (locations.length > 0) {
-          var driver = locations[0].properties.driver, i = 0 , linepoints = [];
-          while (i < locations.length) {
-
-            if (locations[i].properties.driver != driver) {
-              driver = locations[i].properties.driver;
-              polylines.push(linepoints);
-              linepoints = [];
-            }
-            linepoints.push([locations[i].geometry.coordinates[1], locations[i].geometry.coordinates[0]]);
-            i++;
-          }
-          polylines.push(linepoints);
-        }
-        console.log(polylines);
-        var colorOptions = ['red', 'blue', 'green', 'yellow'], colorChoice = 0;
-        var layer = L.layerGroup(), pline;
-        for (j = 0; j < polylines.length; j++) {
-          pline = new L.Polyline(polylines[j], {
-            color: colorOptions[colorChoice],
-            weight: 5,
-            smoothFactor: 10
-
-          });
-          layer.addLayer(pline);
-          colorChoice++;
-          if (colorChoice > 3) {
-            colorChoice = 0;
-          }
-        }
-        console.log(layer);
-        return layer;
-      }
+      // function createVehicleDriveLayer(data) {
+      //   var locations = data.features, polylines = [];
+      //   if (locations.length > 0) {
+      //     var driver = locations[0].properties.driver, i = 0 , linepoints = [];
+      //     while (i < locations.length) {
+      //
+      //       if (locations[i].properties.driver != driver) {
+      //         driver = locations[i].properties.driver;
+      //         polylines.push(linepoints);
+      //         linepoints = [];
+      //       }
+      //       linepoints.push([locations[i].geometry.coordinates[1], locations[i].geometry.coordinates[0]]);
+      //       i++;
+      //     }
+      //     polylines.push(linepoints);
+      //   }
+      //   var colorOptions = ['red', 'blue', 'green', 'yellow'], colorChoice = 0;
+      //   var layer = L.layerGroup(), pline;
+      //   for (j = 0; j < polylines.length; j++) {
+      //     pline = new L.Polyline(polylines[j], {
+      //       color: colorOptions[colorChoice],
+      //       weight: 5,
+      //       smoothFactor: 10
+      //
+      //     });
+      //     layer.addLayer(pline);
+      //     colorChoice++;
+      //     if (colorChoice > 3) {
+      //       colorChoice = 0;
+      //     }
+      //   }
+      //   return layer;
+      // }
 
       // Facilities GeoJSON Layer
-      var events = requestUpdatedJson('/latest_events/86400/'),
-        clonedEvents = _.clone(events),
-        eventsLayer = createEventsLayer(events),
-        vehiclePositions = requestUpdatedJson('/latest_vehicle_locations/600/'),
-        clonedVehiclePositions = _.clone(vehiclePositions),
-        vehiclePositionsLayer = createVehicleDriveLayer(vehiclePositions);
+      var events, clonedEvents, eventsLayer;
+
+      requestUpdatedJson('followUp', function (events) {
+        clonedEvents = _.clone(events);
+        eventsLayer = createEventsLayer(events);
+        eventsLayer.addTo(map);
+        var overlayMaps = {
+          "Events": eventsLayer,
+//        "Vehicle positions": vehiclePositionsLayer,
+        };
+//      map.fitBounds(eventsLayer.getBounds());
+        L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
+      });//,
+        //vehiclePositions = requestUpdatedJson('/latest_vehicle_locations/600/'),
+        //clonedVehiclePositions = _.clone(vehiclePositions),
+        //vehiclePositionsLayer = createVehicleDriveLayer(vehiclePositions);
 
       setInterval(function() {
-        var newEvents = requestUpdatedJson('/latest_events/86400/');
-        if (!(_.isEqual(clonedEvents, newEvents))) {
-          console.log('events have changed');
-          events = newEvents;
-          clonedEvents = _.clone(events);
-          map.removeLayer(eventsLayer);
-          eventsLayer = createEventsLayer(events);
-          eventsLayer.addTo(map);
-        }
-      }, 5000);
+        requestUpdatedJson('followUp', function (newEvents) {
+          if (!(_.isEqual(clonedEvents, newEvents))) {
+            console.log('events have changed');
+            events = newEvents;
+            clonedEvents = _.clone(events);
+            map.removeLayer(eventsLayer);
+            eventsLayer = createEventsLayer(events);
+            eventsLayer.addTo(map);
+            L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
+          }
+        });
+      }, 300000);
 
-      setInterval(function() {
-        var newVehiclePositions = requestUpdatedJson('/latest_vehicle_locations/600/');
-        if (!(_.isEqual(clonedVehiclePositions, newVehiclePositions))) {
-          console.log('vehicle positions have changed');
-          vehiclePositions = newVehiclePositions;
-          clonedVehiclePositions = _.clone(vehiclePositions);
-          map.removeLayer(vehiclePositionsLayer);
-          vehiclePositionsLayer = createVehicleDriveLayer(vehiclePositions);
-          vehiclePositionsLayer.addTo(map);
-        }
-      }, 5000);
+      // setInterval(function() {
+      //   var newVehiclePositions = requestUpdatedJson('/latest_vehicle_locations/600/');
+      //   if (!(_.isEqual(clonedVehiclePositions, newVehiclePositions))) {
+      //     console.log('vehicle positions have changed');
+      //     vehiclePositions = newVehiclePositions;
+      //     clonedVehiclePositions = _.clone(vehiclePositions);
+      //     map.removeLayer(vehiclePositionsLayer);
+      //     vehiclePositionsLayer = createVehicleDriveLayer(vehiclePositions);
+      //     vehiclePositionsLayer.addTo(map);
+      //   }
+      // }, 5000);
 
       var map = L.map('map', {
-        center: new L.LatLng(-12, 18),
-        zoom: 6,
+        center: new L.LatLng(6.5, 3.3),
+        zoom: 10,
         minZoom: 1,
         maxZoom: 18,
-        layers: [osm, eventsLayer, vehiclePositionsLayer]
+        layers: [osm]
       });
 
       var baseMaps = {
         "Map": osm
       };
-      var overlayMaps = {
-        "Events": eventsLayer,
-        "Vehicle positions": vehiclePositionsLayer,
-      };
-      map.fitBounds(eventsLayer.getBounds());
-      L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
+
     }
 
-    function requestUpdatedJson(apiUrl) {
-      // TODO: Use URL tag to create apiUrl from view name and args
-      //var apiUrl;
 
-      // if (argument) {
-      //     apiUrl = "/rest/"+api+"/?"+argument+"&format=json";
-      // } else {
-      //     apiUrl = "/rest/"+api+"/?format=json";
-      // }
-
-      var result;
-      $.ajax({
-        type: 'GET',
-        url: apiUrl,
-        contentType: "application/json; charset=utf-8",
-        dataType: 'json',
-        async: false,
-        success: function(data) {
-          result = parseResponseJsonData(data)
-        },
-        error: function(req, status, error) {
-          //var facilities = JSON.parse($("#facilities").attr("data"));
-          //result = parseResponseJsonData(facilities);
-          alert('Unable to get data: ' + api + ' -  ' + error);
-        }
-      });
-      return result;
-    }
 
 // function getDriver(driverId) {
 //     return "Driver " + driverId;
 // }
-    function getBubbleName(f) {
-      return "Driver: " + "<b>" + f.driver_phone + "</b>" + "<br>" + f.lat + ", " + f.lon + "<br>" + "Event Code: " + f.event_code + "<br>" + f.event_name + "<br>" + new Date(f.timestamp * 1000);
+//    function getBubbleName(f) {
+//      return ""//"Driver: " + "<b>" + f.driver_phone + "</b>" + "<br>" + f.lat + ", " + f.lon + "<br>" + "Event Code: " + f.event_code + "<br>" + f.event_name + "<br>" + new Date(f.timestamp * 1000);
+//    }
+
+    function requestUpdatedJson(unusedVariable, callback) {
+      FollowUp.all().then(function(response) {
+        callback(parseResponseJsonData(response));
+      });
     }
 
     function parseResponseJsonData(data) {
@@ -212,18 +198,17 @@ angular.module('sedApp')
       $.each(data, function(i, f) {
         var item = {};
         item.properties = {
-          name: getBubbleName(f), //getDriver(f.driver),//"Lat: "+f.lat+", Lon: "+f.lon,
-          event_type: f.event_type,
-          timestamp: f.timestamp,
-          driver: f.driver,
+          name: f["ContactInformation/contact_name"], //getDriver(f.driver),//"Lat: "+f.lat+", Lon: "+f.lon,
+          event_type: 'case',
+          timestamp: f["_submission_time"]
         };
         item.geometry = {
           type: "Point",
-          coordinates: [f.lon, f.lat]
+          coordinates: [parseFloat(f["_geolocation"][1]), parseFloat(f["_geolocation"][0])]
         };
         item.type = "Feature";
         items.push(item);
-
+        console.log(item)
         //  events_array.push(f);
         //  console.log(events_array);
       });
