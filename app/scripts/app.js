@@ -6,6 +6,7 @@ angular
     'ngSanitize',
     'ngRoute',
     'ngResource',
+    'ngTable',
     'nvd3ChartDirectives',
     'ui.bootstrap'
   ])
@@ -19,6 +20,10 @@ angular
       .when('/map', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl'
+      })
+      .when('/follow-ups', {
+        templateUrl: 'views/follow-ups.html',
+        controller: 'FollowUpsCtrl'
       })
       .when('/login', {
         templateUrl: 'views/login.html',
