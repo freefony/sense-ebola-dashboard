@@ -320,7 +320,10 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%= yeoman.app %>',
           dest: '<%= yeoman.dist %>',
-          src: ['bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*.*']
+          src: [
+            'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*.*',
+            'bower_components/Leaflet.awesome-markers/dist/images/*.*'
+          ]
         }]
       },
       styles: {
