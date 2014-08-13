@@ -9,7 +9,7 @@ angular.module('sedApp')
         page: 1,
         count: 10,
         sorting: {
-          date_visit: 'desc'
+          end: 'desc'
         }
       }, {
         total: 0,
@@ -19,7 +19,6 @@ angular.module('sedApp')
           else {
             FollowUp.all()
               .then(function(response) {
-                console.log(response);
                 data = response;
                 resolve(data);
               })
