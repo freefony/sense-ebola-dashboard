@@ -4,6 +4,7 @@ angular.module('sedApp')
   .controller('FollowUpsCtrl', function($scope, $filter, ngTableParams, FollowUp) {
     var data = [];
     var locals = $scope.locals = {
+      loading: true,
       error: false,
       tableParams: new ngTableParams({
         page: 1,
@@ -22,8 +23,13 @@ angular.module('sedApp')
                 data = response;
                 resolve(data);
               })
-              .catch(function(error) {
+              .catch(function() {
+                data = [];
+                resolve(data);
                 locals.error = true;
+              })
+              .finally(function() {
+                locals.loading = false;
               });
           }
 

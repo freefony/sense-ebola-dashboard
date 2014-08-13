@@ -1,38 +1,42 @@
 <h1 class="page-header">Follow Ups</h1>
-<table ng-table="locals.tableParams" class="table table-bordered table-striped table-condensed">
-  <tr ng-repeat="item in $data">
-    <td data-title="'Name'" sortable="'ContactInformation_contact_name'">{{item['ContactInformation/contact_name']}}
-    </td>
-    <td data-title="'End'" sortable="'end'" style="white-space: nowrap;">{{item.end | date:SETTINGS.dateFormat}}</td>
-    <td data-title="'Location'" sortable="'ContactInformation_lga'">{{item['ContactInformation/lga']}}</td>
-    <td data-title="'Temp'">{{item['Clinicals/Temp_reading']}}</td>
-    <td data-title="'Fever'">
-      <yes-no-mark ng-model="item['Clinicals/AnyFever']"></yes-no-mark>
-    </td>
-    <td data-title="'Vomiting'">
-      <yes-no-mark ng-model="item['Clinicals/Anyvomiting']"></yes-no-mark>
-    </td>
-    <td data-title="'Pharyngitis'">
-      <yes-no-mark ng-model="item['Clinicals/Anypharyngitis']"></yes-no-mark>
-    </td>
-    <td data-title="'Maculopapular Rash'">
-      <yes-no-mark ng-model="item['Clinicals/Anymacuplopapularash']"></yes-no-mark>
-    </td>
-    <td data-title="'Diaarrhea'">
-      <yes-no-mark ng-model="item['Clinicals/Anydiaarrhea']"></yes-no-mark>
-    </td>
-    <td data-title="'Muscle Pain'">
-      <yes-no-mark ng-model="item['Clinicals/Anymusclepain']"></yes-no-mark>
-    </td>
-    <td data-title="'Headaches'">
-      <yes-no-mark ng-model="item['Clinicals/AnyHeadaches']"></yes-no-mark>
-    </td>
-    <td data-title="'Haemorrhagic Signs'">
-      <yes-no-mark ng-model="item['Clinicals/Anyhaemorrhagicsigns']"></yes-no-mark>
-    </td>
-    <td data-title="'Malaise'">
-      <yes-no-mark ng-model="item['Clinicals/Anymalaise']"></yes-no-mark>
-    </td>
-    <td data-title="'TAG'">{{item['Clinicals/TAG']}}</td>
-  </tr>
-</table>
+<alert ng-if="locals.loading" type="info">Loading ...</alert>
+<alert ng-if="locals.error" type="danger">Error loading data.</alert>
+<div ng-show="!locals.loading && !locals.error">
+  <table ng-table="locals.tableParams" class="table table-bordered table-striped table-condensed">
+    <tr ng-repeat="item in $data">
+      <td data-title="'Name'" sortable="'ContactInformation_contact_name'">{{item['ContactInformation/contact_name']}}
+      </td>
+      <td data-title="'End'" sortable="'end'" style="white-space: nowrap;">{{item.end | date:SETTINGS.dateFormat}}</td>
+      <td data-title="'Location'" sortable="'ContactInformation_lga'">{{item['ContactInformation/lga']}}</td>
+      <td data-title="'Temp'">{{item['Clinicals/Temp_reading']}}</td>
+      <td data-title="'Fever'">
+        <yes-no-mark ng-model="item['Clinicals/AnyFever']"></yes-no-mark>
+      </td>
+      <td data-title="'Vomiting'">
+        <yes-no-mark ng-model="item['Clinicals/Anyvomiting']"></yes-no-mark>
+      </td>
+      <td data-title="'Pharyngitis'">
+        <yes-no-mark ng-model="item['Clinicals/Anypharyngitis']"></yes-no-mark>
+      </td>
+      <td data-title="'Maculopapular Rash'">
+        <yes-no-mark ng-model="item['Clinicals/Anymacuplopapularash']"></yes-no-mark>
+      </td>
+      <td data-title="'Diaarrhea'">
+        <yes-no-mark ng-model="item['Clinicals/Anydiaarrhea']"></yes-no-mark>
+      </td>
+      <td data-title="'Muscle Pain'">
+        <yes-no-mark ng-model="item['Clinicals/Anymusclepain']"></yes-no-mark>
+      </td>
+      <td data-title="'Headaches'">
+        <yes-no-mark ng-model="item['Clinicals/AnyHeadaches']"></yes-no-mark>
+      </td>
+      <td data-title="'Haemorrhagic Signs'">
+        <yes-no-mark ng-model="item['Clinicals/Anyhaemorrhagicsigns']"></yes-no-mark>
+      </td>
+      <td data-title="'Malaise'">
+        <yes-no-mark ng-model="item['Clinicals/Anymalaise']"></yes-no-mark>
+      </td>
+      <td data-title="'TAG'">{{item['Clinicals/TAG']}}</td>
+    </tr>
+  </table>
+</div>
