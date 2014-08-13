@@ -72,11 +72,13 @@ angular.module('sedApp')
             });
           },
           onEachFeature: function(feature, layer) {
+            /*
             var events = document.getElementById('events'),
               featureDiv = document.createElement('div');
             featureDiv.classList.add('event-div');
             $(featureDiv).html(feature.properties.name);
             events.insertBefore(featureDiv, events.firstChild.nextSibling);
+            */
             if (feature.properties && feature.properties.name) {
               layer.bindPopup(markerPopup(feature.properties));
             }
@@ -196,21 +198,23 @@ angular.module('sedApp')
       //var events_array = [];
 
       $.each(data, function(i, f) {
-        var item = {};
-        item.properties = {
-          name: f["ContactInformation/contact_name"], //getDriver(f.driver),//"Lat: "+f.lat+", Lon: "+f.lon,
-          event_type: 'case',
-          timestamp: f["_submission_time"]
-        };
-        item.geometry = {
-          type: "Point",
-          coordinates: [parseFloat(f["_geolocation"][1]), parseFloat(f["_geolocation"][0])]
-        };
-        item.type = "Feature";
-        items.push(item);
-        console.log(item)
-        //  events_array.push(f);
-        //  console.log(events_array);
+        if (f["_geolocation"][0] != null) {
+          var item = {};
+          item.properties = {
+            name: f["ContactInformation/contact_name"],
+            event_type: 'case',
+            timestamp: f["_submission_time"]
+          };
+          item.geometry = {
+            type: "Point",
+            coordinates: [parseFloat(f["_geolocation"][1]), parseFloat(f["_geolocation"][0])]
+          };
+          item.type = "Feature";
+          items.push(item);
+          console.log(item)
+          //  events_array.push(f);
+          //  console.log(events_array);
+       }
       });
 
       // return the FeatureCollection
