@@ -2,7 +2,8 @@
 
 angular.module('sedApp')
   .factory('FollowUp', function($q, formHub) {
-    var FORM_ID = 14;
+    var FORM_ID = 18;
+    var DATES = ['start', 'end', 'today', '_submission_time', 'ContactInformation/date_of_visit'];
 
     return {
       all: function() {
@@ -10,16 +11,26 @@ angular.module('sedApp')
 
         formHub.query({form_id: FORM_ID}).$promise
           .then(function(response) {
-            angular.forEach(response, function(obj) {
+            for (var i = 0; i < response.length; i++) {
+              var obj = response[i];
+
               angular.forEach(obj, function(value, key) {
-                if (key == 'date_visit' || key == '_submission_time')
-                  obj[key] = new Date(value);
-                else if (value == 'yes')
-                  obj[key] = true;
-                else if (value == 'no')
-                  obj[key] = false;
-              });
-            });
+                if (DATES.indexOf(key) >= 0)
+                  this[key] = moment(value).toDate();
+
+                if (angular.isString(value)) {
+                  if (value.toLowerCase() == 'yes')
+                    this[key] = true;
+                  else if (value.toLowerCase() == 'no')
+                    this[key] = false;
+                }
+
+                // angular 'orderBy' filter has issues with fields that have a '/'
+                // in their names, so we add '/'-free versions of them for sorting.
+                if (key.indexOf('/') >= 0)
+                  this[key.replace(/\//g, '_')] = this[key];
+              }, obj);
+            }
 
             d.resolve(response);
           })

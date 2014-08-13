@@ -1,39 +1,42 @@
 <h1 class="page-header">Follow Ups</h1>
-<table ng-table="locals.tableParams" class="table table-bordered table-striped table-condensed">
-  <tr ng-repeat="item in $data">
-    <td data-title="'Contact'" sortable="'name_of_contact'">{{item.name_of_contact}}</td>
-    <td data-title="'Date'" sortable="'date_visit'">{{item.date_visit | date:SETTINGS.dateFormat}}</td>
-    <td data-title="'LGA'" sortable="'lga_name'">{{item.lga_name}}</td>
-    <td data-title="'Temperature'">
-      <i class="glyphicon" ng-class="{'glyphicon-ok': item.temperature, 'glyphicon-remove': !item.temperature}"></i>
-    </td>
-    <td data-title="'Muscle Pain'">
-      <i class="glyphicon"
-         ng-class="{'glyphicon-ok': item.any_muscle_pain, 'glyphicon-remove': !item.any_muscle_pain}"></i>
-    </td>
-    <td data-title="'Diarrhoea'">
-      <i class="glyphicon" ng-class="{'glyphicon-ok': item.any_diarrhoea, 'glyphicon-remove': !item.any_diarrhoea}"></i>
-    </td>
-    <td data-title="'Vomiting'">
-      <i class="glyphicon" ng-class="{'glyphicon-ok': item.any_vomiting, 'glyphicon-remove': !item.any_vomiting}"></i>
-    </td>
-    <td data-title="'Rash'">
-      <i class="glyphicon" ng-class="{'glyphicon-ok': item.any_rash, 'glyphicon-remove': !item.any_rash}"></i>
-    </td>
-    <td data-title="'Headaches'">
-      <i class="glyphicon" ng-class="{'glyphicon-ok': item.any_headaches, 'glyphicon-remove': !item.any_headaches}"></i>
-    </td>
-    <td data-title="'Pharyngitis'">
-      <i class="glyphicon"
-         ng-class="{'glyphicon-ok': item.an_pharyngitis, 'glyphicon-remove': !item.an_pharyngitis}"></i>
-    </td>
-    <td data-title="'Haemorrhagic'">
-      <i class="glyphicon"
-         ng-class="{'glyphicon-ok': item.any_haemorrhagic, 'glyphicon-remove': !item.any_haemorrhagic}"></i>
-    </td>
-    <td data-title="'Malaise'">
-      <i class="glyphicon" ng-class="{'glyphicon-ok': item.any_malaise, 'glyphicon-remove': !item.any_malaise}"></i>
-    </td>
-    <td data-title="'Comments'">{{item.comments}}</td>
-  </tr>
-</table>
+<alert ng-if="locals.loading" type="info">Loading ...</alert>
+<alert ng-if="locals.error" type="danger">Error loading data.</alert>
+<div ng-show="!locals.loading && !locals.error">
+  <table ng-table="locals.tableParams" class="table table-bordered table-striped table-condensed">
+    <tr ng-repeat="item in $data">
+      <td data-title="'Name'" sortable="'ContactInformation_contact_name'">{{item['ContactInformation/contact_name']}}
+      </td>
+      <td data-title="'End'" sortable="'end'" style="white-space: nowrap;">{{item.end | date:SETTINGS.dateFormat}}</td>
+      <td data-title="'Location'" sortable="'ContactInformation_lga'">{{item['ContactInformation/lga']}}</td>
+      <td data-title="'Temp'">{{item['Clinicals/Temp_reading']}}</td>
+      <td data-title="'Fever'">
+        <yes-no-mark ng-model="item['Clinicals/AnyFever']"></yes-no-mark>
+      </td>
+      <td data-title="'Vomiting'">
+        <yes-no-mark ng-model="item['Clinicals/Anyvomiting']"></yes-no-mark>
+      </td>
+      <td data-title="'Pharyngitis'">
+        <yes-no-mark ng-model="item['Clinicals/Anypharyngitis']"></yes-no-mark>
+      </td>
+      <td data-title="'Maculopapular Rash'">
+        <yes-no-mark ng-model="item['Clinicals/Anymacuplopapularash']"></yes-no-mark>
+      </td>
+      <td data-title="'Diaarrhea'">
+        <yes-no-mark ng-model="item['Clinicals/Anydiaarrhea']"></yes-no-mark>
+      </td>
+      <td data-title="'Muscle Pain'">
+        <yes-no-mark ng-model="item['Clinicals/Anymusclepain']"></yes-no-mark>
+      </td>
+      <td data-title="'Headaches'">
+        <yes-no-mark ng-model="item['Clinicals/AnyHeadaches']"></yes-no-mark>
+      </td>
+      <td data-title="'Haemorrhagic Signs'">
+        <yes-no-mark ng-model="item['Clinicals/Anyhaemorrhagicsigns']"></yes-no-mark>
+      </td>
+      <td data-title="'Malaise'">
+        <yes-no-mark ng-model="item['Clinicals/Anymalaise']"></yes-no-mark>
+      </td>
+      <td data-title="'TAG'">{{item['Clinicals/TAG']}}</td>
+    </tr>
+  </table>
+</div>

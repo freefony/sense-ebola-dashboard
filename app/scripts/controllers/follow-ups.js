@@ -4,12 +4,13 @@ angular.module('sedApp')
   .controller('FollowUpsCtrl', function($scope, $filter, ngTableParams, FollowUp) {
     var data = [];
     var locals = $scope.locals = {
+      loading: true,
       error: false,
       tableParams: new ngTableParams({
         page: 1,
         count: 10,
         sorting: {
-          date_visit: 'desc'
+          end: 'desc'
         }
       }, {
         total: 0,
@@ -19,12 +20,16 @@ angular.module('sedApp')
           else {
             FollowUp.all()
               .then(function(response) {
-                console.log(response);
                 data = response;
                 resolve(data);
               })
-              .catch(function(error) {
+              .catch(function() {
+                data = [];
+                resolve(data);
                 locals.error = true;
+              })
+              .finally(function() {
+                locals.loading = false;
               });
           }
 
