@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sedApp')
-  .controller('MapCtrl', function($scope, FollowUp) {
+  .controller('MapCtrl', function($scope, FollowUp, couchdb) {
     $scope.title = 'Map';
     initiateMap();
 
@@ -60,7 +60,7 @@ angular.module('sedApp')
       }
 
       function createEventsLayer(events) {
-        console.log(events);
+    //    console.log(events);
         return L.geoJson(events, {
           style: {
             "weight": 1,
@@ -123,7 +123,7 @@ angular.module('sedApp')
       // Facilities GeoJSON Layer
       var events, clonedEvents, eventsLayer;
 
-      requestUpdatedJson('followUp', function (events) {
+      requestUpdatedJson('couchdb', function (events) {
         clonedEvents = _.clone(events);
         eventsLayer = createEventsLayer(events);
         eventsLayer.addTo(map);
@@ -139,7 +139,7 @@ angular.module('sedApp')
         //vehiclePositionsLayer = createVehicleDriveLayer(vehiclePositions);
 
       setInterval(function() {
-        requestUpdatedJson('followUp', function (newEvents) {
+        requestUpdatedJson('couchdb', function (newEvents) {
           if (!(_.isEqual(clonedEvents, newEvents))) {
             console.log('events have changed');
             events = newEvents;
@@ -179,7 +179,13 @@ angular.module('sedApp')
     }
 
 
-
+   function service(serviceName) {
+     if (serviceName=='followup') {
+       return FollowUp;
+     } else {
+       return couchdb;
+     }
+   }
 // function getDriver(driverId) {
 //     return "Driver " + driverId;
 // }
@@ -187,8 +193,8 @@ angular.module('sedApp')
 //      return ""//"Driver: " + "<b>" + f.driver_phone + "</b>" + "<br>" + f.lat + ", " + f.lon + "<br>" + "Event Code: " + f.event_code + "<br>" + f.event_name + "<br>" + new Date(f.timestamp * 1000);
 //    }
 
-    function requestUpdatedJson(unusedVariable, callback) {
-      FollowUp.all().then(function(response) {
+    function requestUpdatedJson(serviceName, callback) {
+      service(serviceName).all().then(function(response) {
         callback(parseResponseJsonData(response));
       });
     }
@@ -196,7 +202,7 @@ angular.module('sedApp')
     function parseResponseJsonData(data) {
       var items = [];
       //var events_array = [];
-
+      console.log(data);
       $.each(data, function(i, f) {
         if (f["_geolocation"][0] != null) {
           var item = {};
