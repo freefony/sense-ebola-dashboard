@@ -18,11 +18,12 @@ module.exports = function(config) {
       'app/bower_components/angular-sanitize/angular-sanitize.js',
       'app/bower_components/angular-route/angular-route.js',
       'app/bower_components/angular-resource/angular-resource.js',
+      'app/bower_components/ng-table/ng-table.js',
+      'app/bower_components/ngstorage/ngStorage.js',
       'app/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
       'app/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
       'app/bower_components/es5-shim/es5-shim.js',
       'app/bower_components/pouchdb/dist/pouchdb-nightly.js',
-      'app/bower_components/ng-table/ng-table.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'

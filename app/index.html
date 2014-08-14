@@ -45,7 +45,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li ng-show="currentUser" class="dropdown">
-        <a class="dropdown-toggle" href="#" data-toggle="dropdown">{{currentUser.name}} <span class="caret"></span></a>
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown">{{currentUser.username}} <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
           <li><a ng-click="logout()">Logout</a></li>
         </ul>
@@ -92,6 +92,7 @@
 <script src="bower_components/underscore/underscore.js"></script>
 <script src="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
 <script src="bower_components/ng-table/ng-table.js"></script>
+<script src="bower_components/ngstorage/ngStorage.js"></script>
 <!-- endbower -->
 
 <script src="vendors/wax.leaf.min.js"></script>
