@@ -14,9 +14,14 @@ angular.module('sedApp')
       scope.error = '';
 
       if (form.$valid) {
-        Auth.login(scope.user);
-        $location.search('back', null);
-        $location.path(back);
+        Auth.login(scope.user)
+          .then(function() {
+            $location.search('back', null);
+            $location.path(back);
+          })
+          .catch(function(err) {
+            scope.error = err.data.reason;
+          });
       }
     };
   });
