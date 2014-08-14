@@ -1,11 +1,14 @@
 'use strict';
 
 angular.module('sedApp')
-  .factory('Auth', function Auth($rootScope, $q) {
+  .factory('Auth', function Auth($rootScope, $sessionStorage) {
     $rootScope.currentUser = null;
     $rootScope.app = $rootScope.app || {
       init: false
     };
+
+    if ($sessionStorage.user)
+      set($sessionStorage.user);
 
     // no async operation, so set init to true right away
     $rootScope.app.init = true;
@@ -24,6 +27,7 @@ angular.module('sedApp')
        * @param  {Object}   user     - login info
        */
       login: function(user) {
+        $sessionStorage.user = user;
         set(user);
       },
 
@@ -31,6 +35,7 @@ angular.module('sedApp')
        * Unauthenticate user
        */
       logout: function() {
+        $sessionStorage.user = null;
         set(null);
       },
 
