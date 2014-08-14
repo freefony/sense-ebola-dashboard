@@ -20,7 +20,7 @@ angular.module('sedApp')
             resolve(data);
           else {
 
-            contactFactory.all()
+            contactFactory.viewByDate()
               .then(function(senseContacts) {
                 data = senseContacts.rows
                   .map(function(senseData) {
