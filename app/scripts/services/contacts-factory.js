@@ -6,7 +6,7 @@ angular.module('sedApp')
     var DB_NAME = 'sense_contacts';
 
     function getAll() {
-      return couchdb.view({_db: DB_NAME}).$promise;
+      return couchdb.allDocs({_db: DB_NAME}).$promise;
     }
 
     function getViewByDate() {
