@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sedApp')
-  .controller('MapCtrl', function($scope, FollowUp) {
+  .controller('MapCtrl', function($scope, FollowUp, contactFactory) {
     $scope.title = 'Map';
 
     $scope.initiateMap = function() {
@@ -36,11 +36,11 @@ angular.module('sedApp')
 
       function selectIcon(event_class, event_type) {
         switch (event_type) {
-          case 'case':
+          case 1:
             return markers[event_class].purple;
           case 3:
             return markers[event_class].red;
-          case 1:
+          case 'case':
             return markers[event_class].green;
           case 2:
             return markers[event_class].green;
@@ -57,7 +57,7 @@ angular.module('sedApp')
       }
 
       function createEventsLayer(events) {
-        console.log(events);
+    //    console.log(events);
         return L.geoJson(events, {
           style: {
             "weight": 1,
@@ -120,7 +120,7 @@ angular.module('sedApp')
       // Facilities GeoJSON Layer
       var events, clonedEvents, eventsLayer;
 
-      requestUpdatedJson('followUp', function (events) {
+      requestUpdatedJson('couchdb', function (events) {
         clonedEvents = _.clone(events);
         eventsLayer = createEventsLayer(events);
         eventsLayer.addTo(map);
@@ -136,7 +136,7 @@ angular.module('sedApp')
         //vehiclePositionsLayer = createVehicleDriveLayer(vehiclePositions);
 
       setInterval(function() {
-        requestUpdatedJson('followUp', function (newEvents) {
+        requestUpdatedJson('couchdb', function (newEvents) {
           if (!(_.isEqual(clonedEvents, newEvents))) {
             console.log('events have changed');
             events = newEvents;
@@ -176,7 +176,13 @@ angular.module('sedApp')
     }
 
 
-
+function getService(serviceName) {
+  if (serviceName=='followup') {
+    return FollowUp;
+  } else {
+    return contactFactory;
+  }
+}
 // function getDriver(driverId) {
 //     return "Driver " + driverId;
 // }
@@ -184,8 +190,9 @@ angular.module('sedApp')
 //      return ""//"Driver: " + "<b>" + f.driver_phone + "</b>" + "<br>" + f.lat + ", " + f.lon + "<br>" + "Event Code: " + f.event_code + "<br>" + f.event_name + "<br>" + new Date(f.timestamp * 1000);
 //    }
 
-    function requestUpdatedJson(unusedVariable, callback) {
-      FollowUp.all().then(function(response) {
+    function requestUpdatedJson(serviceName, callback) {
+      console.log(getService(serviceName));
+      getService(serviceName).all().then(function(response) {
         callback(parseResponseJsonData(response));
       });
     }
@@ -193,21 +200,26 @@ angular.module('sedApp')
     function parseResponseJsonData(data) {
       var items = [];
       //var events_array = [];
-
-      $.each(data, function(i, f) {
-        if (f["_geolocation"][0] != null) {
-          var item = {};
-          item.properties = {
-            name: f["ContactInformation/contact_name"],
-            event_type: 'case',
-            timestamp: f["_submission_time"]
-          };
-          item.geometry = {
-            type: "Point",
-            coordinates: [parseFloat(f["_geolocation"][1]), parseFloat(f["_geolocation"][0])]
-          };
-          item.type = "Feature";
-          items.push(item);
+      console.log(data);
+      $.each(data.rows, function(i, g) {
+        var f = g["doc"];
+        console.log(f);
+        if (f["dailyVisits"] && f["dailyVisits"].length > 0) {
+          var item = {},
+          lastDailyVisit = _.last(_.sortBy(f["dailyVisits"], 'dateOfVisit'));
+          if (lastDailyVisit["geoInfo"]["coords"]) {
+            item.properties = {
+              name: f["OtherNames"]+" "+f["SurName"],
+              event_type: 'case',
+              timestamp: lastDailyVisit["dateOfVisit"]
+            };
+            item.geometry = {
+              type: "Point",
+              coordinates: [parseFloat(lastDailyVisit["geoInfo"]["coords"]["longitude"]), parseFloat(lastDailyVisit["geoInfo"]["coords"]["latitude"])]
+            };
+            item.type = "Feature";
+            items.push(item);
+          }
           console.log(item)
           //  events_array.push(f);
           //  console.log(events_array);
