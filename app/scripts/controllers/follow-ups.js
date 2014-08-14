@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('sedApp')
-  .controller('FollowUpsCtrl', function($scope, $filter, ngTableParams, FollowUp) {
+  .controller('FollowUpsCtrl', function($scope, $filter, ngTableParams, FollowUp, contactFactory) {
+
     var data = [];
     var locals = $scope.locals = {
       loading: true,
@@ -18,9 +19,27 @@ angular.module('sedApp')
           if (data.length)
             resolve(data);
           else {
-            FollowUp.all()
-              .then(function(response) {
-                data = response;
+
+            contactFactory.all()
+              .then(function(senseContacts) {
+                data = senseContacts.rows
+                  .map(function(senseData) {
+                    return {
+                      name: senseData.value.Surname + ' ' + senseData.value.OtherNames,
+                      time: senseData.key,
+                      interviewer: senseData.value.visitData.interviewer,
+                      temperature: senseData.value.visitData.symptoms.temperature,
+                      diarrhoea: senseData.value.visitData.symptoms.diarrhoea,
+                      pharyngitis: senseData.value.visitData.symptoms.pharyngitis,
+                      haemorrhagic: senseData.value.visitData.symptoms.haemorrhagic,
+                      headache: senseData.value.visitData.symptoms.headache,
+                      maculopapular: senseData.value.visitData.symptoms.maculopapular,
+                      malaise: senseData.value.visitData.symptoms.malaise,
+                      musclePain: senseData.value.visitData.symptoms.musclePain,
+                      vomiting: senseData.value.visitData.symptoms.vomiting
+                    };
+                  });
+
                 resolve(data);
               })
               .catch(function() {
@@ -31,6 +50,7 @@ angular.module('sedApp')
               .finally(function() {
                 locals.loading = false;
               });
+
           }
 
           function resolve(data) {
@@ -41,4 +61,5 @@ angular.module('sedApp')
         }
       })
     };
+
   });
