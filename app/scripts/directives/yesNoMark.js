@@ -4,7 +4,7 @@ angular.module('sedApp')
       restrict: 'E',
       link: function(scope, element, attrs) {
         var name = attrs['ngModel'];
-        var htmlText = '<i class="glyphicon" ng-class="{\'glyphicon-ok\': ' + name + ', \'glyphicon-remove\': !' + name + '}"></i>';
+        var htmlText = '<i class="fa" ng-class="{\'fa-check text-danger\': ' + name + ', \'fa-minus\': !' + name + '}"></i>';
 
         element.replaceWith($compile(htmlText)(scope));
       }

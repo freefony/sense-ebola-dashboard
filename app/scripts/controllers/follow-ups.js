@@ -11,7 +11,7 @@ angular.module('sedApp')
         page: 1,
         count: 10,
         sorting: {
-          end: 'desc'
+          time: 'desc'
         }
       }, {
         total: 0,
