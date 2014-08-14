@@ -36,11 +36,11 @@ angular.module('sedApp')
 
       function selectIcon(event_class, event_type) {
         switch (event_type) {
-          case 'case':
+          case 1:
             return markers[event_class].purple;
           case 3:
             return markers[event_class].red;
-          case 1:
+          case 'case':
             return markers[event_class].green;
           case 2:
             return markers[event_class].green;
@@ -201,20 +201,25 @@ function getService(serviceName) {
       var items = [];
       //var events_array = [];
       console.log(data);
-      $.each(data.rows, function(i, f) {
-        if (f["_geolocation"][0] != null) {
-          var item = {};
-          item.properties = {
-            name: f["ContactInformation/contact_name"],
-            event_type: 'case',
-            timestamp: f["_submission_time"]
-          };
-          item.geometry = {
-            type: "Point",
-            coordinates: [parseFloat(f["_geolocation"][1]), parseFloat(f["_geolocation"][0])]
-          };
-          item.type = "Feature";
-          items.push(item);
+      $.each(data.rows, function(i, g) {
+        var f = g["doc"];
+        console.log(f);
+        if (f["dailyVisits"] && f["dailyVisits"].length > 0) {
+          var item = {},
+          lastDailyVisit = _.last(_.sortBy(f["dailyVisits"], 'dateOfVisit'));
+          if (lastDailyVisit["geoInfo"]["coords"]) {
+            item.properties = {
+              name: f["OtherNames"]+" "+f["SurName"],
+              event_type: 'case',
+              timestamp: lastDailyVisit["dateOfVisit"]
+            };
+            item.geometry = {
+              type: "Point",
+              coordinates: [parseFloat(lastDailyVisit["geoInfo"]["coords"]["longitude"]), parseFloat(lastDailyVisit["geoInfo"]["coords"]["latitude"])]
+            };
+            item.type = "Feature";
+            items.push(item);
+          }
           console.log(item)
           //  events_array.push(f);
           //  console.log(events_array);
