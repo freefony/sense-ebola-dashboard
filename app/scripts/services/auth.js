@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sedApp')
-  .factory('Auth', function Auth($rootScope, $sessionStorage) {
+  .factory('Auth', function Auth($rootScope, $sessionStorage, couchdb) {
     $rootScope.currentUser = null;
     $rootScope.app = $rootScope.app || {
       init: false
@@ -16,6 +16,7 @@ angular.module('sedApp')
     function set(user) {
       if (user != $rootScope.currentUser) {
         $rootScope.currentUser = user;
+        $sessionStorage.user = user;
         $rootScope.$emit('currentUserChanged', user);
       }
     }
@@ -25,18 +26,54 @@ angular.module('sedApp')
        * Authenticate user
        *
        * @param  {Object}   user     - login info
+       * @param  {Function} callback - optional
+       * @return {Promise}
        */
-      login: function(user) {
-        $sessionStorage.user = user;
-        set(user);
+      login: function(user, callback) {
+        var cb = callback || angular.noop;
+
+        var promise = couchdb.login({
+          name: user.username,
+          password: user.password
+        }).$promise;
+
+        promise
+          .then(function(data) {
+            if (data.ok) {
+              set(user);
+            }
+            cb();
+          })
+          .catch(function(err) {
+            cb(err);
+          });
+
+        return promise;
       },
 
       /**
        * Unauthenticate user
+       *
+       * @param  {Function} callback - optional
+       * @return {Promise}
        */
-      logout: function() {
-        $sessionStorage.user = null;
-        set(null);
+      logout: function(callback) {
+        var cb = callback || angular.noop;
+
+        var promise = couchdb.logout().$promise;
+        promise
+          .then(function(data) {
+            if (data.ok) {
+              set(null);
+            }
+
+            cb();
+          })
+          .catch(function(err) {
+            cb(err);
+          });
+
+        return promise;
       },
 
       /**
