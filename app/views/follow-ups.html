@@ -3,39 +3,21 @@
 <div ng-show="!locals.loading && !locals.error">
   <table ng-table="locals.tableParams" class="table table-bordered table-striped table-condensed">
     <tr ng-repeat="item in $data">
-      <td data-title="'Name'" sortable="'ContactInformation_contact_name'">{{item['ContactInformation/contact_name']}}
+      <td data-title="'Name'" sortable="'ContactInformation_contact_name'">{{ item.name }}
       </td>
-      <td data-title="'End'" sortable="'end'" style="white-space: nowrap;">{{item.end | date:SETTINGS.dateFormat}}</td>
-      <td data-title="'Location'" sortable="'ContactInformation_lga'">{{item['ContactInformation/lga']}}</td>
-      <td data-title="'Temp'">{{item['Clinicals/Temp_reading']}}</td>
-      <td data-title="'Fever'">
-        <yes-no-mark ng-model="item['Clinicals/AnyFever']"></yes-no-mark>
+      <td data-title="'Time'" sortable="'time'" style="white-space: nowrap;">{{item.time | date:SETTINGS.dateFormat}}</td>
+      <td data-title="'Interviewer'" sortable="'interviewer'">{{item.interviewer}}</td>
+      <td data-title="'Temp'">{{item.temperature}}</td>
+      <td data-title="'D'">
+        <i class="fa" ng-class="{'fa-minus fa-xs': !item.diarrhoea, 'fa-check text-danger fa-xs': item.diarrhoea}"></i>
       </td>
-      <td data-title="'Vomiting'">
-        <yes-no-mark ng-model="item['Clinicals/Anyvomiting']"></yes-no-mark>
-      </td>
-      <td data-title="'Pharyngitis'">
-        <yes-no-mark ng-model="item['Clinicals/Anypharyngitis']"></yes-no-mark>
-      </td>
-      <td data-title="'Maculopapular Rash'">
-        <yes-no-mark ng-model="item['Clinicals/Anymacuplopapularash']"></yes-no-mark>
-      </td>
-      <td data-title="'Diaarrhea'">
-        <yes-no-mark ng-model="item['Clinicals/Anydiaarrhea']"></yes-no-mark>
-      </td>
-      <td data-title="'Muscle Pain'">
-        <yes-no-mark ng-model="item['Clinicals/Anymusclepain']"></yes-no-mark>
-      </td>
-      <td data-title="'Headaches'">
-        <yes-no-mark ng-model="item['Clinicals/AnyHeadaches']"></yes-no-mark>
-      </td>
-      <td data-title="'Haemorrhagic Signs'">
-        <yes-no-mark ng-model="item['Clinicals/Anyhaemorrhagicsigns']"></yes-no-mark>
-      </td>
-      <td data-title="'Malaise'">
-        <yes-no-mark ng-model="item['Clinicals/Anymalaise']"></yes-no-mark>
-      </td>
-      <td data-title="'TAG'">{{item['Clinicals/TAG']}}</td>
+      <td data-title="'P'"><i class="fa" ng-class="{'fa-minus ': !item.pharyngitis, 'fa-check text-danger': item.pharyngitis}"></i></td>
+      <td data-title="'Ha'"><i class="fa" ng-class="{'fa-minus ': !item.haemorrhagic, 'fa-check text-danger': item.haemorrhagic}"></i></td>
+      <td data-title="'He'"><i class="fa" ng-class="{'fa-minus ': !item.headache, 'fa-check text-danger': item.headache}"></i></td>
+      <td data-title="'Mac'"><i class="fa" ng-class="{'fa-minus ': !item.maculopapular, 'fa-check text-danger': item.maculopapular}"></i></td>
+      <td data-title="'Mal'"><i class="fa" ng-class="{'fa-minus ': !item.malaise, 'fa-check text-danger': item.malaise}"></i></td>
+      <td data-title="'Mu'"><i class="fa" ng-class="{'fa-minus ': !item.musclePain, 'fa-check text-danger': item.musclePain}"></i></td>
+      <td data-title="'V'"><i class="fa" ng-class="{'fa-minus ': !item.vomiting, 'fa-check text-danger': item.vomiting}"></i></td>
     </tr>
   </table>
 </div>
