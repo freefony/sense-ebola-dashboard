@@ -20,26 +20,30 @@ angular.module('sedApp')
             resolve(data);
           else {
 
-            contactFactory.viewByDate()
-              .then(function(senseContacts) {
-                data = senseContacts.rows
+            FollowUp.all()
+              .then(function(formHubData) {
+                var response = {
+                  Yes: true,
+                  No: false
+                };
+
+                data = formHubData
                   .map(function(senseData) {
                     return {
-                      name: senseData.value.Surname + ' ' + senseData.value.OtherNames,
-                      time: senseData.key,
-                      interviewer: senseData.value.visitData.interviewer,
-                      temperature: senseData.value.visitData.symptoms.temperature,
-                      diarrhoea: senseData.value.visitData.symptoms.diarrhoea,
-                      pharyngitis: senseData.value.visitData.symptoms.pharyngitis,
-                      haemorrhagic: senseData.value.visitData.symptoms.haemorrhagic,
-                      headache: senseData.value.visitData.symptoms.headache,
-                      maculopapular: senseData.value.visitData.symptoms.maculopapular,
-                      malaise: senseData.value.visitData.symptoms.malaise,
-                      musclePain: senseData.value.visitData.symptoms.musclePain,
-                      vomiting: senseData.value.visitData.symptoms.vomiting
+                      name: senseData['ContactInformation/contact_name'],
+                      time: senseData['_submission_time'],
+                      interviewer: senseData['WELCOME/Contact_tracer'],
+                      temperature: senseData['Clinicals/Temp_reading'],
+                      diarrhoea: response[senseData['Clinicals/Anydiaarrhea']],
+                      pharyngitis: response[senseData['Clinicals/Anypharyngitis']],
+                      haemorrhagic: response[senseData['Clinicals/Anyhaemorrhagicsigns']],
+                      headache: response[senseData['Clinicals/AnyHeadaches']],
+                      maculopapular: response[senseData['Clinicals/Anymacuplopapularash']],
+                      malaise: response[senseData['Clinicals/Anymalaise']],
+                      musclePain: response[senseData['Clinicals/Anymusclepain']],
+                      vomiting: response[senseData['Clinicals/Anyvomiting']]
                     };
                   });
-
                 resolve(data);
               })
               .catch(function() {
