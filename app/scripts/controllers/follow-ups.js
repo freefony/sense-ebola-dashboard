@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sedApp')
-  .controller('FollowUpsCtrl', function($scope, $filter, ngTableParams, FollowUp, contactFactory) {
+  .controller('FollowUpsCtrl', function($scope, $filter, ngTableParams, aggregatedData) {
 
     var data = [];
     var locals = $scope.locals = {
@@ -20,30 +20,9 @@ angular.module('sedApp')
             resolve(data);
           else {
 
-            FollowUp.all()
-              .then(function(formHubData) {
-                var response = {
-                  Yes: true,
-                  No: false
-                };
-
-                data = formHubData
-                  .map(function(senseData) {
-                    return {
-                      name: senseData['ContactInformation/contact_name'],
-                      time: senseData['_submission_time'],
-                      interviewer: senseData['WELCOME/Contact_tracer'],
-                      temperature: senseData['Clinicals/Temp_reading'],
-                      diarrhoea: response[senseData['Clinicals/Anydiaarrhea']],
-                      pharyngitis: response[senseData['Clinicals/Anypharyngitis']],
-                      haemorrhagic: response[senseData['Clinicals/Anyhaemorrhagicsigns']],
-                      headache: response[senseData['Clinicals/AnyHeadaches']],
-                      maculopapular: response[senseData['Clinicals/Anymacuplopapularash']],
-                      malaise: response[senseData['Clinicals/Anymalaise']],
-                      musclePain: response[senseData['Clinicals/Anymusclepain']],
-                      vomiting: response[senseData['Clinicals/Anyvomiting']]
-                    };
-                  });
+            aggregatedData.mergedData()
+              .then(function(merged) {
+                data = merged;
                 resolve(data);
               })
               .catch(function() {
