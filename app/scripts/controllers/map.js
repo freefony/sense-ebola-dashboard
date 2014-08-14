@@ -44,7 +44,7 @@ angular.module('sedApp')
       }
 
       function markerPopup(marker_properties) {
-        var infoText = marker_properties.name;
+        var date = new Date(marker_properties.timestamp), infoText = '<p>' + marker_properties.name +'</p><p>'+date+'</p>';
 
         return infoText;
       }
@@ -210,7 +210,7 @@ function getService(serviceName) {
 
           if (lastDailyVisit["geoInfo"]["coords"]) {
             item.properties = {
-              name: f["OtherNames"]+" "+f["SurName"],
+              name: f["OtherNames"]+" "+f["Surname"],
               timestamp: lastDailyVisit["dateOfVisit"],
               updateStatus: updateStatus
             };
