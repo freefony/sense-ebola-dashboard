@@ -9,7 +9,7 @@ angular.module('sedApp')
       error: false,
       tableParams: new ngTableParams({
         page: 1,
-        count: 10,
+        count: 20,
         sorting: {
           time: 'desc'
         }
