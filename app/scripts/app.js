@@ -36,13 +36,16 @@ angular
 
     // Intercept 401s and redirect user to login
     $httpProvider.interceptors.push([
-      '$rootScope', '$q', '$location', function($rootScope, $q, $location) {
+      '$rootScope', '$q', '$location', 'SETTINGS', function($rootScope, $q, $location, SETTINGS) {
         return {
           'request': function(config) {
-            var username = $rootScope.currentUser ? $rootScope.currentUser.username : '';
-            var password = $rootScope.currentUser ? $rootScope.currentUser.password : '';
+            if (config.url.substr(0, SETTINGS.formHubUrl.length) === SETTINGS.formHubUrl) {
+              var username = $rootScope.currentUser ? $rootScope.currentUser.username : '';
+              var password = $rootScope.currentUser ? $rootScope.currentUser.password : '';
 
-            config.headers['Authorization'] = 'Basic ' + btoa(username + ':' + password);
+              config.headers['Authorization'] = 'Basic ' + btoa(username + ':' + password);
+            }
+
             return config;
           },
           'responseError': function(response) {
