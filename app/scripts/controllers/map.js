@@ -21,29 +21,22 @@ angular.module('sedApp')
               markerColor: 'red',
               prefix: 'icon'
             }),
-            black: L.AwesomeMarkers.icon({
+            grey: L.AwesomeMarkers.icon({
               icon: 'circle',
-              markerColor: 'black',
-              prefix: 'icon'
-            }),
-            purple: L.AwesomeMarkers.icon({
-              icon: 'circle',
-              markerColor: 'purple',
+              markerColor: 'grey',
               prefix: 'icon'
             })
           }
         };
 
-      function selectIcon(event_class, event_type) {
-        switch (event_type) {
-          case 1:
-            return markers[event_class].purple;
-          case 3:
+      function selectIcon(event_class, updateStatus) {
+        switch (updateStatus) {
+          case 'lastDay':
+            return markers[event_class].green;
+          case 'within48Hours':
+            return markers[event_class].grey;
+          case 'outdated':
             return markers[event_class].red;
-          case 'case':
-            return markers[event_class].green;
-          case 2:
-            return markers[event_class].green;
         }
         // Unknown event type?
         return markers[event_class].red;
@@ -57,7 +50,6 @@ angular.module('sedApp')
       }
 
       function createEventsLayer(events) {
-    //    console.log(events);
         return L.geoJson(events, {
           style: {
             "weight": 1,
@@ -65,7 +57,7 @@ angular.module('sedApp')
           },
           pointToLayer: function(feature, latlng) {
             return L.marker(latlng, {
-              icon: selectIcon('Event', feature.properties.event_type),
+              icon: selectIcon('Event', feature.properties.updateStatus),
             });
           },
           onEachFeature: function(feature, layer) {
@@ -191,7 +183,6 @@ function getService(serviceName) {
 //    }
 
     function requestUpdatedJson(serviceName, callback) {
-      console.log(getService(serviceName));
       getService(serviceName).all().then(function(response) {
         callback(parseResponseJsonData(response));
       });
@@ -200,18 +191,28 @@ function getService(serviceName) {
     function parseResponseJsonData(data) {
       var items = [];
       //var events_array = [];
-      console.log(data);
       $.each(data.rows, function(i, g) {
         var f = g["doc"];
-        console.log(f);
         if (f["dailyVisits"] && f["dailyVisits"].length > 0) {
           var item = {},
-          lastDailyVisit = _.last(_.sortBy(f["dailyVisits"], 'dateOfVisit'));
+          lastDailyVisit = _.last(_.sortBy(f["dailyVisits"], 'dateOfVisit')),
+          timeDelta = new Date() - new Date(lastDailyVisit["dateOfVisit"]),
+          updateStatus = 'outdated';
+
+
+          if (timeDelta > 172800000) {
+            updateStatus = 'outdated';
+          } else if (timeDelta > 86400000 ) {
+            updateStatus = 'within48Hours';
+          } else {
+            updateStatus = 'lastDay';
+          }
+
           if (lastDailyVisit["geoInfo"]["coords"]) {
             item.properties = {
               name: f["OtherNames"]+" "+f["SurName"],
-              event_type: 'case',
-              timestamp: lastDailyVisit["dateOfVisit"]
+              timestamp: lastDailyVisit["dateOfVisit"],
+              updateStatus: updateStatus
             };
             item.geometry = {
               type: "Point",
@@ -220,9 +221,6 @@ function getService(serviceName) {
             item.type = "Feature";
             items.push(item);
           }
-          console.log(item)
-          //  events_array.push(f);
-          //  console.log(events_array);
        }
       });
 
