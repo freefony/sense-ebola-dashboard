@@ -208,7 +208,7 @@ function getService(serviceName) {
             updateStatus = 'lastDay';
           }
 
-          if (lastDailyVisit["geoInfo"]["coords"]) {
+          if (lastDailyVisit["geoInfo"] && lastDailyVisit["geoInfo"]["coords"]) {
             item.properties = {
               name: f["OtherNames"]+" "+f["Surname"],
               timestamp: lastDailyVisit["dateOfVisit"],
