@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sedApp')
-  .controller('MapCtrl', function($scope, FollowUp, couchdb) {
+  .controller('MapCtrl', function($scope, FollowUp, contactFactory) {
     $scope.title = 'Map';
 
     $scope.initiateMap = function() {
@@ -176,13 +176,13 @@ angular.module('sedApp')
     }
 
 
-   function service(serviceName) {
-     if (serviceName=='followup') {
-       return FollowUp;
-     } else {
-       return couchdb;
-     }
-   }
+function getService(serviceName) {
+  if (serviceName=='followup') {
+    return FollowUp;
+  } else {
+    return contactFactory;
+  }
+}
 // function getDriver(driverId) {
 //     return "Driver " + driverId;
 // }
@@ -191,7 +191,8 @@ angular.module('sedApp')
 //    }
 
     function requestUpdatedJson(serviceName, callback) {
-      service(serviceName).all().then(function(response) {
+      console.log(getService(serviceName));
+      getService(serviceName).all().then(function(response) {
         callback(parseResponseJsonData(response));
       });
     }
@@ -200,7 +201,7 @@ angular.module('sedApp')
       var items = [];
       //var events_array = [];
       console.log(data);
-      $.each(data, function(i, f) {
+      $.each(data.rows, function(i, f) {
         if (f["_geolocation"][0] != null) {
           var item = {};
           item.properties = {
