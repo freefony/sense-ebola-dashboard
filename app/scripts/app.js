@@ -6,6 +6,7 @@ angular
     'ngSanitize',
     'ngRoute',
     'ngResource',
+    'ngStorage',
     'ngTable',
     'nvd3ChartDirectives',
     'ui.bootstrap'
