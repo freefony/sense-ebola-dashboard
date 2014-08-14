@@ -3,11 +3,8 @@
 angular.module('sedApp')
   .controller('MapCtrl', function($scope, FollowUp) {
     $scope.title = 'Map';
-    initiateMap();
 
-
-
-    function initiateMap() {
+    $scope.initiateMap = function() {
       var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         osmAttrib = 'Map data © OpenStreetMap contributors',
         osm = L.tileLayer(osmUrl, {minZoom: 6, maxZoom: 18, attribution: osmAttrib}),
