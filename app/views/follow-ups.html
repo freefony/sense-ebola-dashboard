@@ -5,7 +5,7 @@
     <tr ng-repeat="item in $data">
       <td data-title="'Name'" sortable="'name'">{{item.name}}</td>
       <td data-title="'Time'" sortable="'time'" style="white-space: nowrap;">
-        {{item.time | date:SETTINGS.dateFormat}}
+        {{item.time | date:SETTINGS.dateTimeFormat}}
       </td>
       <td data-title="'Interviewer'" sortable="'interviewer'">{{item.interviewer}}</td>
       <td data-title="'Temp'">{{item.temperature}}</td>
