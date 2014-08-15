@@ -88,7 +88,7 @@ angular.module('sedApp')
             function getData() {
                   requestUpdatedJson('couchdb', function(newEvents) {
                       if (!(_.isEqual(clonedEvents, newEvents))) {
-                          console.log('events have changed');
+                          console.log('followups have changed');
                           events = newEvents;
                           clonedEvents = _.clone(events);
                           if (eventsLayer) {
@@ -97,7 +97,7 @@ angular.module('sedApp')
                           eventsLayer = createEventsLayer(events);
                           eventsLayer.addTo(map);
                           if (legend) {
-                            map.removeLayer(legend);
+                            legend.removeFrom(map);
                           }
                           legend = L.control.layers(baseMaps, {
                             "Latest followups": eventsLayer,
