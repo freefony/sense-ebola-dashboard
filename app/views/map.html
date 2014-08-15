@@ -1,8 +1,12 @@
-<div class="row" ng-init="initiateMap()">
-  <div class="col-sm-12">
-    <div id="map" style="height: 300px;"></div>
-    <p><span id="updated-contacts"></span>/<span id="total-contacts"></span> followed up today.</span></p>
-    <h2>NOT DONE TODAY</h2>
-    <div id="missing-contacts" style="-webkit-column-count: 2;-moz-column-count: 2;"></div>
+<div class="panel panel-default" ng-init="initiateMap()">
+  <div class="panel-heading">Map</div>
+  <div id="map" style="height: 400px;"></div>
+  <div class="panel-footer">
+    <span id="updated-contacts"></span>/<span id="total-contacts"></span> followed up today.
   </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">Not Done Today</div>
+  <div id="missing-contacts" style="-webkit-column-count: 2;-moz-column-count: 2;"></div>
 </div>

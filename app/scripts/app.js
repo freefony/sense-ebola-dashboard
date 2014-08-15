@@ -12,7 +12,14 @@ angular
     'ui.bootstrap',
     'ngCsv'
   ])
-  .config(function($httpProvider, $routeProvider) {
+  .config(function($httpProvider, $routeProvider, paginationConfig) {
+
+    paginationConfig.maxSize = 6;
+    paginationConfig.boundaryLinks = true;
+    paginationConfig.previousText = "<";
+    paginationConfig.nextText = ">";
+    paginationConfig.firstText = "<<";
+    paginationConfig.lastText = ">>";
 
     $routeProvider
       .when('/', {

@@ -1,7 +1,11 @@
-<alert ng-if="locals.loading" type="info">Loading ...</alert>
-<alert ng-if="locals.error" type="danger">Error loading data.</alert>
-<div ng-show="!locals.loading && !locals.error">
-  <table ng-table="locals.tableParams" class="table table-bordered table-striped table-condensed">
+<div class="panel panel-default">
+  <div class="panel-heading">Records</div>
+  <div ng-show="locals.loading || locals.error" class="panel-body">
+    <alert class="loader" ng-if="locals.loading" type="info"><img src="../images/preloader.gif" alt="preloader"></alert>
+    <alert ng-if="locals.error" type="danger">Error loading data.</alert>
+  </div>
+  <table ng-show="!locals.loading && !locals.error" ng-table="locals.tableParams"
+         class="table table-bordered table-striped table-condensed">
     <tr ng-repeat="item in $data">
       <td data-title="'Name'" sortable="'name'">{{item.name}}</td>
       <td data-title="'Time'" sortable="'time'" style="white-space: nowrap;">
@@ -11,9 +15,18 @@
       <td data-title="'F'"><yes-no-mark ng-model="item.fever"></yes-no-mark></td>
       <td data-title="'Status'">{{item.status}}</td>
       <td data-title="'Type'">{{item.type}}</td>
-      <td data-title="'Coll. Date'" style="white-space: nowrap;">{{item.collect_date | date:SETTINGS.dateFormat}}</td>
-      <td data-title="'Res. Date'" style="white-space: nowrap;">{{item.results_date | date:SETTINGS.dateFormat}}</td>
+      <td data-title="'Coll. Date'" style="white-space: nowrap;">{{item.collect_date | date:SETTINGS.dateFormat}}
+      </td>
+      <td data-title="'Res. Date'" style="white-space: nowrap;">{{item.results_date | date:SETTINGS.dateFormat}}
+      </td>
       <td data-title="'Res.'">{{item.results}}</td>
     </tr>
   </table>
+  <div class="panel-footer compact">
+    <pagination class="pagination-sm"
+                ng-model="locals.currentPage"
+                total-items="locals.totalItems"
+                items-per-page="locals.tableParams.count()"
+                ng-change="locals.tableParams.page(locals.currentPage)"></pagination>
+  </div>
 </div>
