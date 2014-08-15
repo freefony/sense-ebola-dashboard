@@ -2,8 +2,31 @@
 
 angular.module('sedApp')
   .controller('FollowUpsCtrl', function($scope, $filter, ngTableParams, aggregatedData) {
+    $scope.csvHeader = [
+      'Name',
+      'Time',
+      'Interviewer',
+      'Temperature',
+      'Pharyngitis',
+      'Haemorrhagic',
+      'Headache',
+      'Maculopapular',
+      'Malaise',
+      'Muscle Pain',
+      'Vomiting'
+    ];
+
+    function getFileName() {
+      return 'follow-ups-'+ $filter('date')(new Date(), 'yyyy-MM-dd hh-mm-ss');
+    }
+
+    $scope.fileName = getFileName();
+    $scope.changeFileName = function() {
+      $scope.fileName = getFileName();
+    };
 
     var data = [];
+    $scope.csvData = data;
     var loading = false;
     var locals = $scope.locals = {
       loading: true,
@@ -25,6 +48,7 @@ angular.module('sedApp')
             aggregatedData.mergedData()
               .then(function(merged) {
                 data = merged;
+                $scope.csvData = data;
                 resolve(data);
               })
               .catch(function() {
@@ -48,6 +72,12 @@ angular.module('sedApp')
       })
     };
 
+    function exportToCSV() {
+
+
+
+    }
+
     setInterval(function() {
 
       if (!loading) {
@@ -55,6 +85,7 @@ angular.module('sedApp')
         aggregatedData.mergedData()
           .then(function(merged) {
             data = merged;
+            $scope.csvData = data;
             locals.tableParams.reload();
           })
           .catch(function(reason) {
