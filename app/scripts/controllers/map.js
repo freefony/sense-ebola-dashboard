@@ -68,9 +68,11 @@ angular.module('sedApp')
 
             }
 
-            function markerPopup(marker_properties) {
-                var date = new Date(marker_properties.timestamp),
-                    infoText = '<p>' + marker_properties.name + '</p><p>' + date + '</p>';
+            function markerPopup(markerProperties) {
+                var date = new Date(markerProperties.timestamp),
+                    infoText = '<p>' + markerProperties.name + '</p>'
+                    + '<p>Temperature: ' + markerProperties.temperature + '</p>'
+                    + '<p>' + date + '</p>';
 
                 return infoText;
             }
