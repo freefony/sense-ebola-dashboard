@@ -83,7 +83,7 @@ angular.module('sedApp')
 
 
             // Facilities GeoJSON Layer
-            var events = [], clonedEvents = [], eventsLayer;
+            var events = [], clonedEvents = [], eventsLayer, legend;
 
             function getData() {
                   requestUpdatedJson('couchdb', function(newEvents) {
@@ -96,12 +96,15 @@ angular.module('sedApp')
                           }
                           eventsLayer = createEventsLayer(events);
                           eventsLayer.addTo(map);
-                          var overlayMaps = {
+                          if (legend) {
+                            map.removeLayer(legend);
+                          }
+                          legend = L.control.layers(baseMaps, {
                             "Latest followups": eventsLayer,
-                          };
-                          L.control.layers(baseMaps, overlayMaps, {
+                          }, {
                               collapsed: false
-                          }).addTo(map);
+                          });
+                          legend.addTo(map);
                       }
                   });
             }
