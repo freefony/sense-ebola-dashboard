@@ -4,6 +4,7 @@ angular.module('sedApp')
   .controller('FollowUpsCtrl', function($scope, $filter, ngTableParams, aggregatedData) {
 
     var data = [];
+    var loading = false;
     var locals = $scope.locals = {
       loading: true,
       error: false,
@@ -16,6 +17,7 @@ angular.module('sedApp')
       }, {
         total: 0,
         getData: function($defer, params) {
+          loading = true;
           if (data.length)
             resolve(data);
           else {
@@ -31,6 +33,7 @@ angular.module('sedApp')
                 locals.error = true;
               })
               .finally(function() {
+                loading = false;
                 locals.loading = false;
               });
 
@@ -44,5 +47,24 @@ angular.module('sedApp')
         }
       })
     };
+
+    setInterval(function() {
+
+      if (!loading) {
+        loading = true;
+        aggregatedData.mergedData()
+          .then(function(merged) {
+            data = merged;
+            locals.tableParams.reload();
+          })
+          .catch(function(reason) {
+            console.error(reason);
+          })
+          .finally(function() {
+            loading = false;
+          });
+      }
+
+    }, 300000);
 
   });
