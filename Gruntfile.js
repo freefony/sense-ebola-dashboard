@@ -306,20 +306,15 @@ module.exports = function (grunt) {
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
             'fonts/*',
-            'fixtures/**/*'
+            'fixtures/**/*',
+            'bower_components/font-awesome/fonts/*',
+            'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*.*',
           ]
         }, {
           expand: true,
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
           src: ['generated/*']
-        }, {
-          expand: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*.*',
-          ]
         }]
       },
       styles: {
@@ -447,8 +442,9 @@ module.exports = function (grunt) {
   grunt.registerTask('build', function (target) {
     var ngct = 'dev';
 
-    if (target === 'prod')
+    if (target === 'prod') {
       ngct = 'prod';
+    }
 
     grunt.task.run([
       'clean:dist',
@@ -466,7 +462,7 @@ module.exports = function (grunt) {
       'rev',
       'usemin',
       'htmlmin'
-    ])
+    ]);
   });
 
   grunt.registerTask('default', [
