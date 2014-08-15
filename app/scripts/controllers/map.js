@@ -39,17 +39,28 @@ angular.module('sedApp')
                             shadowAnchor: [20,7],
                             popupAnchor: [0,0]
                         }),
+                        yellow: L.icon({
+                            iconUrl: '/images/marker-yellow.png',
+                            iconSize: [20,14],
+                            shadowSize: [20,14],
+                            iconAnchor: [10,14],
+                            shadowAnchor: [20,7],
+                            popupAnchor: [0,0]
+                        }),
                     }
                 };
 
-            function selectIcon(event_class, updateStatus) {
-                switch (updateStatus) {
+            function selectIcon(event_class, itemProperties) {
+                if (itemProperties.symptomatic) {
+                    return markers[event_class].red;
+                }
+                switch (itemProperties.updateStatus) {
                     case 'lastDay':
                         return markers[event_class].green;
                     case 'lastTwoDays':
                         return markers[event_class].gray;
                     case 'outdated':
-                        return markers[event_class].red;
+                        return markers[event_class].yellow;
                 }
                 // Unknown update status?
                 console.log('Unknown update status: ' + updateStatus)
@@ -72,7 +83,7 @@ angular.module('sedApp')
                     },
                     pointToLayer: function(feature, latlng) {
                         return L.marker(latlng, {
-                            icon: selectIcon('Event', feature.properties.updateStatus),
+                            icon: selectIcon('Event', feature.properties),
                         });
                     },
                     onEachFeature: function(feature, layer) {
@@ -84,6 +95,7 @@ angular.module('sedApp')
                         events.insertBefore(featureDiv, events.firstChild.nextSibling);
                         */
                         if (feature.properties && feature.properties.name) {
+
                             layer.bindPopup(markerPopup(feature.properties));
                         }
                     }
@@ -122,7 +134,7 @@ angular.module('sedApp')
 
             var map = L.map('map', {
                 center: new L.LatLng(6.5, 3.3),
-                zoom: 10,
+                zoom: 12,
                 minZoom: 1,
                 maxZoom: 18,
                 layers: [osm]
@@ -179,6 +191,7 @@ angular.module('sedApp')
               if (!couchContact[0].hasOwnProperty('dailyVisits')) {
                 couchContact[0].dailyVisits=[];
               }
+
               couchContact[0].dailyVisits.push(
                 {
                   dateOfVisit: formhubData[i]["end"].toISOString(),
@@ -187,6 +200,17 @@ angular.module('sedApp')
                       longitude: formhubData[i]["_geolocation"][1],
                       latitude: formhubData[i]["_geolocation"][0],
                     }
+                  },
+                  symptoms: {
+                      temperature: formhubData[i]['Clinicals/Temp_reading'],
+                      diarrhoea: formhubData[i]['Clinicals/Anydiaarrhea'],
+                      pharyngitis: formhubData[i]['Clinicals/Anypharyngitis'],
+                      haemorrhagic: formhubData[i]['Clinicals/Anyhaemorrhagicsigns'],
+                      headache: formhubData[i]['Clinicals/AnyHeadaches'],
+                      maculopapular: formhubData[i]['Clinicals/Anymacuplopapularash'],
+                      malaise: formhubData[i]['Clinicals/Anymalaise'],
+                      musclePain: formhubData[i]['Clinicals/Anymusclepain'],
+                      vomiting: formhubData[i]['Clinicals/Anyvomiting']
                   }
                 }
               );
@@ -227,9 +251,23 @@ angular.module('sedApp')
                     if (lastDailyVisit["geoInfo"] && lastDailyVisit["geoInfo"]["coords"] && lastDailyVisit["geoInfo"]["coords"]["longitude"]) {
                         item.properties = {
                             name: f["OtherNames"] + " " + f["Surname"],
-                            timestamp: lastDailyVisit["dateOfVisit"],
-                            updateStatus: updateStatus
+                            timestamp: lastDailyVisit.dateOfVisit,
+                            updateStatus: updateStatus,
+                            symptomatic: false,
+                            temperature: lastDailyVisit.symptoms.temperature,
                         };
+
+                        if (lastDailyVisit.symptoms.temperature>38||
+                          lastDailyVisit.symptoms.diarrhoea||
+                          lastDailyVisit.symptoms.pharyngitis||
+                          lastDailyVisit.symptoms.haemorrhagic||
+                          lastDailyVisit.symptoms.headache||
+                          lastDailyVisit.symptoms.maculapapular||
+                          lastDailyVisit.symptoms.malaise||
+                          lastDailyVisit.symptoms.musclePain||
+                          lastDailyVisit.symptoms.vomiting) {
+                            item.properties.symptomatic = true;
+                        }
                         item.geometry = {
                             type: "Point",
                             coordinates: [parseFloat(lastDailyVisit["geoInfo"]["coords"]["longitude"]), parseFloat(lastDailyVisit["geoInfo"]["coords"]["latitude"])]
@@ -239,6 +277,8 @@ angular.module('sedApp')
                     }
                 }
             });
+
+
 
             // return the FeatureCollection
             return {
