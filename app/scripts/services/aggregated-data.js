@@ -20,8 +20,8 @@ angular.module('sedApp')
       $q.all(promises)
         .then(function(resolved) {
           var response = {
-            Yes: true,
-            No: false
+            'Yes': 'true',
+            'No': 'false'
           };
           var formHubData = resolved[0]
             .map(function(senseData) {
@@ -30,14 +30,14 @@ angular.module('sedApp')
                 time: senseData['_submission_time'],
                 interviewer: utility.toTitleCase(senseData['WELCOME/Contact_tracer']),
                 temperature: senseData['Clinicals/Temp_reading'],
-                diarrhoea: response[senseData['Clinicals/Anydiaarrhea']],
-                pharyngitis: response[senseData['Clinicals/Anypharyngitis']],
-                haemorrhagic: response[senseData['Clinicals/Anyhaemorrhagicsigns']],
-                headache: response[senseData['Clinicals/AnyHeadaches']],
-                maculopapular: response[senseData['Clinicals/Anymacuplopapularash']],
-                malaise: response[senseData['Clinicals/Anymalaise']],
-                musclePain: response[senseData['Clinicals/Anymusclepain']],
-                vomiting: response[senseData['Clinicals/Anyvomiting']]
+                diarrhoea: senseData['Clinicals/Anydiaarrhea'],
+                pharyngitis: senseData['Clinicals/Anypharyngitis'],
+                haemorrhagic: senseData['Clinicals/Anyhaemorrhagicsigns'],
+                headache: senseData['Clinicals/AnyHeadaches'],
+                maculopapular: senseData['Clinicals/Anymacuplopapularash'],
+                malaise: senseData['Clinicals/Anymalaise'],
+                musclePain: senseData['Clinicals/Anymusclepain'],
+                vomiting: senseData['Clinicals/Anyvomiting']
               };
             }),
               couchdbData = resolved[1].rows
