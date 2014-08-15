@@ -1,3 +1,5 @@
+// Imports =====================
+@import url("http://fonts.googleapis.com/css?family=Cabin:400,700,400italic");
 @import "bootstrap";
 
 body{
@@ -6,8 +8,41 @@ body{
 
 a, button {
   cursor: pointer;
+=======
+// Bootstrap overrides =====================
+.loader {
+  text-align: center;
+  box-shadow: none;
+  border: none;
 }
 
+// Helpers =====================
+.pointer{cursor: pointer;}
+
+// Base =====================
+body {
+  font-family: "Cabin", Helvetica, sans-serif;
+}
+a, button {cursor: pointer;}
+
+// Content =====================
+.page-header {
+  margin: 10px 0px 0px 0px;
+  text-transform: uppercase;
+  padding: 10px;
+  display: inline-block;
+  background-color: #fff; 
+}
+
+// Footer =====================
+footer {
+  background: #fff;
+  margin-top: 40px;
+  padding: 20px;
+  .footnote {margin: 0;}
+}
+
+// Login =====================
 td .form-group {
   margin: 0;
 }
@@ -52,6 +87,3 @@ td .form-group .form-control-feedback {
   border-top: none;
 }
 
-.pointer{
-  cursor: pointer;
-}
