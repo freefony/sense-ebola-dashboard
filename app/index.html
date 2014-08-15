@@ -45,9 +45,12 @@
       <li ng-class="{active: isActive('/follow-ups')}"><a href="#/follow-ups">Follow Ups</a></li>
     </ul>
 -->
-    <ul class="nav navbar-nav navbar-right">
-      <li ng-show="currentUser" class="dropdown">
-        <a class="dropdown-toggle" href="#" data-toggle="dropdown">{{currentUser.username}} <span class="caret"></span></a>
+    <ul class="nav navbar-nav navbar-right" ng-if="currentUser">
+      <li class="dropdown">
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown">
+          <span ng-bind="currentUser.username"></span>
+          <span ng-cloak class="caret"></span>
+        </a>
         <ul class="dropdown-menu" role="menu">
           <li><a ng-click="logout()">Logout</a></li>
         </ul>
