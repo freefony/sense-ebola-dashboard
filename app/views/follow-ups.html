@@ -1,6 +1,7 @@
 <alert ng-if="locals.loading" type="info">Loading ...</alert>
 <alert ng-if="locals.error" type="danger">Error loading data.</alert>
 <div ng-show="!locals.loading && !locals.error">
+
   <table ng-table="locals.tableParams" class="table table-bordered table-striped table-condensed">
     <tr ng-repeat="item in $data">
       <td data-title="'Name'" sortable="'name'">{{item.name}}</td>
@@ -19,4 +20,14 @@
       <td data-title="'V'"><yes-no-mark ng-model="item.vomiting"></yes-no-mark></td>
     </tr>
   </table>
+  <div>
+    <button class="btn btn-success pull-right" type="button"
+            ng-csv="csvData"
+            csv-header="csvHeader"
+            ng-click="changeFileName()"
+            filename="{{fileName}}.csv">
+      Export Data
+    </button>
+    <div class="clearfix"></div>
+  </div>
 </div>
