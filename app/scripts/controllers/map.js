@@ -119,6 +119,7 @@ angular.module('sedApp')
                           }
                           eventsLayer = createEventsLayer(events);
                           eventsLayer.addTo(map);
+                          map.fitBounds(eventsLayer.getBounds());
                           if (legend) {
                             legend.removeFrom(map);
                           }
@@ -133,7 +134,7 @@ angular.module('sedApp')
             }
 
             var map = L.map('map', {
-                center: new L.LatLng(6.5, 3.3),
+                center: new L.LatLng(6.5959695, 3.3089232),
                 zoom: 12,
                 minZoom: 1,
                 maxZoom: 18,
