@@ -25,9 +25,9 @@ angular.module('sedApp')
                             markerColor: 'red',
                             prefix: 'icon'
                         }),
-                        grey: L.AwesomeMarkers.icon({
+                        gray: L.AwesomeMarkers.icon({
                             icon: 'circle',
-                            markerColor: 'grey',
+                            markerColor: 'gray',
                             prefix: 'icon'
                         })
                     }
@@ -37,12 +37,13 @@ angular.module('sedApp')
                 switch (updateStatus) {
                     case 'lastDay':
                         return markers[event_class].green;
-                    case 'within48Hours':
-                        return markers[event_class].grey;
+                    case 'lastTwoDays':
+                        return markers[event_class].gray;
                     case 'outdated':
                         return markers[event_class].red;
                 }
-                // Unknown event type?
+                // Unknown update status?
+                console.log('Unknown update status: ' + updateStatus)
                 return markers[event_class].red;
 
             }
@@ -193,7 +194,7 @@ angular.module('sedApp')
                     if (timeDelta > 172800000) {
                         updateStatus = 'outdated';
                     } else if (timeDelta > 86400000) {
-                        updateStatus = 'within48Hours';
+                        updateStatus = 'lastTwoDays';
                     } else {
                         updateStatus = 'lastDay';
                     }
