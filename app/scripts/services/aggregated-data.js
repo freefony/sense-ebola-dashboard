@@ -8,7 +8,7 @@
  * Service in the senseEbolaDashboardApp.
  */
 angular.module('sedApp')
-  .service('aggregatedData', function aggregatedData($q, FollowUp, contactFactory) {
+  .service('aggregatedData', function aggregatedData($q, FollowUp, contactFactory, utility) {
     // AngularJS will instantiate a singleton by calling "new" on this function
 
     this.mergedData = function() {
@@ -26,9 +26,9 @@ angular.module('sedApp')
           var formHubData = resolved[0]
             .map(function(senseData) {
               return {
-                name: senseData['ContactInformation/contact_name'],
+                name: utility.toTitleCase(senseData['ContactInformation/contact_name']),
                 time: senseData['_submission_time'],
-                interviewer: senseData['WELCOME/Contact_tracer'],
+                interviewer: utility.toTitleCase(senseData['WELCOME/Contact_tracer']),
                 temperature: senseData['Clinicals/Temp_reading'],
                 diarrhoea: response[senseData['Clinicals/Anydiaarrhea']],
                 pharyngitis: response[senseData['Clinicals/Anypharyngitis']],
@@ -43,9 +43,9 @@ angular.module('sedApp')
               couchdbData = resolved[1].rows
                 .map(function(senseData) {
                   return {
-                    name: senseData.value.Surname + ' ' + senseData.value.OtherNames,
+                    name: utility.toTitleCase(senseData.value.Surname + ' ' + senseData.value.OtherNames),
                     time: senseData.key,
-                    interviewer: senseData.value.visitData.interviewer,
+                    interviewer: utility.toTitleCase(senseData.value.visitData.interviewer),
                     temperature: senseData.value.visitData.symptoms.temperature,
                     diarrhoea: senseData.value.visitData.symptoms.diarrhoea,
                     pharyngitis: senseData.value.visitData.symptoms.pharyngitis,
