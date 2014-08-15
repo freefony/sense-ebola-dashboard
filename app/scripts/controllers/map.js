@@ -95,10 +95,12 @@ angular.module('sedApp')
             var events = [], clonedEvents = [], eventsLayer, legend;
 
             function getData() {
-                  requestUpdatedJson('couchdb', function(newEvents) {
-                      if (!(_.isEqual(clonedEvents, newEvents))) {
+                  requestUpdatedJson('couchdb', function(newData) {
+                      if (!(_.isEqual(clonedEvents, newData['events']))) {
                           console.log('followups have changed');
-                          events = newEvents;
+                          jQuery('#total-contacts').html(newData.stats.total);
+                          jQuery('#updated-contacts').html(newData.stats.updated);
+                          events = newData['events'];
                           clonedEvents = _.clone(events);
                           if (eventsLayer) {
                             map.removeLayer(eventsLayer);
@@ -196,8 +198,9 @@ angular.module('sedApp')
         /* END TEMPORARY REPLACEMENT*/
 
         function parseResponseJsonData(data) {
-            var items = [];
+            var items = [], totalContacts, updatedToday = 0;
             // data = _.pluck(data.rows,'doc');
+            totalContacts = data.length;
             $.each(data, function(g, f) {
 
                 if (f["dailyVisits"] && f["dailyVisits"].length > 0) {
@@ -218,6 +221,7 @@ angular.module('sedApp')
                         updateStatus = 'lastTwoDays';
                     } else {
                         updateStatus = 'lastDay';
+                        updatedToday++;
                     }
 
                     if (lastDailyVisit["geoInfo"] && lastDailyVisit["geoInfo"]["coords"] && lastDailyVisit["geoInfo"]["coords"]["longitude"]) {
@@ -238,8 +242,14 @@ angular.module('sedApp')
 
             // return the FeatureCollection
             return {
-                type: "FeatureCollection",
-                features: items
-            };
+              events: {
+                  type: "FeatureCollection",
+                  features: items
+                },
+                stats: {
+                  total: totalContacts,
+                  updated: updatedToday
+                }
+              };
         }
     });
