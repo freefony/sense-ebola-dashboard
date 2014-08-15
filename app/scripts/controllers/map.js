@@ -194,12 +194,18 @@ angular.module('sedApp')
                 if (f["dailyVisits"] && f["dailyVisits"].length > 0) {
                     var item = {},
                         lastDailyVisit = _.last(_.sortBy(f["dailyVisits"], 'dateOfVisit')),
-                        timeDelta = new Date() - new Date(lastDailyVisit["dateOfVisit"]),
+                        currentDate = new Date(),
+                        visitDate = new Date(lastDailyVisit["dateOfVisit"]),
+                        updateStatus = 'outdated',
+                        timeDelta;
+                    // Set the hour, minute and second of the current and visit date to zero before comparing.
+                    // That way markers will only turn green if they are from the same day instead of being from in-between 24 h.
+                    currentDate = new Date(currentDate.getFullYear(),currentDate.getMonth(),currentDate.getDate());
+                    visitDate = new Date(visitDate.getFullYear(),visitDate.getMonth(),visitDate.getDate());
+                    timeDelta = currentDate - visitDate;
+                    if (timeDelta >= 172800000) {
                         updateStatus = 'outdated';
-
-                    if (timeDelta > 172800000) {
-                        updateStatus = 'outdated';
-                    } else if (timeDelta > 86400000) {
+                    } else if (timeDelta >= 86400000) {
                         updateStatus = 'lastTwoDays';
                     } else {
                         updateStatus = 'lastDay';
