@@ -225,11 +225,12 @@ angular.module('sedApp')
         /* END TEMPORARY REPLACEMENT*/
 
         function parseResponseJsonData(data) {
-            var items = [], totalContacts, updatedToday = 0;
+            var items = [], totalContacts = 0, updatedToday = 0;
             // data = _.pluck(data.rows,'doc');
-            totalContacts = data.length;
             $.each(data, function(g, f) {
-
+                if (f["_id"]) {
+                  totalContacts++;
+                }
                 if (f["dailyVisits"] && f["dailyVisits"].length > 0) {
                     var item = {},
                         lastDailyVisit = _.last(_.sortBy(f["dailyVisits"], 'dateOfVisit')),
