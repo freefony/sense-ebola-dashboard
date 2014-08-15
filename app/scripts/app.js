@@ -9,7 +9,8 @@ angular
     'ngStorage',
     'ngTable',
     'nvd3ChartDirectives',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ngCsv'
   ])
   .config(function($httpProvider, $routeProvider) {
 
