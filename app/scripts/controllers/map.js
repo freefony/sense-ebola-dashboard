@@ -156,6 +156,9 @@ angular.module('sedApp')
           couchData = _.pluck(rawCouchData.rows, 'doc');
           for (i=0;i<formhubData.length;i++) {
             fullName = formhubData[i]["ContactInformation/contact_name"].split('  ');
+            if (fullName.length<2) {
+              fullName.push('');
+            }
             couchContact = _.where(couchData, {Surname:fullName[0], OtherNames:fullName[1]});
             if (couchContact.length==0) {
               console.log("Received data for unknown contact: " + fullName.join(', '));
