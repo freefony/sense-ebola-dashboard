@@ -9,19 +9,19 @@
 
 // //== Colors
 // //
-// //## Gray and brand colors for use across Bootstrap.
+//## Gray and brand colors for use across Bootstrap.
+$black: #252525;
+$gray-darker:            lighten(#252525, 13.5%) !default; // #222
+$gray-dark:              lighten(#252525, 20%) !default;   // #333
+$gray:                   lighten(#252525, 33.5%) !default; // #555
+$gray-light:             lighten(#252525, 60%) !default;   // #999
+$gray-lighter:           lighten(#252525, 93.5%) !default; // #eee
 
-// $gray-darker:            lighten(#000, 13.5%) !default; // #222
-// $gray-dark:              lighten(#000, 20%) !default;   // #333
-// $gray:                   lighten(#000, 33.5%) !default; // #555
-// $gray-light:             lighten(#000, 60%) !default;   // #999
-// $gray-lighter:           lighten(#000, 93.5%) !default; // #eee
-
-// $brand-primary:         #428bca !default;
-// $brand-success:         #5cb85c !default;
-// $brand-info:            #5bc0de !default;
-// $brand-warning:         #f0ad4e !default;
-// $brand-danger:          #d9534f !default;
+$brand-primary:         #34495E !default; //PICKLED BLUEWOOD
+$brand-success:         #3FC380 !default; //ESMERALD
+$brand-info:            $gray !default; //
+$brand-warning:         #F27935 !default; //JAFFA
+$brand-danger:          #C0392B !default; // TALL POPPY
 
 
 // //== Scaffolding
@@ -29,7 +29,7 @@
 // //## Settings for some of the most global styles.
 
 // //** Background color for `<body>`.
-// $body-bg:               #fff !default;
+$body-bg:               $gray-lighter;
 // //** Global text color on `<body>`.
 // $text-color:            $gray-dark !default;
 
@@ -43,11 +43,11 @@
 // //
 // //## Font, line-height, and color for body text, headings, and more.
 
-// $font-family-sans-serif:  "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-// $font-family-serif:       Georgia, "Times New Roman", Times, serif !default;
+$font-family-sans-serif:  "Cabin", sans-serif !default;
+$font-family-serif:       "Cabin", "Times New Roman", Times, serif !default;
 // //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 // $font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace !default;
-// $font-family-base:        $font-family-sans-serif !default;
+$font-family-base:        $font-family-sans-serif !default;
 
 // $font-size-base:          14px !default;
 // $font-size-large:         ceil(($font-size-base * 1.25)) !default; // ~18px
@@ -66,7 +66,7 @@
 // $line-height-computed:    floor(($font-size-base * $line-height-base)) !default; // ~20px
 
 // //** By default, this inherits from the `<body>`.
-// $headings-font-family:    inherit !default;
+$headings-font-family:    "Cabin", sans-serif;
 // $headings-font-weight:    500 !default;
 // $headings-line-height:    1.1 !default;
 // $headings-color:          inherit !default;
@@ -103,9 +103,9 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 // $line-height-large:         1.33 !default;
 // $line-height-small:         1.5 !default;
 
-// $border-radius-base:        4px !default;
-// $border-radius-large:       6px !default;
-// $border-radius-small:       3px !default;
+$border-radius-base:        0px !default;
+$border-radius-large:       0px !default;
+$border-radius-small:       0px !default;
 
 // //** Global color for active items (e.g., navs or dropdowns).
 // $component-active-color:    #fff !default;
@@ -123,12 +123,12 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 // //## Customizes the `.table` component with basic values, each used across all table variations.
 
 // //** Padding for `<th>`s and `<td>`s.
-// $table-cell-padding:            8px !default;
+$table-cell-padding:            12px !default;
 // //** Padding for cells in `.table-condensed`.
 // $table-condensed-cell-padding:  5px !default;
 
 // //** Default background color used for all tables.
-// $table-bg:                      transparent !default;
+$table-bg:                      #fff;
 // //** Background color used for `.table-striped`.
 // $table-bg-accent:               #f9f9f9 !default;
 // //** Background color used for `.table-hover`.
@@ -339,29 +339,29 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 // //##
 
 // // Basics of a navbar
-// $navbar-height:                    50px !default;
+// $navbar-height:                    80px !default;
 // $navbar-margin-bottom:             $line-height-computed !default;
 // $navbar-border-radius:             $border-radius-base !default;
 // $navbar-padding-horizontal:        floor(($grid-gutter-width / 2)) !default;
 // $navbar-padding-vertical:          (($navbar-height - $line-height-computed) / 2) !default;
 // $navbar-collapse-max-height:       340px !default;
 
-// $navbar-default-color:             #777 !default;
-// $navbar-default-bg:                #f8f8f8 !default;
+$navbar-default-color:             #fff;
+$navbar-default-bg:                $gray-dark;
 // $navbar-default-border:            darken($navbar-default-bg, 6.5%) !default;
 
 // // Navbar links
-// $navbar-default-link-color:                #777 !default;
-// $navbar-default-link-hover-color:          #333 !default;
-// $navbar-default-link-hover-bg:             transparent !default;
-// $navbar-default-link-active-color:         #555 !default;
-// $navbar-default-link-active-bg:            darken($navbar-default-bg, 6.5%) !default;
+$navbar-default-link-color:                #fff;
+$navbar-default-link-hover-color:          #fff;
+$navbar-default-link-hover-bg:             $gray;
+$navbar-default-link-active-color:         #fff;
+$navbar-default-link-active-bg:            $gray;
 // $navbar-default-link-disabled-color:       #ccc !default;
 // $navbar-default-link-disabled-bg:          transparent !default;
 
 // // Navbar brand label
-// $navbar-default-brand-color:               $navbar-default-link-color !default;
-// $navbar-default-brand-hover-color:         darken($navbar-default-brand-color, 10%) !default;
+$navbar-default-brand-color:               #fff;
+$navbar-default-brand-hover-color:         $gray-light;
 // $navbar-default-brand-hover-bg:            transparent !default;
 
 // // Navbar toggle
@@ -611,7 +611,7 @@ $icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/
 // $alert-success-text:          $state-success-text !default;
 // $alert-success-border:        $state-success-border !default;
 
-// $alert-info-bg:               $state-info-bg !default;
+$alert-info-bg:               #fff;
 // $alert-info-text:             $state-info-text !default;
 // $alert-info-border:           $state-info-border !default;
 

@@ -1,4 +1,4 @@
-<alert ng-if="locals.loading" type="info">Loading ...</alert>
+<alert class="loader" ng-if="locals.loading" type="info"><img src="../images/preloader.gif" alt="preloader"></alert>
 <alert ng-if="locals.error" type="danger">Error loading data.</alert>
 <div ng-show="!locals.loading && !locals.error">
 
