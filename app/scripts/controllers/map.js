@@ -82,35 +82,28 @@ angular.module('sedApp')
 
 
             // Facilities GeoJSON Layer
-            var events, clonedEvents, eventsLayer;
+            var events = [], clonedEvents = [], eventsLayer;
 
-            requestUpdatedJson('couchdb', function(events) {
-                clonedEvents = _.clone(events);
-                eventsLayer = createEventsLayer(events);
-                eventsLayer.addTo(map);
-                var overlayMaps = {
-                    "Latest followups": eventsLayer,
-                };
-                L.control.layers(baseMaps, overlayMaps, {
-                    collapsed: false
-                }).addTo(map);
-            });
-
-            setInterval(function() {
-                requestUpdatedJson('couchdb', function(newEvents) {
-                    if (!(_.isEqual(clonedEvents, newEvents))) {
-                        console.log('events have changed');
-                        events = newEvents;
-                        clonedEvents = _.clone(events);
-                        map.removeLayer(eventsLayer);
-                        eventsLayer = createEventsLayer(events);
-                        eventsLayer.addTo(map);
-                        L.control.layers(baseMaps, overlayMaps, {
-                            collapsed: false
-                        }).addTo(map);
-                    }
-                });
-            }, 300000);
+            function getData() {
+                  requestUpdatedJson('couchdb', function(newEvents) {
+                      if (!(_.isEqual(clonedEvents, newEvents))) {
+                          console.log('events have changed');
+                          events = newEvents;
+                          clonedEvents = _.clone(events);
+                          if (eventsLayer) {
+                            map.removeLayer(eventsLayer);
+                          }
+                          eventsLayer = createEventsLayer(events);
+                          eventsLayer.addTo(map);
+                          var overlayMaps = {
+                            "Latest followups": eventsLayer,
+                          };
+                          L.control.layers(baseMaps, overlayMaps, {
+                              collapsed: false
+                          }).addTo(map);
+                      }
+                  });
+            }
 
             var map = L.map('map', {
                 center: new L.LatLng(6.5, 3.3),
@@ -124,8 +117,9 @@ angular.module('sedApp')
                 "Map": osm
             };
 
+            getData();
+            setInterval(function(){getData();}, 300000);
         }
-
 
         function getService(serviceName) {
             if (serviceName == 'followup') {
@@ -135,23 +129,66 @@ angular.module('sedApp')
             }
         }
 
-        function requestUpdatedJson(serviceName, callback) {
-            getService(serviceName).all().then(function(response) {
-                callback(parseResponseJsonData(response));
+        // function requestUpdatedJson(serviceName, callback) {
+        //     getService(serviceName).all().then(function(response) {
+        //         callback(parseResponseJsonData(response));
+        //     });
+        // }
+
+
+        /* TEMPORARY REPLACEMENT FUNCTIONS FOR MIXING FORMHUB AND COUCHDB DATA */
+        function requestUpdatedJson(unusedVariable, callback) {
+            getService('followup').all().then(function(formhubData) {
+              getService('couchdb').all().then(function(couchData) {
+                attachFormhubToCouchData(formhubData, couchData, function(response) {
+                  callback(parseResponseJsonData(response));
+                });
+              });
             });
         }
 
+        function attachFormhubToCouchData(formhubData, rawCouchData, callback) {
+          var i, fullName, couchContact,
+          couchData = _.pluck(rawCouchData.rows, 'doc');
+          for (i=0;i<formhubData.length;i++) {
+            fullName = formhubData[i]["ContactInformation/contact_name"].split('  ');
+            couchContact = _.where(couchData, {Surname:fullName[0], OtherNames:fullName[1]});
+            if (couchContact.length==0) {
+              console.log("Received data for unknown contact: " + fullName.join(', '));
+            } else if (couchContact.length>1) {
+              console.log("Received data with ambiguous contact name: " + fullName.join(', '));
+            } else {
+              if (!couchContact[0].hasOwnProperty('dailyVisits')) {
+                couchContact[0].dailyVisits=[];
+              }
+              couchContact[0].dailyVisits.push(
+                {
+                  dateOfVisit: formhubData[i]["end"].toISOString(),
+                  geoInfo: {
+                    coords: {
+                      longitude: formhubData[i]["_geolocation"][1],
+                      latitude: formhubData[i]["_geolocation"][0],
+                    }
+                  }
+                }
+              );
+            }
+
+          }
+          callback(couchData);
+        }
+        /* END TEMPORARY REPLACEMENT*/
+
         function parseResponseJsonData(data) {
             var items = [];
-            //var events_array = [];
-            $.each(data.rows, function(i, g) {
-                var f = g["doc"];
+            // data = _.pluck(data.rows,'doc');
+            $.each(data, function(g, f) {
+
                 if (f["dailyVisits"] && f["dailyVisits"].length > 0) {
                     var item = {},
                         lastDailyVisit = _.last(_.sortBy(f["dailyVisits"], 'dateOfVisit')),
                         timeDelta = new Date() - new Date(lastDailyVisit["dateOfVisit"]),
                         updateStatus = 'outdated';
-
 
                     if (timeDelta > 172800000) {
                         updateStatus = 'outdated';
@@ -161,7 +198,7 @@ angular.module('sedApp')
                         updateStatus = 'lastDay';
                     }
 
-                    if (lastDailyVisit["geoInfo"] && lastDailyVisit["geoInfo"]["coords"]) {
+                    if (lastDailyVisit["geoInfo"] && lastDailyVisit["geoInfo"]["coords"] && lastDailyVisit["geoInfo"]["coords"]["longitude"]) {
                         item.properties = {
                             name: f["OtherNames"] + " " + f["Surname"],
                             timestamp: lastDailyVisit["dateOfVisit"],
