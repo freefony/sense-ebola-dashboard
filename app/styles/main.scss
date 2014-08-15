@@ -88,3 +88,25 @@ td .form-group .form-control-feedback {
   border-top: none;
 }
 
+.panel {
+  .ng-table-pager {
+    display: none;
+  }
+}
+
+.panel-heading {
+  padding: 3px 6px;
+}
+
+.panel-footer {
+  padding: 3px 6px;
+
+  &.compact {
+    line-height: 0;
+    padding: 3px;
+  }
+
+  .pagination {
+    margin: 0;
+  }
+}

@@ -7,14 +7,17 @@ angular.module('sedApp')
     var locals = $scope.locals = {
       loading: true,
       error: false,
+      totalItems: 0,
+      currentPage: 1,
       tableParams: new ngTableParams({
         page: 1,
-        count: 20,
+        count: 10,
         sorting: {
           time: 'desc'
         }
       }, {
         total: 0,
+        counts: [],
         getData: function($defer, params) {
           if (data.length)
             resolve(data);
@@ -33,7 +36,7 @@ angular.module('sedApp')
 
           function resolve(data) {
             var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-            params.total(orderedData.length);
+            locals.totalItems = orderedData.length;
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
           }
         }
