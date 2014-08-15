@@ -322,7 +322,6 @@ module.exports = function (grunt) {
           dest: '<%= yeoman.dist %>',
           src: [
             'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*.*',
-            'bower_components/Leaflet.awesome-markers/dist/images/*.*'
           ]
         }]
       },

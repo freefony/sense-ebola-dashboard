@@ -23,7 +23,6 @@
     "pouchdb": "~2.2.3",
     "leaflet": "0.7.3",
     "underscore": "1.6.0",
-    "Leaflet.awesome-markers": "~2.0.2",
     "ng-table": "~0.3.3",
     "ngstorage": "~0.3.0",
     "font-awesome": "~4.1.0"
