@@ -53,3 +53,17 @@ td .form-group .form-control-feedback {
 .pointer{
   cursor: pointer;
 }
+
+.awesome-marker{
+  background: url('../images/markers-soft-modified.png') no-repeat 0 0;
+  width: 35px !important;
+  height: 16px !important;
+}
+
+.awesome-marker-icon-gray {
+  background-position: -648px 0;
+}
+
+.awesome-marker-icon-green {
+  background-position: -72px 0;
+}
