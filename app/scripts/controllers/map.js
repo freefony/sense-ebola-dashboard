@@ -15,21 +15,30 @@ angular.module('sedApp')
                 markers = {
 
                     Event: {
-                        green: L.AwesomeMarkers.icon({
-                            icon: 'circle',
-                            markerColor: 'green',
-                            prefix: 'icon'
+                        green: L.icon({
+                            iconUrl: '/images/marker-green.png',
+                            iconSize: [20,14],
+                            shadowSize: [20,14],
+                            iconAnchor: [10,14],
+                            shadowAnchor: [20,7],
+                            popupAnchor: [0,0]
                         }),
-                        red: L.AwesomeMarkers.icon({
-                            icon: 'circle',
-                            markerColor: 'red',
-                            prefix: 'icon'
+                        red: L.icon({
+                            iconUrl: '/images/marker-red.png',
+                            iconSize: [20,14],
+                            shadowSize: [20,14],
+                            iconAnchor: [10,14],
+                            shadowAnchor: [20,7],
+                            popupAnchor: [0,0]
                         }),
-                        gray: L.AwesomeMarkers.icon({
-                            icon: 'circle',
-                            markerColor: 'gray',
-                            prefix: 'icon'
-                        })
+                        gray: L.icon({
+                            iconUrl: '/images/marker-gray.png',
+                            iconSize: [20,14],
+                            shadowSize: [20,14],
+                            iconAnchor: [10,14],
+                            shadowAnchor: [20,7],
+                            popupAnchor: [0,0]
+                        }),
                     }
                 };
 
