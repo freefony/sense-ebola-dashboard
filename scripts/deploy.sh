@@ -13,17 +13,23 @@ decode_ssh_key() {
 }
 
 # Only deploy on non-forks
-[[ "TRAVIS_REPO_SLUG" == "eHealthAfrica/sense-ebola-dashboard" ]] || exit 1
+[[ "$TRAVIS_REPO_SLUG" == "eHealthAfrica/sense-ebola-dashboard" ]] || exit 1
+
+# Do not deploy pull requests
+[[ "$TRAVIS_PULL_REQUEST" == "false" ]] || exit 1
 
 dist="dist"
 [[ -d "$dist" ]] || error "$dist: no such directory"
 
-if [[ "$TRAVIS_TAG" ]]; then
+if [[ "$TRAVIS_BRANCH" == "master" ]]; then
   deploy "release"
   host="54.75.128.38"
-else
+elif [[ "$TRAVIS_BRANCH" == "develop" ]]; then
   deploy "snapshot"
   host="54.75.128.38"
+else
+  info "not deploying ${TRAVIS_BRANCH} branch"
+  exit 1
 fi
 
 decode_ssh_key "$host"
