@@ -148,8 +148,6 @@ module.exports = function (grunt) {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
         exclude: [
-          'es5-shim',
-          'json3',
           'bootstrap-sass-official'
         ],
         ignorePath: '<%= yeoman.app %>/'
