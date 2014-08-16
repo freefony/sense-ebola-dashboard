@@ -10,13 +10,23 @@ angular.module('sedApp')
       'Time',
       'Interviewer',
       'Temperature',
+      'diarrhoea',
       'Pharyngitis',
       'Haemorrhagic',
       'Headache',
       'Maculopapular',
       'Malaise',
       'Muscle Pain',
-      'Vomiting'
+      'Vomiting',
+      'Latitude',
+      'Longitude',
+      'Accuracy',
+      'Gender',
+      'Age',
+      'Address',
+      'State',
+      'LGA',
+      'Phone'
     ];
 
     function getFileName() {
