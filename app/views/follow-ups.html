@@ -1,0 +1,48 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+
+    Follow Ups
+  </div>
+  <div ng-show="locals.loading || locals.error" class="panel-body">
+    <alert class="loader" ng-if="locals.loading" type="info"><img src="../images/preloader.gif" alt="preloader"></alert>
+    <alert ng-if="locals.error" type="danger">Error loading data.</alert>
+  </div>
+  <table ng-show="!locals.loading && !locals.error" ng-table="locals.tableParams"
+         class="table table-bordered table-condensed">
+    <tr ng-repeat="item in $data" ng-class="{'bg-danger': item.temperature >= MAX_TEMP }">
+      <td data-title="'Name'" sortable="'name'">{{item.name}}</td>
+      <td data-title="'Time'" sortable="'time'" style="white-space: nowrap;">
+        {{item.time | date:SETTINGS.dateTimeFormat}}
+      </td>
+      <td data-title="'Interviewer'" sortable="'interviewer'">{{item.interviewer}}</td>
+      <td data-title="'Temp'" >{{item.temperature}}</td>
+      <td data-title="'D'"><yes-no-mark ng-model="item.diarrhoea"></yes-no-mark></td>
+      <td data-title="'P'"><yes-no-mark ng-model="item.pharyngitis"></yes-no-mark></td>
+      <td data-title="'Ha'"><yes-no-mark ng-model="item.haemorrhagic"></yes-no-mark></td>
+      <td data-title="'He'"><yes-no-mark ng-model="item.headache"></yes-no-mark></td>
+      <td data-title="'Mac'"><yes-no-mark ng-model="item.maculopapular"></yes-no-mark></td>
+      <td data-title="'Mal'"><yes-no-mark ng-model="item.malaise"></yes-no-mark></td>
+      <td data-title="'Mu'"><yes-no-mark ng-model="item.musclePain"></yes-no-mark></td>
+      <td data-title="'V'"><yes-no-mark ng-model="item.vomiting"></yes-no-mark></td>
+    </tr>
+  </table>
+  <div class="panel-footer compact">
+    <button class="btn btn-success btn-xs pull-right" type="button"
+            ng-show="!locals.loading && !locals.error"
+            ng-csv="csvData"
+            csv-header="csvHeader"
+            ng-click="changeFileName()"
+            filename="{{fileName}}.csv">
+      Export Data
+    </button>
+    <pagination class="pagination-sm"
+                ng-model="locals.currentPage"
+                total-items="locals.totalItems"
+                items-per-page="locals.tableParams.count()"
+                ng-change="locals.tableParams.page(locals.currentPage)"></pagination>
+  </div>
+</div>
+
+<div class="panel panel-default" style="display: none;">
+  <div ng-include="'views/lab-results.html'" ng-controller="LabResultsCtrl"></div>
+</div>

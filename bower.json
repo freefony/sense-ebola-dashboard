@@ -1,0 +1,49 @@
+{
+  "name": "sense-ebola-dashboard",
+  "version": "0.1.0",
+  "description": "Dashboard for Ebola sensed data.",
+  "homepage": "https://github.com/eHealthAfrica/sense-ebola-dashboard",
+  "authors": [
+    "eHealth Africa <http://ehealthafrica.org>"
+  ],
+  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "angular": "1.2.22",
+    "ng-csv": "~0.2.3",
+    "jquery": "~2.1.0",
+    "bootstrap-sass-official": "~3.1.1",
+    "angular-sanitize": "1.2.22",
+    "angular-route": "1.2.22",
+    "angular-resource": "1.2.22",
+    "angular-ui-bootstrap-bower": "~0.11.0",
+    "moment": "~2.7.0",
+    "pouchdb": "~2.2.3",
+    "leaflet": "0.7.3",
+    "underscore": "1.6.0",
+    "ng-table": "~0.3.3",
+    "ngstorage": "~0.3.0",
+    "font-awesome": "~4.1.0",
+    "leaflet-fullscreen": "johanneswilm/leaflet.fullscreen#~1.1.5"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.2.22",
+    "es5-shim": "~2.3.0"
+  },
+  "keywords": [
+    "ebola",
+    "dashboard",
+    "ehealth"
+  ],
+  "resolutions": {
+    "d3": "~3.4.1"
+  },
+  "overrides": {
+    "leaflet": {
+      "main": [
+        "dist/leaflet-src.js",
+        "dist/leaflet.css"
+      ]
+    }
+  }
+}

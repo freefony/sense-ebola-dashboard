@@ -1,0 +1,32 @@
+<div class="panel panel-default" ng-init="initiateMap()">
+  <div class="panel-heading">Follow Ups</div>
+  <div id="map" style="height: 400px;">
+    <div id="map-legend">
+      <p>
+        <p id="map-legend-header"><b>Last followup</b></p>
+        <img src="/images/marker-green.png">
+        Today
+      </p>
+      <p>
+        <img src="/images/marker-gray.png">
+        Yesterday
+      </p>
+      <p>
+        <img src="/images/marker-yellow.png">
+        2+ days ago
+      </p>
+      <p>
+        <img src="/images/marker-red.png">
+        Symptomatic
+      </p>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <span id="updated-contacts"></span>/<span id="total-contacts"></span> followed up today.
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">Not Done Today</div>
+  <div id="missing-contacts" style="-webkit-column-count: 2;-moz-column-count: 2;"></div>
+</div>
