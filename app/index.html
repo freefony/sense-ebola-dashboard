@@ -1,17 +1,11 @@
 <!doctype html>
-<!--[if lt IE 7]>
-<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>
-<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>
-<html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js"> <!--<![endif]-->
+<html lang="en-US">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>EOC Lagos | Ebola Outbreak Response</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="Dashboard for Ebola sensed data">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
   <!-- build:css styles/vendor.css -->
   <!-- bower:css -->
@@ -26,12 +20,6 @@
   <!-- endbuild -->
 </head>
 <body ng-app="sedApp">
-<!--[if lt IE 7]>
-<p class="browsehappy">You are using an <strong>outdated</strong> browser.
-  Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve
-  your experience.</p>
-<![endif]-->
-
 <div ng-hide="app.init"></div>
 <nav ng-show="app.init" class="navbar navbar-default navbar-static-top" ng-controller="NavBar">
   <div class="container-fluid">
@@ -66,7 +54,6 @@
   </div>
 </nav>
 
-<!-- Add your site or application content here -->
 <div ng-show="app.init" class="container-fluid" ng-view=""></div>
 
 <footer class="footer">
@@ -74,10 +61,6 @@
     <p class="footnote text-muted text-center">Powered by eHealth Sense <img src="images/ehealth_logo_on_white.png" width="100px"/></p>
   </div>
 </footer>
-<!--[if lt IE 9]>
-<script src="bower_components/es5-shim/es5-shim.js"></script>
-<script src="bower_components/json3/lib/json3.min.js"></script>
-<![endif]-->
 
 <!-- build:js scripts/vendor.js -->
 <!-- bower:js -->
