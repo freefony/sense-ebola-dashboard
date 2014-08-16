@@ -26,7 +26,7 @@ if [[ "$TRAVIS_BRANCH" == "master" ]]; then
   host="54.75.128.38"
 elif [[ "$TRAVIS_BRANCH" == "develop" ]]; then
   deploy "snapshot"
-  host="54.75.128.38"
+  host="54.73.247.96"
 else
   info "not deploying ${TRAVIS_BRANCH} branch"
   exit 1
