@@ -2,15 +2,6 @@
 @import url("http://fonts.googleapis.com/css?family=Cabin:400,700,400italic");
 @import "bootstrap";
 
-body {
-  color: $black;
-  font-size: 12px;
-}
-
-a, button {
-  cursor: pointer;
-}
-
 // Bootstrap overrides =====================
 .loader {
   text-align: center;
@@ -24,6 +15,8 @@ a, button {
 // Base =====================
 body {
   font-family: "Cabin", Helvetica, sans-serif;
+  color: $black;
+  font-size: 11px;
 }
 a, button {cursor: pointer;}
 
