@@ -17,7 +17,7 @@ angular.module('sedApp')
                             iconUrl: '/images/marker-green.png',
                             iconSize: [20, 14],
                             shadowSize: [20, 14],
-                            iconAnchor: [10, 14],
+                            iconAnchor: [10, 7],
                             shadowAnchor: [20, 7],
                             popupAnchor: [0, 0]
                         }),
@@ -25,7 +25,7 @@ angular.module('sedApp')
                             iconUrl: '/images/marker-red.png',
                             iconSize: [20, 14],
                             shadowSize: [20, 14],
-                            iconAnchor: [10, 14],
+                            iconAnchor: [10, 7],
                             shadowAnchor: [20, 7],
                             popupAnchor: [0, 0]
                         }),
@@ -33,7 +33,7 @@ angular.module('sedApp')
                             iconUrl: '/images/marker-gray.png',
                             iconSize: [20, 14],
                             shadowSize: [20, 14],
-                            iconAnchor: [10, 14],
+                            iconAnchor: [10, 7],
                             shadowAnchor: [20, 7],
                             popupAnchor: [0, 0]
                         }),
