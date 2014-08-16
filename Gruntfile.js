@@ -308,6 +308,7 @@ module.exports = function (grunt) {
             'fixtures/**/*',
             'bower_components/font-awesome/fonts/*',
             'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*.*',
+            'bower_components/leaflet-fullscreen/*.png'
           ]
         }, {
           expand: true,
