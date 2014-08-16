@@ -61,10 +61,10 @@ angular.module('sedApp')
           deferred.resolve(mergedData
             .sort(function(a, b) {
               if (new Date(a.time).getTime() > new Date(b.time).getTime()){
-                return 1;
+                return -1;
               }
               if (new Date(a.time).getTime() < new Date(b.time).getTime()){
-                return -1;
+                return 1;
               }
               return 0;
             }));

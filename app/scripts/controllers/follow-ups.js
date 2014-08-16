@@ -2,6 +2,9 @@
 
 angular.module('sedApp')
   .controller('FollowUpsCtrl', function($scope, $filter, ngTableParams, aggregatedData) {
+
+    var RELOAD_DELAY = 300000;
+    $scope.MAX_TEMP = 38;
     $scope.csvHeader = [
       'Name',
       'Time',
@@ -75,12 +78,6 @@ angular.module('sedApp')
       })
     };
 
-    function exportToCSV() {
-
-
-
-    }
-
     setInterval(function() {
 
       if (!loading) {
@@ -99,6 +96,6 @@ angular.module('sedApp')
           });
       }
 
-    }, 300000);
+    }, RELOAD_DELAY);
 
   });
