@@ -15,35 +15,35 @@ angular.module('sedApp')
                     Event: {
                         green: L.icon({
                             iconUrl: '/images/marker-green.png',
-                            iconSize: [18, 18],
+                            iconSize: [14, 14],
                             shadowSize: [20, 14],
                             iconAnchor: [10, 7],
                             shadowAnchor: [20, 7],
-                            popupAnchor: [0, 0]
+                            popupAnchor: [-3, -5]
                         }),
                         red: L.icon({
                             iconUrl: '/images/marker-red.png',
-                            iconSize: [18, 18],
+                            iconSize: [14, 14],
                             shadowSize: [20, 14],
                             iconAnchor: [10, 7],
                             shadowAnchor: [20, 7],
-                            popupAnchor: [0, 0]
+                            popupAnchor: [-3, -5]
                         }),
                         gray: L.icon({
                             iconUrl: '/images/marker-gray.png',
-                            iconSize: [18, 18],
+                            iconSize: [14, 14],
                             shadowSize: [20, 14],
                             iconAnchor: [10, 7],
                             shadowAnchor: [20, 7],
-                            popupAnchor: [0, 0]
+                            popupAnchor: [-3, -5]
                         }),
                         yellow: L.icon({
                             iconUrl: '/images/marker-yellow.png',
-                            iconSize: [18, 18],
+                            iconSize: [14, 14],
                             shadowSize: [20, 14],
                             iconAnchor: [10, 14],
                             shadowAnchor: [20, 7],
-                            popupAnchor: [0, 0]
+                            popupAnchor: [-3, -5]
                         }),
                     }
                 };
