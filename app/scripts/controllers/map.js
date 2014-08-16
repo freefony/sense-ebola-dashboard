@@ -15,7 +15,7 @@ angular.module('sedApp')
                     Event: {
                         green: L.icon({
                             iconUrl: '/images/marker-green.png',
-                            iconSize: [20, 14],
+                            iconSize: [18, 18],
                             shadowSize: [20, 14],
                             iconAnchor: [10, 7],
                             shadowAnchor: [20, 7],
@@ -23,7 +23,7 @@ angular.module('sedApp')
                         }),
                         red: L.icon({
                             iconUrl: '/images/marker-red.png',
-                            iconSize: [20, 14],
+                            iconSize: [18, 18],
                             shadowSize: [20, 14],
                             iconAnchor: [10, 7],
                             shadowAnchor: [20, 7],
@@ -31,7 +31,7 @@ angular.module('sedApp')
                         }),
                         gray: L.icon({
                             iconUrl: '/images/marker-gray.png',
-                            iconSize: [20, 14],
+                            iconSize: [18, 18],
                             shadowSize: [20, 14],
                             iconAnchor: [10, 7],
                             shadowAnchor: [20, 7],
@@ -39,7 +39,7 @@ angular.module('sedApp')
                         }),
                         yellow: L.icon({
                             iconUrl: '/images/marker-yellow.png',
-                            iconSize: [20, 14],
+                            iconSize: [18, 18],
                             shadowSize: [20, 14],
                             iconAnchor: [10, 14],
                             shadowAnchor: [20, 7],
