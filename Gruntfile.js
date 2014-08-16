@@ -344,27 +344,23 @@ module.exports = function (grunt) {
         name: 'config',
         dest: '<%= yeoman.app %>/scripts/config.js',
         template: grunt.file.read('.ngconstant.tpl.ejs'),
+        serializerOptions: {
+          indent: '  ',
+          // jshint camelcase: false
+          no_trailing_comma: true
+        },
         constants: {
-          SETTINGS: {
-            dateFormat: 'yyyy-MM-dd',
-            dateTimeFormat: 'yyyy-MM-dd HH:mm'
-          }
+          SETTINGS: grunt.file.readJSON('config/common.json')
         }
       },
       dev: {
         constants: {
-          SETTINGS: {
-            dbUrl: 'http://ebola.eocng.org:5984/',
-            formHubUrl: 'http://forms.eocng.org/api/v1/data/ebola/'
-          }
+          SETTINGS: grunt.file.readJSON('config/dev.json')
         }
       },
       prod: {
         constants: {
-          SETTINGS: {
-            dbUrl: 'http://ebola.eocng.org:5984/',
-            formHubUrl: 'http://forms.eocng.org/api/v1/data/ebola/'
-          }
+          SETTINGS: grunt.file.readJSON('config/prod.json')
         }
       }
     },
