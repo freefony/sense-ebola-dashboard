@@ -3,14 +3,12 @@
 angular.module('sedApp')
     .controller('MapCtrl', function($scope, FollowUp, contactFactory) {
         $scope.title = 'Map';
-
         $scope.initiateMap = function() {
             var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                osmAttrib = 'Map data © OpenStreetMap contributors',
                 osm = L.tileLayer(osmUrl, {
                     minZoom: 6,
                     maxZoom: 18,
-                    attribution: osmAttrib
+                    attribution: false
                 }),
                 markers = {
 
@@ -78,8 +76,8 @@ angular.module('sedApp')
             function createEventsLayer(events) {
                 return L.geoJson(events, {
                     style: {
-                        "weight": 1,
-                        "opacity": 0.3,
+                        'weight': 1,
+                        'opacity': 0.3,
                     },
                     pointToLayer: function(feature, latlng) {
                         return L.marker(latlng, {
@@ -127,7 +125,7 @@ angular.module('sedApp')
                             legend.removeFrom(map);
                         }
                         legend = L.control.layers(baseMaps, {
-                            "Latest followups": eventsLayer,
+                            'Latest followups': eventsLayer,
                         }, {
                             collapsed: false
                         });
@@ -141,11 +139,12 @@ angular.module('sedApp')
                 zoom: 12,
                 minZoom: 1,
                 maxZoom: 18,
-                layers: [osm]
+                layers: [osm],
             });
 
+            map.attributionControl.setPrefix('');
             var baseMaps = {
-                "Map": osm
+                'Map': osm
             };
 
             getData();
@@ -184,7 +183,7 @@ angular.module('sedApp')
                 var i, fullName, couchContact,
                     couchData = _.pluck(rawCouchData.rows, 'doc');
                 for (i = 0; i < formhubData.length; i++) {
-                    fullName = formhubData[i]["ContactInformation/contact_name"].split('  ');
+                    fullName = formhubData[i]['ContactInformation/contact_name'].split('  ');
                     if (fullName.length < 2) {
                         fullName.push('');
                     }
@@ -202,11 +201,11 @@ angular.module('sedApp')
                         }
 
                         couchContact[0].dailyVisits.push({
-                            dateOfVisit: formhubData[i]["end"].toISOString(),
+                            dateOfVisit: formhubData[i].end.toISOString(),
                             geoInfo: {
                                 coords: {
-                                    longitude: formhubData[i]["_geolocation"][1],
-                                    latitude: formhubData[i]["_geolocation"][0],
+                                    longitude: formhubData[i]._geolocation[1],
+                                    latitude: formhubData[i]._geolocation[0],
                                 }
                             },
                             symptoms: {
@@ -235,13 +234,14 @@ angular.module('sedApp')
                 missingContacts = [];
             // data = _.pluck(data.rows,'doc');
             $.each(data, function(g, f) {
-                if (!f.hasOwnProperty('views')&&!f.hasOwnProperty('admins')) {
+                if (!f.hasOwnProperty('views') && !f.hasOwnProperty('admins')) {
                     totalContacts++;
-                    if (f["dailyVisits"] && f["dailyVisits"].length > 0) {
+
+                    if (f.dailyVisits && f.dailyVisits.length > 0) {
                         var item = {},
-                            lastDailyVisit = _.last(_.sortBy(f["dailyVisits"], 'dateOfVisit')),
+                            lastDailyVisit = _.last(_.sortBy(f.dailyVisits, 'dateOfVisit')),
                             currentDate = new Date(),
-                            visitDate = new Date(lastDailyVisit["dateOfVisit"]),
+                            visitDate = new Date(lastDailyVisit.dateOfVisit),
                             updateStatus = 'outdated',
                             timeDelta;
                         // Set the hour, minute and second of the current and visit date to zero before comparing.
@@ -260,9 +260,9 @@ angular.module('sedApp')
                             updatedToday++;
                         }
 
-                        if (lastDailyVisit["geoInfo"] && lastDailyVisit["geoInfo"]["coords"] && lastDailyVisit["geoInfo"]["coords"]["longitude"]) {
+                        if (lastDailyVisit.geoInfo && lastDailyVisit.geoInfo.coords && lastDailyVisit.geoInfo.coords.longitude) {
                             item.properties = {
-                                name: f["OtherNames"] + " " + f["Surname"],
+                                name: f.OtherNames + ' ' + f.Surname,
                                 timestamp: lastDailyVisit.dateOfVisit,
                                 updateStatus: updateStatus,
                                 symptomatic: false,
@@ -281,10 +281,10 @@ angular.module('sedApp')
                                 item.properties.symptomatic = true;
                             }
                             item.geometry = {
-                                type: "Point",
-                                coordinates: [parseFloat(lastDailyVisit["geoInfo"]["coords"]["longitude"]), parseFloat(lastDailyVisit["geoInfo"]["coords"]["latitude"])]
+                                type: 'Point',
+                                coordinates: [parseFloat(lastDailyVisit.geoInfo.coords.longitude), parseFloat(lastDailyVisit.geoInfo.coords.latitude)]
                             };
-                            item.type = "Feature";
+                            item.type = 'Feature';
                             items.push(item);
                         }
                     } else {
@@ -299,7 +299,7 @@ angular.module('sedApp')
             // return the FeatureCollection
             return {
                 events: {
-                    type: "FeatureCollection",
+                    type: 'FeatureCollection',
                     features: items
                 },
                 stats: {
