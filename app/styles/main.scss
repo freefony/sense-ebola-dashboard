@@ -2,14 +2,6 @@
 @import url("http://fonts.googleapis.com/css?family=Cabin:400,700,400italic");
 @import "bootstrap";
 
-body {
-  font-size: 11px;
-}
-
-a, button {
-  cursor: pointer;
-}
-
 // Bootstrap overrides =====================
 .loader {
   text-align: center;
@@ -23,10 +15,35 @@ a, button {
 // Base =====================
 body {
   font-family: "Cabin", Helvetica, sans-serif;
+  color: $black;
+  font-size: 11px;
 }
 a, button {cursor: pointer;}
 
-// Content =====================
+// Navbar =====================
+.navbar-default {
+  border-color: $brown-lighter;
+}
+
+// Map =======================
+
+#map-legend {
+  z-index: 1500;
+  position: absolute;
+  background-color: white;
+  top: 20px;
+  right: 20px;
+  width: 130px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  border-radius: 4px;
+  padding: 5px;
+}
+
+#map-legend-header {
+  padding-left:24px;
+}
+
+// Panels =====================
 .page-header {
   margin: 10px 0px 0px 0px;
   text-transform: uppercase;
@@ -34,6 +51,45 @@ a, button {cursor: pointer;}
   display: inline-block;
   background-color: #fff;
 }
+
+.panel {
+  border: 1px solid $brown-light;
+  .ng-table-pager {display: none;}
+}
+
+.panel-heading, .panel-footer {  
+  background-color: $brown-light !important;
+  border-bottom: none;
+  border-radius: 0;
+  color: $white !important;
+  padding: 3px 6px;
+  text-transform: uppercase;
+}
+
+.panel-footer {
+  text-transform: none;
+  font-weight: normal;
+  font-style: italic;
+  &.compact {
+    line-height: 0;
+    padding: 3px;
+  }
+
+  .pagination {
+    margin: 0;
+  }
+}
+
+.btn-export {
+  margin-top: 3px;
+}
+
+// Tables =====================
+.table {
+  border: none!important;
+  .header {border-bottom: 1px solid $brown-light;}
+}
+
 
 // Footer =====================
 footer {
@@ -86,45 +142,4 @@ td .form-group .form-control-feedback {
 
 #stock-count-summary > tbody + tbody {
   border-top: none;
-}
-
-.panel {
-  .ng-table-pager {
-    display: none;
-  }
-}
-
-.panel-heading {
-  padding: 3px 6px;
-}
-
-.panel-footer {
-  padding: 3px 6px;
-
-  &.compact {
-    line-height: 0;
-    padding: 3px;
-  }
-
-  .pagination {
-    margin: 0;
-  }
-}
-
-// Map =======================
-
-#map-legend {
-  z-index: 1500;
-  position: absolute;
-  background-color: white;
-  top: 20px;
-  right: 20px;
-  width: 130px;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
-  border-radius: 4px;
-  padding: 5px;
-}
-
-#map-legend-header {
-  padding-left:24px;
 }
