@@ -8,7 +8,7 @@
     <alert ng-if="locals.error" type="danger">Error loading data.</alert>
   </div>
   <table ng-show="!locals.loading && !locals.error" ng-table="locals.tableParams"
-         class="table table-bordered table-condensed">
+         class="table table-condensed">
     <tr ng-repeat="item in $data" ng-class="{'bg-danger': item.temperature >= MAX_TEMP }">
       <td data-title="'Name'" sortable="'name'">{{item.name}}</td>
       <td data-title="'Time'" sortable="'time'" style="white-space: nowrap;">
