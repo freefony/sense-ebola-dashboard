@@ -132,7 +132,7 @@ $border-radius-small:       0px !default;
 // $table-condensed-cell-padding:  5px !default;
 
 // //** Default background color used for all tables.
-$table-bg:                      #fff;
+// $table-bg:                      #fff;
 // //** Background color used for `.table-striped`.
 // $table-bg-accent:               #f9f9f9 !default;
 // //** Background color used for `.table-hover`.
@@ -440,7 +440,7 @@ $pagination-bg:                        $brown;
 $pagination-border:                    $brown-light;
 
 $pagination-hover-color:               $white;
-$pagination-hover-bg:                  lighten($brown-light, 5%);
+$pagination-hover-bg:                  darken($brown, 10%);
 $pagination-hover-border:              $brown-light;
 
 $pagination-active-color:              $white;
@@ -448,7 +448,7 @@ $pagination-active-bg:                 darken($brown, 10%);
 $pagination-active-border:             $brown-light;
 
 $pagination-disabled-color:            $brown-lighter;
-$pagination-disabled-bg:               lighten($brown-light, 5%);
+$pagination-disabled-bg:               lighten($brown-light, 10%);
 $pagination-disabled-border:           $brown-light;
 
 
