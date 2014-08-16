@@ -304,7 +304,6 @@ angular.module('sedApp')
                         }
                     } else {
                         missingContacts.push(f.Surname + ', ' + f.OtherNames);
-                        console.log(f);
                     }
 
             });

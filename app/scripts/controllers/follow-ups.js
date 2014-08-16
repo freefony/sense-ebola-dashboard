@@ -40,8 +40,8 @@ angular.module('sedApp')
         page: 1,
         count: 10,
         sorting: {
-          time: 'desc'
-        }
+          time: 'desc',
+        },
       }, {
         total: 0,
         counts: [],
