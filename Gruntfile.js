@@ -147,12 +147,12 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        exclude: ['es5-shim', 'json3'],
+        exclude: [
+          'es5-shim',
+          'json3',
+          'bootstrap-sass-official'
+        ],
         ignorePath: '<%= yeoman.app %>/'
-      },
-      sass: {
-        src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        ignorePath: '<%= yeoman.app %>/bower_components/'
       }
     },
 
