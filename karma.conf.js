@@ -3,6 +3,13 @@
 
 'use strict';
 
+var bowerJS = require('wiredep')({
+  devDependencies: true,
+  exclude: [
+    'bootstrap-sass-official'
+  ]
+}).js;
+
 module.exports = function(config) {
   config.set({
     // base path, that will be used to resolve files and exclude
@@ -12,23 +19,11 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
 
     // list of files / patterns to load in the browser
-    files: [
-      'app/bower_components/angular/angular.js',
-      'app/bower_components/angular-mocks/angular-mocks.js',
-      'app/bower_components/angular-sanitize/angular-sanitize.js',
-      'app/bower_components/angular-route/angular-route.js',
-      'app/bower_components/angular-resource/angular-resource.js',
-      'app/bower_components/ng-table/ng-table.js',
-      'app/bower_components/ngstorage/ngStorage.js',
-      'app/bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js',
-      'app/bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
-      'app/bower_components/es5-shim/es5-shim.js',
-      'app/bower_components/pouchdb/dist/pouchdb-nightly.js',
-      'app/bower_components/ng-csv/build/ng-csv.min.js',
+    files: bowerJS.concat([
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
       'test/spec/**/*.js'
-    ],
+    ]),
 
     // list of files / patterns to exclude
     exclude: [],
