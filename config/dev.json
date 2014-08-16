@@ -1,4 +1,4 @@
 {
-  "dbUrl": "http://ebola.eocng.org:5984/",
+  "dbUrl": "http://stage.ebola.eocng.org:5984/",
   "formHubUrl": "http://forms.eocng.org/api/v1/data/ebola/"
 }
