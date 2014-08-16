@@ -8,7 +8,6 @@ angular
         'ngResource',
         'ngStorage',
         'ngTable',
-        'nvd3ChartDirectives',
         'ui.bootstrap',
         'ngCsv'
     ])
@@ -58,13 +57,13 @@ angular
                         return config;
                     },
                     'responseError': function(response) {
-                        switch (response.status) {
-                            case 401:
-                                if ($location.path() !== '/login') {
-                                    $location.search('back', $location.path()).path('/login');
-                                }
-                                break;
-                        }
+                        // switch (response.status) {
+                        //     case 401:
+                        //         if ($location.path() !== '/login') {
+                        //             $location.search('back', $location.path()).path('/login');
+                        //         }
+                        //         break;
+                        // }
 
                         return $q.reject(response);
                     }

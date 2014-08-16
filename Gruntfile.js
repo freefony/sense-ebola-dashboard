@@ -29,7 +29,7 @@ module.exports = function (grunt) {
     watch: {
       bower: {
         files: ['bower.json'],
-        tasks: ['bowerInstall']
+        tasks: ['wiredep']
       },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
@@ -144,15 +144,15 @@ module.exports = function (grunt) {
     },
 
     // Automatically inject Bower components into the app
-    bowerInstall: {
+    wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        exclude: ['es5-shim', 'json3'],
+        exclude: [
+          'es5-shim',
+          'json3',
+          'bootstrap-sass-official'
+        ],
         ignorePath: '<%= yeoman.app %>/'
-      },
-      sass: {
-        src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        ignorePath: '<%= yeoman.app %>/bower_components/'
       }
     },
 
@@ -307,7 +307,7 @@ module.exports = function (grunt) {
             'fonts/*',
             'fixtures/**/*',
             'bower_components/font-awesome/fonts/*',
-            'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/*.*',
+            'bower_components/leaflet-fullscreen/*.png'
           ]
         }, {
           expand: true,
@@ -344,27 +344,23 @@ module.exports = function (grunt) {
         name: 'config',
         dest: '<%= yeoman.app %>/scripts/config.js',
         template: grunt.file.read('.ngconstant.tpl.ejs'),
+        serializerOptions: {
+          indent: '  ',
+          // jshint camelcase: false
+          no_trailing_comma: true
+        },
         constants: {
-          SETTINGS: {
-            dateFormat: 'yyyy-MM-dd',
-            dateTimeFormat: 'yyyy-MM-dd HH:mm'
-          }
+          SETTINGS: grunt.file.readJSON('config/common.json')
         }
       },
       dev: {
         constants: {
-          SETTINGS: {
-            dbUrl: 'http://ebola.eocng.org:5984/',
-            formHubUrl: 'http://forms.eocng.org/api/v1/data/ebola/'
-          }
+          SETTINGS: grunt.file.readJSON('config/dev.json')
         }
       },
       prod: {
         constants: {
-          SETTINGS: {
-            dbUrl: 'http://ebola.eocng.org:5984/',
-            formHubUrl: 'http://forms.eocng.org/api/v1/data/ebola/'
-          }
+          SETTINGS: grunt.file.readJSON('config/prod.json')
         }
       }
     },
@@ -416,7 +412,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'ngconstant:dev',
-      'bowerInstall',
+      'wiredep',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -448,7 +444,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:dist',
       'ngconstant:' + ngct,
-      'bowerInstall',
+      'wiredep',
       'useminPrepare',
       'concurrent:dist',
       'autoprefixer',

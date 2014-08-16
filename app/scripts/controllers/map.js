@@ -80,9 +80,14 @@ angular.module('sedApp')
                         'opacity': 0.3,
                     },
                     pointToLayer: function(feature, latlng) {
-                        return L.marker(latlng, {
+                        var markerOptions = {
                             icon: selectIcon('Event', feature.properties),
-                        });
+                        };
+                        if (feature.properties.symptomatic) {
+                          markerOptions.zIndexOffset=1000;
+                        }
+
+                        return L.marker(latlng, markerOptions);
                     },
                     onEachFeature: function(feature, layer) {
                         /*
@@ -129,7 +134,7 @@ angular.module('sedApp')
                         //}, {
                         //    collapsed: false
                         //});
-                        legend.addTo(map);
+                        //legend.addTo(map);
                     }
                 });
             }
@@ -147,9 +152,9 @@ angular.module('sedApp')
             });
 
             map.attributionControl.setPrefix('');
-            var baseMaps = {
-                'Map': osm
-            };
+            //var baseMaps = {
+          //      'Map': osm
+          //  };
 
             getData();
             setInterval(function() {
@@ -239,6 +244,9 @@ angular.module('sedApp')
                 data=_.where(data,{
                   status: 'active',
                   doc_type: 'contact'
+                });
+                data = _.sortBy(data,function(contact) {
+                  return [contact.Surname, contact.OtherNames].join("_");
                 });
             // data = _.pluck(data.rows,'doc');
             $.each(data, function(g, f) {
