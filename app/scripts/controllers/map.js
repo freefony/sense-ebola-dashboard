@@ -140,6 +140,10 @@ angular.module('sedApp')
                 minZoom: 1,
                 maxZoom: 18,
                 layers: [osm],
+                fullscreenControl: true,
+                fullscreenControlOptions: {
+                    position: 'topleft'
+                }
             });
 
             map.attributionControl.setPrefix('');
