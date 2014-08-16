@@ -236,9 +236,12 @@ angular.module('sedApp')
                 totalContacts = 0,
                 updatedToday = 0,
                 missingContacts = [];
+                data=_.where(data,{
+                  status: 'active',
+                  doc_type: 'contact'
+                });
             // data = _.pluck(data.rows,'doc');
             $.each(data, function(g, f) {
-                if (!f.hasOwnProperty('views') && !f.hasOwnProperty('admins')) {
                     totalContacts++;
 
                     if (f.dailyVisits && f.dailyVisits.length > 0) {
@@ -295,7 +298,7 @@ angular.module('sedApp')
                         missingContacts.push(f.Surname + ', ' + f.OtherNames);
                         console.log(f);
                     }
-                }
+
             });
 
 
