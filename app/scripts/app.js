@@ -8,7 +8,6 @@ angular
         'ngResource',
         'ngStorage',
         'ngTable',
-        'nvd3ChartDirectives',
         'ui.bootstrap',
         'ngCsv'
     ])
