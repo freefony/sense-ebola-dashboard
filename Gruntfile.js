@@ -154,6 +154,16 @@ module.exports = function (grunt) {
       }
     },
 
+    wiredepCopy: {
+      dev: {
+        options: {
+          src: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dist %>',
+          wiredep: '<%= wiredep.app %>'
+        }
+      }
+    },
+
     // Compiles Sass to CSS and generates necessary files if requested
     compass: {
       options: {
@@ -319,6 +329,26 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
+      },
+      dev: {
+        files: [
+          '<%= copy.dist.files %>',
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/',
+            dest: '<%= yeoman.dist %>',
+            src: [
+              'scripts/{,*/}*.js',
+              'images/{,*/}*'
+            ]
+          },
+          {
+            expand: true,
+            cwd: '.tmp/styles',
+            dest: '<%= yeoman.dist %>/styles',
+            src: '{,*/}*.css'
+          }
+        ]
       }
     },
 
@@ -330,7 +360,10 @@ module.exports = function (grunt) {
       test: [
         'compass'
       ],
-      dist: [
+      dev: [
+        'compass'
+      ],
+      prod: [
         'compass:dist',
         'imagemin',
         'svgmin'
@@ -432,19 +465,24 @@ module.exports = function (grunt) {
     'karma'
   ]);
 
-  grunt.registerTask('build', function (target) {
-    var ngct = 'dev';
-
-    if (target === 'prod') {
-      ngct = 'prod';
-    }
-
-    grunt.task.run([
+  grunt.registerTask('build', function(target) {
+    var common = [
       'clean:dist',
-      'ngconstant:' + ngct,
-      'wiredep',
+      'wiredep'
+    ];
+
+    var dev = [
+      'ngconstant:dev',
+      'concurrent:dev',
+      'autoprefixer',
+      'copy:dev',
+      'wiredepCopy:dev'
+    ];
+
+    var prod = [
+      'ngconstant:prod',
       'useminPrepare',
-      'concurrent:dist',
+      'concurrent:prod',
       'autoprefixer',
       'concat',
       'ngAnnotate',
@@ -455,7 +493,13 @@ module.exports = function (grunt) {
       'rev',
       'usemin',
       'htmlmin'
-    ]);
+    ];
+
+    if (target === 'prod') {
+      grunt.task.run(common.concat(prod));
+    } else {
+      grunt.task.run(common.concat(dev));
+    }
   });
 
   grunt.registerTask('default', [
