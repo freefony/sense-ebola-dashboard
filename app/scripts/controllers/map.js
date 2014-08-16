@@ -129,7 +129,7 @@ angular.module('sedApp')
                         //}, {
                         //    collapsed: false
                         //});
-                        legend.addTo(map);
+                        //legend.addTo(map);
                     }
                 });
             }
