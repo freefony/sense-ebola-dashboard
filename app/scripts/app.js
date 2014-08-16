@@ -54,6 +54,10 @@ angular
               config.headers.Authorization = 'Basic ' + btoa(username + ':' + password);
             }
 
+            if ($rootScope.currentUser === null && $location.path() !== '/login') {
+              $location.search('back', $location.path()).path('/login');
+            }
+
             return config;
           },
           'responseError': function(response) {
