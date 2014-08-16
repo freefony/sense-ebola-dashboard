@@ -40,5 +40,13 @@
   ],
   "resolutions": {
     "d3": "~3.4.1"
+  },
+  "overrides": {
+    "leaflet": {
+      "main": [
+        "dist/leaflet-src.js",
+        "dist/leaflet.css"
+      ]
+    }
   }
 }
