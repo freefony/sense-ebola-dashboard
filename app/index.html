@@ -32,7 +32,7 @@
           {{(dataLoader.lastUpdate() | date:SETTINGS.timeFormat) || '-'}} LAST UPDATE
         </span>
       </p>
-      <p ng-if="dataLoader.loading() && !dataLoader.error()" class="navbar-text" style="margin: 5px;">
+      <p ng-if="currentUser && dataLoader.loading()" class="navbar-text" style="margin: 5px;">
         <img style="height: 40px;" src="../images/preloader.gif" alt="preloader">
       </p>
       <ul class="nav navbar-nav navbar-right" ng-if="currentUser">

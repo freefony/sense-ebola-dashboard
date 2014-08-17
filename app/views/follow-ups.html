@@ -3,12 +3,6 @@
 
     Follow Ups
   </div>
-  <div ng-show="dataLoader.initialLoad()" class="panel-body">
-    <alert ng-if="!dataLoader.error()" class="loader" type="info">
-      <img src="../images/preloader.gif" alt="preloader">
-    </alert>
-    <alert ng-if="$rootScope.currentUser && dataLoader.error()" type="danger">Error loading data.</alert>
-  </div>
   <table ng-show="!dataLoader.initialLoad()" ng-table="locals.tableParams" class="table table-condensed">
     <tr ng-repeat="item in $data" ng-class="{'bg-danger': item.temperature >= MAX_TEMP }">
       <td data-title="'Name'" sortable="'name'">{{item.name}}</td>
