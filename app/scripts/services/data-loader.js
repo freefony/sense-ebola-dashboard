@@ -239,7 +239,7 @@ angular.module('sedApp')
         return [contact.Surname, contact.OtherNames].join("_");
       });
       // data = _.pluck(data.rows,'doc');
-      $.each(data, function(g, f) {
+      data.forEach(function(f) {
         totalContacts++;
 
         if (f.dailyVisits && f.dailyVisits.length > 0) {

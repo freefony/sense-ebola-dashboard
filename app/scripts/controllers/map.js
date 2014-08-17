@@ -117,10 +117,11 @@ angular.module('sedApp')
                 if (!newData) return;
 
                 if (!(_.isEqual(clonedEvents, newData.events))) {
-                    console.log('followups have changed');
-                    jQuery('#total-contacts').html(newData.stats.total);
-                    jQuery('#updated-contacts').html(newData.stats.updated);
-                    jQuery('#missing-contacts').html('<p>' + newData.stats.missing.join('</p><p>') + '</p>');
+                    $scope.contacts = {
+                      total: newData.stats.total,
+                      updated: newData.stats.updated,
+                      missing: newData.stats.missing
+                    };
                     events = newData.events;
                     clonedEvents = _.clone(events);
                     if (eventsLayer) {
