@@ -2,7 +2,7 @@
 
 angular.module('sedApp')
   .service('dataLoader', function dataLoader($rootScope, $q, $timeout, FollowUp, contactFactory, utility) {
-    var RELOAD_DELAY = 30000;
+    var RELOAD_DELAY = 300000;
     var ERROR_RELOAD_DELAY = 1000;
 
     var timeout = null;
