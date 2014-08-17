@@ -3,19 +3,20 @@
 
     Follow Ups
   </div>
-  <div ng-show="locals.loading || locals.error" class="panel-body">
-    <alert class="loader" ng-if="locals.loading" type="info"><img src="../images/preloader.gif" alt="preloader"></alert>
-    <alert ng-if="locals.error" type="danger">Error loading data.</alert>
+  <div ng-show="dataLoader.initialLoad()" class="panel-body">
+    <alert ng-if="!dataLoader.error()" class="loader" type="info">
+      <img src="../images/preloader.gif" alt="preloader">
+    </alert>
+    <alert ng-if="$rootScope.currentUser && dataLoader.error()" type="danger">Error loading data.</alert>
   </div>
-  <table ng-show="!locals.loading && !locals.error" ng-table="locals.tableParams"
-         class="table table-condensed">
+  <table ng-show="!dataLoader.initialLoad()" ng-table="locals.tableParams" class="table table-condensed">
     <tr ng-repeat="item in $data" ng-class="{'bg-danger': item.temperature >= MAX_TEMP }">
       <td data-title="'Name'" sortable="'name'">{{item.name}}</td>
       <td data-title="'Time'" sortable="'time'" style="white-space: nowrap;">
         {{item.time | date:SETTINGS.dateTimeFormat}}
       </td>
       <td data-title="'Interviewer'" sortable="'interviewer'">{{item.interviewer}}</td>
-      <td data-title="'Temp'" >{{item.temperature}}</td>
+      <td data-title="'Temp'">{{item.temperature}}</td>
       <td data-title="'D'"><yes-no-mark ng-model="item.diarrhoea"></yes-no-mark></td>
       <td data-title="'P'"><yes-no-mark ng-model="item.pharyngitis"></yes-no-mark></td>
       <td data-title="'Ha'"><yes-no-mark ng-model="item.haemorrhagic"></yes-no-mark></td>
@@ -28,7 +29,7 @@
   </table>
   <div class="panel-footer compact">
     <button class="btn btn-success btn-xs pull-right btn-export" type="button"
-            ng-show="!locals.loading && !locals.error"
+            ng-show="!dataLoader.initialLoad()"
             ng-csv="csvData"
             csv-header="csvHeader"
             ng-click="changeFileName()"
