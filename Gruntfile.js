@@ -395,6 +395,18 @@ module.exports = function (grunt) {
         configFile: 'karma.conf.js',
         singleRun: true
       }
+    },
+
+    ngtemplates: {
+      sedApp: {
+        options: {
+          htmlmin: '<%= htmlmin.dist.options %>',
+          usemin: 'scripts/scripts.js'
+        },
+        cwd: '<%= yeoman.app %>',
+        src: 'templates/**/*.html',
+        dest: '.tmp/concat/scripts/templates.js'
+      }
     }
   });
 
@@ -446,6 +458,7 @@ module.exports = function (grunt) {
       'useminPrepare',
       'concurrent:dist',
       'autoprefixer',
+      'ngtemplates',
       'concat',
       'ngAnnotate',
       'copy:dist',
