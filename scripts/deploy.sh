@@ -25,11 +25,10 @@ if [[ "$TRAVIS_BRANCH" == "master" ]]; then
   deploy "release"
   host="54.75.128.38"
 elif [[ "$TRAVIS_BRANCH" == "develop" ]]; then
-  deploy "snapshot"
+  deploy "stage"
   host="54.73.247.96"
 else
-  info "not deploying ${TRAVIS_BRANCH} branch"
-  exit 1
+  error "not deploying $TRAVIS_BRANCH branch"
 fi
 
 decode_ssh_key "$host"
