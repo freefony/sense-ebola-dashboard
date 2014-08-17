@@ -14,6 +14,7 @@ angular.module('sedApp')
     var contacts = [];
     var contactsByDate = [];
     var mergedData = [];
+    var mapData = null;
 
     load();
 
@@ -42,6 +43,9 @@ angular.module('sedApp')
       },
       mergedData: function() {
         return mergedData;
+      },
+      mapData: function() {
+        return mapData;
       }
     };
 
@@ -82,7 +86,8 @@ angular.module('sedApp')
 
           if (updated) {
             console.log('data updated');
-            merge();
+            updateMergedData();
+            updateMapData();
             $rootScope.$emit('dataUpdated');
           }
 
@@ -105,7 +110,7 @@ angular.module('sedApp')
         });
     }
 
-    function merge() {
+    function updateMergedData() {
       var formHubData = followUps
         .map(function(senseData) {
           return {
@@ -169,5 +174,146 @@ angular.module('sedApp')
           if (a.time < b.time) return 1;
           return 0;
         });
+    }
+
+    function updateMapData() {
+      var i, fullName, couchContact,
+        couchData = _.pluck(contacts, 'doc');
+
+      for (i = 0; i < followUps.length; i++) {
+        fullName = followUps[i]['ContactInformation/contact_name'].split('  ');
+        if (fullName.length < 2) {
+          fullName.push('');
+        }
+        couchContact = _.where(couchData, {
+          Surname: fullName[0],
+          OtherNames: fullName[1]
+        });
+        if (couchContact.length === 0) {
+          console.log('Received data for unknown contact: ' + fullName.join(', '));
+        }
+        else if (couchContact.length > 1) {
+          console.log('Received data with ambiguous contact name: ' + fullName.join(', '));
+        }
+        else {
+          if (!couchContact[0].hasOwnProperty('dailyVisits')) {
+            couchContact[0].dailyVisits = [];
+          }
+
+          couchContact[0].dailyVisits.push({
+            dateOfVisit: followUps[i].end.toISOString(),
+            geoInfo: {
+              coords: {
+                longitude: followUps[i]._geolocation[1],
+                latitude: followUps[i]._geolocation[0],
+              }
+            },
+            symptoms: {
+              temperature: followUps[i]['Clinicals/Temp_reading'],
+              diarrhoea: followUps[i]['Clinicals/Anydiaarrhea'],
+              pharyngitis: followUps[i]['Clinicals/Anypharyngitis'],
+              haemorrhagic: followUps[i]['Clinicals/Anyhaemorrhagicsigns'],
+              headache: followUps[i]['Clinicals/AnyHeadaches'],
+              maculopapular: followUps[i]['Clinicals/Anymacuplopapularash'],
+              malaise: followUps[i]['Clinicals/Anymalaise'],
+              musclePain: followUps[i]['Clinicals/Anymusclepain'],
+              vomiting: followUps[i]['Clinicals/Anyvomiting']
+            }
+          });
+        }
+      }
+
+      mapData = parseResponseJsonData(couchData);
+    }
+
+    function parseResponseJsonData(data) {
+      var items = [],
+        totalContacts = 0,
+        updatedToday = 0,
+        missingContacts = [];
+      data = _.where(data, {
+        status: 'active',
+        doc_type: 'contact'
+      });
+      data = _.sortBy(data, function(contact) {
+        return [contact.Surname, contact.OtherNames].join("_");
+      });
+      // data = _.pluck(data.rows,'doc');
+      $.each(data, function(g, f) {
+        totalContacts++;
+
+        if (f.dailyVisits && f.dailyVisits.length > 0) {
+          var item = {},
+            lastDailyVisit = _.last(_.sortBy(f.dailyVisits, 'dateOfVisit')),
+            currentDate = new Date(),
+            visitDate = new Date(lastDailyVisit.dateOfVisit),
+            updateStatus = 'outdated',
+            timeDelta;
+          // Set the hour, minute and second of the current and visit date to zero before comparing.
+          // That way markers will only turn green if they are from the same day instead of being from in-between 24 h.
+          currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+          visitDate = new Date(visitDate.getFullYear(), visitDate.getMonth(), visitDate.getDate());
+          timeDelta = currentDate - visitDate;
+          if (timeDelta >= 172800000) {
+            updateStatus = 'outdated';
+            missingContacts.push(f.Surname + ', ' + f.OtherNames);
+          }
+          else if (timeDelta >= 86400000) {
+            updateStatus = 'lastTwoDays';
+            missingContacts.push(f.Surname + ', ' + f.OtherNames);
+          }
+          else {
+            updateStatus = 'lastDay';
+            updatedToday++;
+          }
+
+          if (lastDailyVisit.geoInfo && lastDailyVisit.geoInfo.coords && lastDailyVisit.geoInfo.coords.longitude) {
+            item.properties = {
+              name: f.OtherNames + ' ' + f.Surname,
+              timestamp: lastDailyVisit.dateOfVisit,
+              updateStatus: updateStatus,
+              symptomatic: false,
+              temperature: lastDailyVisit.symptoms.temperature,
+            };
+
+            if (lastDailyVisit.symptoms.temperature > 38 ||
+                lastDailyVisit.symptoms.diarrhoea ||
+                lastDailyVisit.symptoms.pharyngitis ||
+                lastDailyVisit.symptoms.haemorrhagic ||
+                lastDailyVisit.symptoms.headache ||
+                lastDailyVisit.symptoms.maculapapular ||
+                lastDailyVisit.symptoms.malaise ||
+                lastDailyVisit.symptoms.musclePain ||
+                lastDailyVisit.symptoms.vomiting) {
+              item.properties.symptomatic = true;
+            }
+            item.geometry = {
+              type: 'Point',
+              coordinates: [
+                parseFloat(lastDailyVisit.geoInfo.coords.longitude),
+                parseFloat(lastDailyVisit.geoInfo.coords.latitude)
+              ]
+            };
+            item.type = 'Feature';
+            items.push(item);
+          }
+        }
+        else {
+          missingContacts.push(f.Surname + ', ' + f.OtherNames);
+        }
+      });
+
+      // return the FeatureCollection
+      return {
+        events: {
+          type: 'FeatureCollection',
+          features: items
+        },
+        stats: {
+          total: totalContacts,
+          updated: updatedToday,
+          missing: missingContacts
+        }
+      };
     }
   });
