@@ -1,4 +1,5 @@
 {
+  "timeFormat": "HH:mm:ss",
   "dateFormat": "yyyy-MM-dd",
   "dateTimeFormat": "yyyy-MM-dd HH:mm"
 }
