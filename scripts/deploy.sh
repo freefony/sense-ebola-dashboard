@@ -17,10 +17,10 @@ decode_ssh_key() {
 notify() {
   if [[ $1 == 0 ]]; then
     email="build+ok@flowdock.com";
-    subject="${TRAVIS_REPO_SLUG} $2 deplyoment succeeded"
+    subject="${TRAVIS_REPO_SLUG} $2 deployment succeeded"
   else
     email="build+fail@flowdock.com";
-    subject="${TRAVIS_REPO_SLUG} $2 deplyoment failed"
+    subject="${TRAVIS_REPO_SLUG} $2 deployment failed"
   fi
 
   data='{"source": "Travis","from_name":"CI","from_address": "'${email}'","subject": "'${subject}'","content": "'${subject}'"}'
