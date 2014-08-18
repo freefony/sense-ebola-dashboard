@@ -6,10 +6,31 @@
   <table ng-show="!dataLoader.initialLoad()" ng-table="locals.tableParams" class="table table-condensed">
      <thead>
        <tr>
-         <th title="Name">Name</th>
-         <th title="Time" >Time</th>
-         <th title="Interviewer">Interviewer</th>
-         <th title="Temperature">Temp</th>
+         <th class="sortable" ng-class="{
+                    'sort-asc': locals.tableParams.isSortBy('name', 'asc'),
+                    'sort-desc': locals.tableParams.isSortBy('name', 'desc')
+                  }"
+                    ng-click="locals.tableParams.sorting({'name' : locals.tableParams.isSortBy('name', 'asc') ? 'desc' : 'asc'})">
+                    <div>Name</div>
+                </th>
+         <th title="Time" class="sortable" ng-class="{
+            'sort-asc' : locals.tableParams.isSortBy('time','asc'),
+            'sort-desc' : locals.tableParams.isSortBy('time','desc')
+         }"
+         ng-click="locals.tableParams.sorting({'time' : locals.tableParams.isSortBy('time', 'asc') ? 'desc' : 'asc'})">
+             <div>Time</div></th>
+         <th title="Interviewer" class="sortable" ng-class="{
+            'sort-asc' : locals.tableParams.isSortBy('interviewer','asc'),
+            'sort-desc' : locals.tableParams.isSortBy('interviewer','desc')
+         }"
+         ng-click="locals.tableParams.sorting({'interviewer' : locals.tableParams.isSortBy('interviewer', 'asc') ? 'desc' : 'asc'})">
+             <div>Interviewer</div></th>
+         <th title="Temperature"class="sortable" ng-class="{
+            'sort-asc' : locals.tableParams.isSortBy('temp','asc'),
+            'sort-desc' : locals.tableParams.isSortBy('temp','desc')
+         }"
+         ng-click="locals.tableParams.sorting({'temp' : locals.tableParams.isSortBy('temp', 'asc') ? 'desc' : 'asc'})">
+             <div>Temp</div></th>
          <th title="Diarrhoea">D</th>
          <th title="Pharyngitis">P</th>
          <th title="Haemorrhagic">Ha</th>
@@ -54,8 +75,10 @@
                 items-per-page="locals.tableParams.count()"
                 ng-change="locals.tableParams.page(locals.currentPage)"></pagination>
   </div>
+
 </div>
 
 <div class="panel panel-default" style="display: none;">
   <div ng-include="'views/lab-results.html'" ng-controller="LabResultsCtrl"></div>
 </div>
+
