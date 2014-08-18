@@ -227,13 +227,6 @@ module.exports = function(grunt) {
       }
     },
 
-    // The following *-min tasks produce minified files in the dist folder
-    cssmin: {
-      options: {
-        root: '<%= yeoman.app %>'
-      }
-    },
-
     imagemin: {
       dist: {
         files: [{
@@ -286,29 +279,46 @@ module.exports = function(grunt) {
 
     // Copies remaining files to places other tasks can use
     copy: {
+      common: {
+        files: [
+          {
+            expand: true,
+            dot: true,
+            cwd: '<%= yeoman.app %>',
+            dest: '<%= yeoman.dist %>',
+            src: [
+              '*.{ico,png,txt}',
+              '.htaccess',
+              '*.html',
+              'views/{,*/}*.html',
+              'images/{,*/}*.{webp}',
+              'fonts/*'
+            ]
+          },
+          {
+            expand: true,
+            cwd: '.tmp/images',
+            dest: '<%= yeoman.dist %>/images',
+            src: ['generated/*']
+          }
+        ]
+      },
       dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            '*.html',
-            'views/{,*/}*.html',
-            'images/{,*/}*.{webp}',
-            'fonts/*',
-            'fixtures/**/*',
-            'bower_components/font-awesome/fonts/*',
-            'bower_components/leaflet-fullscreen/*.png'
-          ]
-        }, {
-          expand: true,
-          cwd: '.tmp/images',
-          dest: '<%= yeoman.dist %>/images',
-          src: ['generated/*']
-        }]
+        files: [
+          '<%= copy.common.files %>',
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/bower_components/font-awesome/',
+            dest: '<%= yeoman.dist %>',
+            src: 'fonts/*'
+          },
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/bower_components/leaflet-fullscreen/',
+            dest: '<%= yeoman.dist %>/styles',
+            src: '*.png'
+          }
+        ]
       },
       styles: {
         expand: true,
@@ -318,16 +328,20 @@ module.exports = function(grunt) {
       },
       dev: {
         files: [
-          '<%= copy.dist.files %>', {
+          '<%= copy.common.files %>',
+          {
             expand: true,
             cwd: '<%= yeoman.app %>/',
             dest: '<%= yeoman.dist %>',
             src: [
               'scripts/{,*/}*.js',
               'images/{,*/}*',
-              'templates/{,*/}*'
+              'templates/{,*/}*',
+              'bower_components/leaflet-fullscreen/*.png',
+              'bower_components/font-awesome/fonts/*'
             ]
-          }, {
+          },
+          {
             expand: true,
             cwd: '.tmp/styles',
             dest: '<%= yeoman.dist %>/styles',
