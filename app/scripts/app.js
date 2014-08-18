@@ -75,8 +75,10 @@ angular
       }
     ]);
   })
-  .run(function($rootScope, $route, SETTINGS, Auth) {
+  .run(function($rootScope, $route, SETTINGS, Auth, dataLoader) {
     $rootScope.SETTINGS = SETTINGS;
+
+    $rootScope.dataLoader = dataLoader;
 
     $rootScope.logout = function() {
       Auth.logout();

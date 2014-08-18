@@ -25,6 +25,16 @@
       <div class="navbar-header">
         <a class="navbar-brand" href="#">EOC Lagos | Ebola Outbreak Response</a>
       </div>
+      <p class="navbar-text" style="margin: 0 5px;">
+        <span style="font-size: 2em; line-height: normal;" current-time="SETTINGS.timeFormat"></span>
+        <br>
+        <span style="line-height: normal;">
+          {{(dataLoader.lastUpdate() | date:SETTINGS.timeFormat) || '-'}} LAST UPDATE
+        </span>
+      </p>
+      <p ng-if="currentUser && dataLoader.loading()" class="navbar-text" style="margin: 5px;">
+        <img style="height: 40px;" src="../images/preloader.gif" alt="preloader">
+      </p>
       <ul class="nav navbar-nav navbar-right" ng-if="currentUser">
         <li class="dropdown">
           <a class="dropdown-toggle" href="#" data-toggle="dropdown">
@@ -83,8 +93,9 @@
   <script src="scripts/services/follow-up.js"></script>
   <script src="scripts/services/lab-result.js"></script>
   <script src="scripts/services/contacts-factory.js"></script>
-  <script src="scripts/services/aggregated-data.js"></script>
+  <script src="scripts/services/data-loader.js"></script>
   <script src="scripts/directives/yes-no-mark.js"></script>
+  <script src="scripts/directives/current-time.js"></script>
   <script src="scripts/controllers/login.js"></script>
   <script src="scripts/controllers/home.js"></script>
   <script src="scripts/controllers/map.js"></script>
