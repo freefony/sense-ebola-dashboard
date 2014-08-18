@@ -26,6 +26,13 @@
         <a class="navbar-brand" href="#">EOC Lagos | Ebola Outbreak Response</a>
       </div>
       <p ng-if="currentUser && dataLoader.loading()" class="navbar-text" style="margin: 5px;">
+        <span class="navbar-hour" current-time="SETTINGS.timeFormat"></span>
+        <br>
+        <span class="navbar-last-update">
+          {{(dataLoader.lastUpdate() | date:SETTINGS.timeFormat) || '-'}} LAST UPDATE
+        </span>
+      </p>
+      <p ng-if="currentUser && dataLoader.loading()" class="navbar-preloader">
         <img style="height: 40px;" src="../images/preloader.gif" alt="preloader">
       </p>
 
