@@ -182,6 +182,9 @@ td .form-group .form-control-feedback {
 .text-danger {
   color:#dd0000;
 }
+tr.bg-danger {
+  color: #fff;
+}
 
 #missing-contacts {
   @include column-count(2);
