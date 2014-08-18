@@ -1,6 +1,7 @@
 // Imports =====================
 @import url("http://fonts.googleapis.com/css?family=Cabin:400,700,400italic");
 @import "bootstrap";
+@import "compass/css3/columns";
 
 // Bootstrap overrides =====================
 .loader {
@@ -9,8 +10,21 @@
   border: none;
 }
 
+.alert-danger {
+background-color: darken($brand-danger, 20%);
+border-color: darken($brand-danger, 30%);
+color: $white;
+}
+
 // Helpers =====================
 .pointer{cursor: pointer;}
+.panel-compressed {
+  padding-left: 5px;
+  padding-right: 0px;
+}
+.panel-compressed {
+  &.last {padding-right: 5px;}
+}
 
 // Base =====================
 body {
@@ -25,22 +39,41 @@ a, button {cursor: pointer;}
   border-color: $brown-lighter;
 }
 
+.navbar-text {
+  padding: 4px 15px;
+  margin: 0;
+  background-color: $brown-light;
+  min-width: 145px;
+  .navbar-hour {
+    font-size: $font-size-h3;
+    line-height: normal;
+  }
+  .navbar-last-update {
+    line-height: normal;
+  }
+}
+
+.navbar-preloader {
+  margin: 5px;
+  display: inline-block;
+}
+
 // Map =======================
 
 #map-legend {
   z-index: 1500;
   position: absolute;
   background-color: white;
-  top: 20px;
-  right: 20px;
+  top: 10px;
+  right: 10px;
   width: 130px;
-  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  box-shadow: 0 1px 2px $brown;
   border-radius: 4px;
-  padding: 5px;
+  padding: 0 10px;
 }
 
 #map-legend-header {
-  padding-left:24px;
+  padding-left:17px;
 }
 
 // Panels =====================
@@ -57,7 +90,7 @@ a, button {cursor: pointer;}
   .ng-table-pager {display: none;}
 }
 
-.panel-heading, .panel-footer {  
+.panel-heading, .panel-footer {
   background-color: $brown-light !important;
   border-bottom: none;
   border-radius: 0;
@@ -88,6 +121,9 @@ a, button {cursor: pointer;}
 .table {
   border: none!important;
   .header {border-bottom: 1px solid $brown-light;}
+  .sort-desc, .sort-asc {
+    background-color: rgba($brown-lighter, 0.4)!important;
+  }
 }
 
 
@@ -143,11 +179,13 @@ td .form-group .form-control-feedback {
 #stock-count-summary > tbody + tbody {
   border-top: none;
 }
-
 .text-danger {
   color:#dd0000;
 }
-
 tr.bg-danger {
-color: #fff;
+  color: #fff;
+}
+
+#missing-contacts {
+  @include column-count(2);
 }

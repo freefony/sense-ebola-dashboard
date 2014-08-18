@@ -14,8 +14,8 @@ if [[ "$TRAVIS_BRANCH" == "master" ]]; then
   build "release"
   grunt build:prod
 elif [[ "$TRAVIS_BRANCH" == "develop" ]]; then
-  build "snapshot"
+  build "stage"
   grunt build
 else
-  info "not building ${TRAVIS_BRANCH} branch"
+  info "not building $TRAVIS_BRANCH branch"
 fi
