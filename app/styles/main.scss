@@ -4,16 +4,21 @@
 @import "compass/css3/columns";
 
 // Bootstrap overrides =====================
-.loader {
-  text-align: center;
-  box-shadow: none;
-  border: none;
+.bg-success, .alert-success {
+  background-color: darken($brand-success, 20%);
+  color: $white;
 }
-
-.alert-danger {
-background-color: darken($brand-danger, 20%);
-border-color: darken($brand-danger, 30%);
-color: $white;
+.bg-info, .alert-info {
+  background-color: darken($brand-info, 20%);
+  color: $white;
+}
+.bg-warning, .alert-warning {
+  background-color: darken($brand-warning, 20%);
+  color: $white;
+}
+.bg-danger, .alert-danger {
+  background-color: darken($brand-danger, 20%);
+  color: $white;
 }
 
 // Helpers =====================
@@ -53,9 +58,22 @@ a, button {cursor: pointer;}
   }
 }
 
-.navbar-preloader {
-  margin: 5px;
-  display: inline-block;
+.preloader-container {
+  position: absolute;
+  width: 100%; 
+  height: 100%;
+  top: 0; right: 0; left: 0; bottom: 0;
+  background-color: rgba($brown, 0.7);
+  z-index: 9998;
+  .preloader {
+    position: absolute;
+    margin: auto;
+    z-index: 9999;
+    top: 0; right: 0; left: 0; bottom: 0;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+  }
 }
 
 // Map =======================
@@ -87,6 +105,8 @@ a, button {cursor: pointer;}
 
 .panel {
   border: 1px solid $brown-light;
+  margin-bottom: 5px;
+  min-height: 299px;
   .ng-table-pager {display: none;}
 }
 
@@ -178,16 +198,6 @@ td .form-group .form-control-feedback {
 
 #stock-count-summary > tbody + tbody {
   border-top: none;
-}
-.text-danger {
-  color:#dd0000;
-}
-tr.bg-danger { 
-  background-color: #8B0000;
-  color: #fff !important; 
-}
-tr.bg-danger .text-danger{
-  color: #ffffff;
 }
 
 #missing-contacts {
