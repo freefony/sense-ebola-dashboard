@@ -266,6 +266,33 @@ module.exports = function(grunt) {
       }
     },
 
+    uglify: {
+      options: {
+        // jshint camelcase: false
+        mangle: {
+          screw_ie8: true
+        },
+        compress: {
+          screw_ie8: true,
+          sequences: true,
+          properties: true,
+          dead_code: true,
+          drop_debugger: true,
+          comparisons: true,
+          conditionals: true,
+          evaluate: true,
+          booleans: true,
+          loops: true,
+          unused: true,
+          hoist_funs: true,
+          if_return: true,
+          join_vars: true,
+          cascade: true,
+          drop_console: true
+        }
+      }
+    },
+
     ngAnnotate: {
       dist: {
         files: [{
