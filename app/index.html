@@ -25,17 +25,13 @@
       <div class="navbar-header">
         <a class="navbar-brand" href="#">EOC Lagos | Ebola Outbreak Response</a>
       </div>
-      <p ng-if="currentUser && dataLoader.loading()" class="navbar-text" style="margin: 5px;">
+      <p ng-if="currentUser && dataLoader.loading()" class="navbar-text">
         <span class="navbar-hour" current-time="SETTINGS.timeFormat"></span>
         <br>
         <span class="navbar-last-update">
           {{(dataLoader.lastUpdate() | date:SETTINGS.timeFormat) || '-'}} LAST UPDATE
         </span>
       </p>
-      <p ng-if="currentUser && dataLoader.loading()" class="navbar-preloader">
-        <img style="height: 40px;" src="../images/preloader.gif" alt="preloader">
-      </p>
-
       <ul class="nav navbar-nav navbar-right" ng-if="currentUser">
         <li class="dropdown">
           <a class="dropdown-toggle" href="#" data-toggle="dropdown">
@@ -48,13 +44,7 @@
           </ul>
         </li>
       </ul>
-      <p class="navbar-text navbar-right" style="margin: 0 5px;">
-        <span style="font-size: 2em; line-height: normal;" current-time="SETTINGS.timeFormat"></span>
-        <br>
-        <span style="line-height: normal;">
-          {{(dataLoader.lastUpdate() | date:SETTINGS.timeFormat) || '-'}} LAST UPDATE
-        </span>
-      </p>
+
       <ul class="nav navbar-nav navbar-right" ng-if="!currentUser">
         <li class="dropdown">
           <a href="/#/login">
@@ -64,6 +54,11 @@
       </ul>
     </div>
   </nav>
+  
+  <p ng-if="currentUser && dataLoader.loading()" class="preloader-container">
+      <img class="preloader" src="../images/preloader.gif" alt="preloader">
+  </p>
+  
   <div ng-show="app.init" class="container-fluid" ng-view></div>
   <footer class="footer">
     <div class="container">

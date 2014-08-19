@@ -39,12 +39,6 @@ body {
 }
 a, button {cursor: pointer;}
 
-.loader {
-  text-align: center;
-  box-shadow: none;
-  border: none;
-}
-
 // Navbar =====================
 .navbar-default {
   border-color: $brown-lighter;
@@ -64,9 +58,22 @@ a, button {cursor: pointer;}
   }
 }
 
-.navbar-preloader {
-  margin: 5px;
-  display: inline-block;
+.preloader-container {
+  position: absolute;
+  width: 100%; 
+  height: 100%;
+  top: 0; right: 0; left: 0; bottom: 0;
+  background-color: rgba($brown, 0.7);
+  z-index: 9998;
+  .preloader {
+    position: absolute;
+    margin: auto;
+    z-index: 9999;
+    top: 0; right: 0; left: 0; bottom: 0;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+  }
 }
 
 // Map =======================
@@ -99,6 +106,7 @@ a, button {cursor: pointer;}
 .panel {
   border: 1px solid $brown-light;
   margin-bottom: 5px;
+  min-height: 299px;
   .ng-table-pager {display: none;}
 }
 
