@@ -506,8 +506,10 @@ module.exports = function(grunt) {
       common.push('karma');
 
       var nonFork = 'eHealthAfrica/sense-ebola-dashboard';
-      if (process.env.TRAVIS_REPO_SLUG === nonFork) {
-        common.push('protractor:saucelabs');
+      if (process.env.TRAVIS_PULL_REQUEST === 'false' ) {
+        if (process.env.TRAVIS_REPO_SLUG === nonFork) {
+          common.push('protractor:saucelabs');
+        }
       }
 
       return grunt.task.run(common);
