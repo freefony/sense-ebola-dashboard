@@ -4,16 +4,21 @@
 @import "compass/css3/columns";
 
 // Bootstrap overrides =====================
-.loader {
-  text-align: center;
-  box-shadow: none;
-  border: none;
+.bg-success, .alert-success {
+  background-color: darken($brand-success, 20%);
+  color: $white;
 }
-
-.alert-danger {
-background-color: darken($brand-danger, 20%);
-border-color: darken($brand-danger, 30%);
-color: $white;
+.bg-info, .alert-info {
+  background-color: darken($brand-info, 20%);
+  color: $white;
+}
+.bg-warning, .alert-warning {
+  background-color: darken($brand-warning, 20%);
+  color: $white;
+}
+.bg-danger, .alert-danger {
+  background-color: darken($brand-danger, 20%);
+  color: $white;
 }
 
 // Helpers =====================
@@ -33,6 +38,12 @@ body {
   font-size: 11px;
 }
 a, button {cursor: pointer;}
+
+.loader {
+  text-align: center;
+  box-shadow: none;
+  border: none;
+}
 
 // Navbar =====================
 .navbar-default {
@@ -87,6 +98,7 @@ a, button {cursor: pointer;}
 
 .panel {
   border: 1px solid $brown-light;
+  margin-bottom: 5px;
   .ng-table-pager {display: none;}
 }
 
@@ -178,16 +190,6 @@ td .form-group .form-control-feedback {
 
 #stock-count-summary > tbody + tbody {
   border-top: none;
-}
-.text-danger {
-  color:#dd0000;
-}
-tr.bg-danger { 
-  background-color: #8B0000;
-  color: #fff !important; 
-}
-tr.bg-danger .text-danger{
-  color: #ffffff;
 }
 
 #missing-contacts {

@@ -483,23 +483,21 @@ $pagination-disabled-border:           $brown-light;
 //
 //## Define colors for form feedback states and, by default, alerts.
 
-$state-success-text:             #3c763d !default;
-$state-success-bg:               #dff0d8 !default;
-$state-success-border:           darken(adjust-hue($state-success-bg, -10), 5%) !default;
+$state-success-text:             $brand-success;
+$state-success-bg:               lighten($brand-success, 35%);
+$state-success-border:           lighten($brand-success, 25%);
 
-$state-info-text:                #31708f !default;
-$state-info-bg:                  #d9edf7 !default;
-$state-info-border:              darken(adjust-hue($state-info-bg, -10), 7%) !default;
+$state-info-text:                $brand-info;
+$state-info-bg:                  lighten($brand-info, 35%);
+$state-info-border:              lighten($brand-info, 25%);
 
-$state-warning-text:             #8a6d3b !default;
-$state-warning-bg:               #fcf8e3 !default;
-$state-warning-border:           darken(adjust-hue($state-warning-bg, -10), 5%) !default;
+$state-warning-text:             $brand-warning;
+$state-warning-bg:               lighten($brand-warning, 35%);
+$state-warning-border:           lighten($brand-warning, 25%);
 
-$state-danger-text:              #a94442 !default;
-$state-danger-bg:                #f2dede !default;
-$state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%) !default;
-
-
+$state-danger-text:              $brand-danger;
+$state-danger-bg:                lighten($brand-danger, 35%);
+$state-danger-border:            lighten($brand-danger, 25%);
 
 // //== Tooltips
 // //
@@ -552,18 +550,18 @@ $state-danger-border:            darken(adjust-hue($state-danger-bg, -10), 5%) !
 // //
 // //##
 
-// //** Default label background color
-// $label-default-bg:            $gray-light !default;
-// //** Primary label background color
-// $label-primary-bg:            $brand-primary !default;
-// //** Success label background color
-// $label-success-bg:            $brand-success !default;
-// //** Info label background color
-// $label-info-bg:               $brand-info !default;
-// //** Warning label background color
-// $label-warning-bg:            $brand-warning !default;
-// //** Danger label background color
-// $label-danger-bg:             $brand-danger !default;
+//** Default label background color
+$label-default-bg:            $gray-light;
+//** Primary label background color
+$label-primary-bg:            $brand-primary;
+//** Success label background color
+$label-success-bg:            $brand-success;
+//** Info label background color
+$label-info-bg:               $brand-info;
+//** Warning label background color
+$label-warning-bg:            $brand-warning;
+//** Danger label background color
+$label-danger-bg:             $brand-danger;
 
 // //** Default label text color
 // $label-color:                 #fff !default;
@@ -638,16 +636,16 @@ $alert-danger-border:         $state-danger-border;
 // //** Progress bar text color
 // $progress-bar-color:          #fff !default;
 
-// //** Default progress bar color
-// $progress-bar-bg:             $brand-primary !default;
-// //** Success progress bar color
-// $progress-bar-success-bg:     $brand-success !default;
-// //** Warning progress bar color
-// $progress-bar-warning-bg:     $brand-warning !default;
-// //** Danger progress bar color
-// $progress-bar-danger-bg:      $brand-danger !default;
-// //** Info progress bar color
-// $progress-bar-info-bg:        $brand-info !default;
+//** Default progress bar color
+$progress-bar-bg:             $brand-primary;
+//** Success progress bar color
+$progress-bar-success-bg:     $brand-success;
+//** Warning progress bar color
+$progress-bar-warning-bg:     $brand-warning;
+//** Danger progress bar color
+$progress-bar-danger-bg:      $brand-danger;
+//** Info progress bar color
+$progress-bar-info-bg:        $brand-info;
 
 
 // //== List group
@@ -718,9 +716,9 @@ $panel-border-radius:         $border-radius-base !default;
 // $panel-warning-border:        $state-warning-border !default;
 // $panel-warning-heading-bg:    $state-warning-bg !default;
 
-// $panel-danger-text:           $state-danger-text !default;
-// $panel-danger-border:         $state-danger-border !default;
-// $panel-danger-heading-bg:     $state-danger-bg !default;
+$panel-danger-text:           $state-danger-text;
+$panel-danger-border:         $state-danger-border;
+$panel-danger-heading-bg:     $state-danger-bg;
 
 
 // //== Thumbnails
