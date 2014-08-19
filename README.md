@@ -1,6 +1,10 @@
 # sense-ebola-dashboard
 
-[![Build Status][travis-image]][travis-url] [![devDependency Status][daviddm-image]][daviddm-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Code Climate][codeclimate-image]][codeclimate-url]
+[![Build Status][travis-image]][travis-url]
+[![devDependency Status][daviddm-image]][daviddm-url]
+[![Coverage Status][coveralls-image]][coveralls-url]
+[![Code Climate][codeclimate-image]][codeclimate-url]
+[![Sauce Labs][saucelabs-image]][saucelabs-url]
 
 [travis-url]: https://travis-ci.org/eHealthAfrica/sense-ebola-dashboard
 [travis-image]: https://travis-ci.org/eHealthAfrica/sense-ebola-dashboard.png?branch=master
@@ -10,6 +14,8 @@
 [coveralls-image]: https://coveralls.io/repos/eHealthAfrica/sense-ebola-dashboard/badge.png
 [codeclimate-url]: https://codeclimate.com/github/eHealthAfrica/sense-ebola-dashboard
 [codeclimate-image]: https://codeclimate.com/github/eHealthAfrica/sense-ebola-dashboard.png
+[saucelabs-url]: https://saucelabs.com/u/sense-ebola-dash
+[saucelabs-image]: https://saucelabs.com/buildstatus/sense-ebola-dash
 
 > Dashboard for Ebola sensed data
 
@@ -33,12 +39,12 @@ continuous integration server (TravisCI).
 
 ### Unit
 
-Use `grunt test:unit`. During development, `npm run-script test-watch` is
-useful to automatically re-run the tests when a file changes.
+Use `grunt test:unit`.
 
-### e2e
+### End-to-end
 
-`grunt test:e2e`
+Use `grunt test:e2e`. You may also find our automated e2e test results at
+[Sauce Labs][saucelabs-url].
 
 ## Author
 
