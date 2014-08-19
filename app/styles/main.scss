@@ -182,8 +182,16 @@ td .form-group .form-control-feedback {
 .text-danger {
   color:#dd0000;
 }
-tr.bg-danger {
-  color: #fff;
+tr.bg-danger { 
+  background-color: #8B0000;
+  color: #fff !important; 
+}
+tr.bg-danger .text-danger{
+  color: #ffffff;
+}
+
+#missing-contacts {
+  padding: 5px;
 }
 
 #missing-contacts {
