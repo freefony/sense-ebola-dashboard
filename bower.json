@@ -23,7 +23,7 @@
     "ng-table": "~0.3.3",
     "ngstorage": "~0.3.0",
     "font-awesome": "~4.1.0",
-    "leaflet-fullscreen": "tlvince/leaflet.fullscreen#refactor/bower-de-jquery"
+    "leaflet-fullscreen": "tlvince/leaflet.fullscreen#refactor/bower-de-jquery-relative"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.22",

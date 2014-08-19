@@ -187,15 +187,14 @@ module.exports = function(grunt) {
     },
 
     // Renames files for browser caching purposes
-    rev: {
+    filerev: {
       dist: {
-        files: {
-          src: [
-            '<%= yeoman.dist %>/scripts/{,*/}*.js',
-            '<%= yeoman.dist %>/styles/{,*/}*.css',
-            '<%= yeoman.dist %>/styles/fonts/*'
-          ]
-        }
+        src: [
+          '<%= yeoman.dist %>/scripts/{,*/}*.js',
+          '<%= yeoman.dist %>/styles/{,*/}*.css',
+          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= yeoman.dist %>/fonts/*'
+        ]
       }
     },
 
@@ -218,12 +217,24 @@ module.exports = function(grunt) {
       }
     },
 
-    // Performs rewrites based on rev and the useminPrepare configuration
+    // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
       html: ['<%= yeoman.dist %>/{,*/}*.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      js: ['<%= yeoman.dist %>/scripts/{,*/}*.js'],
       options: {
-        assetsDirs: ['<%= yeoman.dist %>']
+        assetsDirs: [
+          '<%= yeoman.dist %>',
+          '<%= yeoman.dist %>/images'
+        ],
+        patterns: {
+          js: [
+            [
+              /(images\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm,
+              'Update the JS to reference our revved images'
+            ]
+          ]
+        }
       }
     },
 
@@ -341,8 +352,8 @@ module.exports = function(grunt) {
           {
             expand: true,
             cwd: '<%= yeoman.app %>/bower_components/leaflet-fullscreen/',
-            dest: '<%= yeoman.dist %>/styles',
-            src: '*.png'
+            dest: '<%= yeoman.dist %>',
+            src: 'images/*.png'
           }
         ]
       },
@@ -364,7 +375,7 @@ module.exports = function(grunt) {
               'images/{,*/}*',
               'templates/{,*/}*.html',
               'views/{,*/}*.html',
-              'bower_components/leaflet-fullscreen/*.png',
+              'bower_components/leaflet-fullscreen/images/*.png',
               'bower_components/font-awesome/fonts/*'
             ]
           },
@@ -543,7 +554,7 @@ module.exports = function(grunt) {
       'copy:dist',
       'cssmin',
       'uglify',
-      'rev',
+      'filerev',
       'usemin',
       'htmlmin'
     ];
