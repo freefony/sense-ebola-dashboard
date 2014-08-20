@@ -50,6 +50,14 @@ angular.module('sedApp')
     };
 
     function load() {
+
+      if ($rootScope.currentUser === null){
+        loading = false;
+        $rootScope.$emit('endLoad');
+        timeout = $timeout(load, ERROR_RELOAD_DELAY);
+        return;
+      }
+
       if (loading)
         return;
 
