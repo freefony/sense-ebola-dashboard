@@ -12,7 +12,7 @@ angular.module('sedApp')
     var lastUpdate = null;
     var followUps = [];
     var contacts = [];
-    var contactsByDate = [];
+    var visitsByDate = [];
     var mergedData = [];
     var mapData = null;
 
@@ -38,8 +38,8 @@ angular.module('sedApp')
       contacts: function() {
         return contacts;
       },
-      contactsByDate: function() {
-        return contactsByDate;
+      visitsByDate: function() {
+        return visitsByDate;
       },
       mergedData: function() {
         return mergedData;
@@ -79,8 +79,8 @@ angular.module('sedApp')
             updated = true;
           }
 
-          if (!angular.equals(contactsByDate, response[2].rows)) {
-            contactsByDate = response[2].rows;
+          if (!angular.equals(visitsByDate, response[2].rows)) {
+            visitsByDate = response[2].rows;
             updated = true;
           }
 
@@ -138,7 +138,10 @@ angular.module('sedApp')
           };
         });
 
-      var couchdbData = contactsByDate
+      var couchdbData = visitsByDate
+        .filter(function(item) {
+          return (item.value.status == 'active' && item.value.doc_type == 'contact');
+        })
         .map(function(senseData) {
           var value = senseData.value;
           var coords = value.visitData.geoInfo ? value.visitData.geoInfo.coords : undefined;
@@ -178,7 +181,10 @@ angular.module('sedApp')
 
     function updateMapData() {
       var i, fullName, couchContact,
-        couchData = _.pluck(contacts, 'doc');
+        couchData = _.where(_.pluck(contacts, 'doc'), {
+          status: 'active',
+          doc_type: 'contact'
+        });
 
       for (i = 0; i < followUps.length; i++) {
         fullName = followUps[i]['ContactInformation/contact_name'].split('  ');
@@ -230,11 +236,8 @@ angular.module('sedApp')
       var items = [],
         totalContacts = 0,
         updatedToday = 0,
-        missingContacts = [];
-      data = _.where(data, {
-        status: 'active',
-        doc_type: 'contact'
-      });
+        missingContacts = []
+
       data = _.sortBy(data, function(contact) {
         return [contact.Surname, contact.OtherNames].join("_");
       });
