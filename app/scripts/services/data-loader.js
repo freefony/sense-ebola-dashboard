@@ -140,7 +140,7 @@ angular.module('sedApp')
 
       var couchdbData = visitsByDate
         .filter(function(item) {
-          return (item.value.status == 'active' && item.value.doc_type == 'contact');
+          return (item.value.doc_type == 'contact');
         })
         .map(function(senseData) {
           var value = senseData.value;
@@ -182,7 +182,6 @@ angular.module('sedApp')
     function updateMapData() {
       var i, fullName, couchContact,
         couchData = _.where(_.pluck(contacts, 'doc'), {
-          status: 'active',
           doc_type: 'contact'
         });
 
@@ -234,17 +233,15 @@ angular.module('sedApp')
 
     function parseResponseJsonData(data) {
       var items = [],
-        totalContacts = 0,
         updatedToday = 0,
-        missingContacts = []
+        missingContacts = [];
 
       data = _.sortBy(data, function(contact) {
         return [contact.Surname, contact.OtherNames].join("_");
       });
+
       // data = _.pluck(data.rows,'doc');
       data.forEach(function(f) {
-        totalContacts++;
-
         if (f.dailyVisits && f.dailyVisits.length > 0) {
           var item = {},
             lastDailyVisit = _.last(_.sortBy(f.dailyVisits, 'dateOfVisit')),
@@ -257,17 +254,24 @@ angular.module('sedApp')
           currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
           visitDate = new Date(visitDate.getFullYear(), visitDate.getMonth(), visitDate.getDate());
           timeDelta = currentDate - visitDate;
-          if (timeDelta >= 172800000) {
-            updateStatus = 'outdated';
-            missingContacts.push(f.Surname + ', ' + f.OtherNames);
-          }
-          else if (timeDelta >= 86400000) {
-            updateStatus = 'lastTwoDays';
-            missingContacts.push(f.Surname + ', ' + f.OtherNames);
-          }
-          else {
+
+          // take all items with visits today and only active items for older visits.
+          if (timeDelta < 86400000) {
             updateStatus = 'lastDay';
             updatedToday++;
+          }
+          else if (f.status === 'active') {
+            if (timeDelta >= 172800000) {
+              updateStatus = 'outdated';
+              missingContacts.push(f.Surname + ', ' + f.OtherNames);
+            }
+            else {
+              updateStatus = 'lastTwoDays';
+              missingContacts.push(f.Surname + ', ' + f.OtherNames);
+            }
+          }
+          else {
+            return;
           }
 
           if (lastDailyVisit.geoInfo && lastDailyVisit.geoInfo.coords && lastDailyVisit.geoInfo.coords.longitude) {
@@ -313,7 +317,7 @@ angular.module('sedApp')
           features: items
         },
         stats: {
-          total: totalContacts,
+          total: updatedToday + missingContacts.length,
           updated: updatedToday,
           missing: missingContacts
         }
