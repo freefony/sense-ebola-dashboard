@@ -14,7 +14,6 @@ describe('SED', function() {
 
   describe('login page', function() {
     var form;
-
     beforeEach(function() {
       browser.get('/#/login');
       form = element(by.tagName('form'));
@@ -25,7 +24,7 @@ describe('SED', function() {
       expect(submitButton.isEnabled()).toBe(false);
     });
 
-    it('should only should help if user has typed', function() {
+    it('should only show help if user has typed', function() {
       var username = form.element(by.id('username'));
       var helpBlocks = username.all(by.css('.help-block'));
       expect(helpBlocks.count()).toBe(0);
@@ -33,6 +32,24 @@ describe('SED', function() {
       input.sendKeys('test');
       input.clear();
       expect(helpBlocks.count()).toBe(1);
+    });
+
+    describe('form-level errors', function() {
+      var formErrors;
+      beforeEach(function() {
+        formErrors = form.element(by.id('form-errors'));
+      });
+
+      it('should not not be displayed on page load', function() {
+        expect(formErrors.isPresent()).toBe(false);
+      });
+
+      it('should should display if login failed', function() {
+        form.submit();
+        var formErrors = form.element(by.id('form-errors'));
+        var helpBlocks = formErrors.all(by.css('.help-block'));
+        expect(helpBlocks.count()).toBe(1);
+      });
     });
   });
 });
