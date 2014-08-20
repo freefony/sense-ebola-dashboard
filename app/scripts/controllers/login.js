@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sedApp')
-  .controller('LoginCtrl', function($scope, $location, Auth) {
+  .controller('LoginCtrl', function($location, Auth) {
     var back = ($location.search() && $location.search().back) || '/';
 
     this.user = {};
