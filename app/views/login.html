@@ -7,13 +7,13 @@
       <div class="panel-body">
         <form ng-controller="LoginCtrl as login" name="form" ng-submit="login.submit(form)" novalidate>
           <fieldset>
-            <div class="form-group" ng-class="{'has-error': form.username.$dirty && form.username.$invalid}">
+            <div id="username" class="form-group" ng-class="{'has-error': form.username.$dirty && form.username.$invalid}">
               <input class="form-control" placeholder="Username" name="username" autofocus ng-model="login.user.username" required>
               <div ng-if="form.username.$dirty && form.username.$error">
                 <p class="help-block" ng-if="form.username.$error.required">Username is required</p>
               </div>
             </div>
-            <div class="form-group" ng-class="{'has-error': form.password.$dirty && form.password.$invalid}">
+            <div id="password" class="form-group" ng-class="{'has-error': form.password.$dirty && form.password.$invalid}">
               <input class="form-control" placeholder="Password" name="password" type="password" ng-model="login.user.password" required>
               <div ng-if="form.password.$dirty && form.password.$error">
                 <p class="help-block" ng-if="form.password.$error.required">Password is required</p>
