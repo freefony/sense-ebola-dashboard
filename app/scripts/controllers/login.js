@@ -1,26 +1,28 @@
 'use strict';
 
 angular.module('sedApp')
-  .controller('LoginCtrl', function($scope, $location, Auth) {
+  .controller('LoginCtrl', function($location, Auth) {
     var back = ($location.search() && $location.search().back) || '/';
-    var scope = $scope.scope = {
-      user: {},
-      error: '',
-      submitted: false
-    };
 
-    $scope.login = function(form) {
-      scope.submitted = true;
-      scope.error = '';
+    this.user = {};
+    this.error = '';
+    this.submitted = false;
+
+    this.submit = function(form) {
+      var _this = this;
+
+      this.submitted = true;
+      this.error = '';
 
       if (form.$valid) {
-        Auth.login(scope.user)
+        Auth.login(this.user)
           .then(function() {
             $location.search('back', null);
             $location.path(back);
           })
           .catch(function(err) {
-            scope.error = err.data.reason;
+            _this.error = err.data.reason;
+            form.$setPristine();
           });
       }
     };
