@@ -1,6 +1,6 @@
 'use strict';
 
-describe('SED auth', function() {
+describe('SED', function() {
   beforeEach(function() {
     // See e2e/home.js
     browser.ignoreSynchronization = true;
@@ -12,11 +12,15 @@ describe('SED auth', function() {
     expect(browser.getCurrentUrl()).toEqual(expected);
   });
 
-  it('should not submit if username/password are missing', function() {
-    browser.get('/#/login');
-    var form = element(by.tagName('form'));
-    form.submit();
-    var helpBlocks = form.all(by.css('.help-block'));
-    expect(helpBlocks.count()).toBe(1);
+  describe('login page', function() {
+    beforeEach(function() {
+      browser.get('/#/login');
+    });
+
+    it('should disable submit if username/password are missing', function() {
+      var form = element(by.tagName('form'));
+      var submitButton = form.element(by.tagName('button'));
+      expect(submitButton.isEnabled()).toBe(false);
+    });
   });
 });
