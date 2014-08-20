@@ -75,7 +75,7 @@ angular
       }
     ]);
   })
-  .run(function($rootScope, $route, SETTINGS, Auth, dataLoader) {
+  .run(function($rootScope, $route, SETTINGS, Auth, dataLoader, $location) {
     $rootScope.SETTINGS = SETTINGS;
 
     $rootScope.dataLoader = dataLoader;
@@ -83,6 +83,7 @@ angular
     $rootScope.logout = function() {
       Auth.logout();
       $route.reload();
+      $location.path('/login');
     };
   })
   .controller('NavBar', function($scope, $location) {
