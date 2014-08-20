@@ -19,7 +19,7 @@
     "moment": "~2.7.0",
     "pouchdb": "~2.2.3",
     "leaflet": "~0.7.3",
-    "underscore": "~1.6.0",
+    "lodash": "~2.4.1",
     "ng-table": "~0.3.3",
     "ngstorage": "~0.3.0",
     "font-awesome": "~4.1.0",
@@ -40,6 +40,9 @@
         "dist/leaflet-src.js",
         "dist/leaflet.css"
       ]
+    },
+    "lodash": {
+      "main": "dist/lodash.js"
     }
   }
 }
