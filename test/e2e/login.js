@@ -24,14 +24,24 @@ describe('SED', function() {
       expect(submitButton.isEnabled()).toBe(false);
     });
 
-    it('should only show help if user has typed', function() {
-      var username = form.element(by.id('username'));
-      var helpBlocks = username.all(by.css('.help-block'));
-      expect(helpBlocks.count()).toBe(0);
-      var input = username.element(by.tagName('input'));
-      input.sendKeys('test');
-      input.clear();
-      expect(helpBlocks.count()).toBe(1);
+    describe('username field', function() {
+      var username;
+      var helpBlocks;
+      beforeEach(function() {
+        username = form.element(by.id('username'));
+        helpBlocks = username.all(by.css('.help-block'));
+      });
+
+      it('should only show help if user has typed', function() {
+        expect(helpBlocks.count()).toBe(0);
+      });
+
+      it('should be required', function() {
+        var input = username.element(by.tagName('input'));
+        input.sendKeys('test');
+        input.clear();
+        expect(helpBlocks.count()).toBe(1);
+      });
     });
 
     describe('form-level errors', function() {
