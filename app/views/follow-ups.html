@@ -40,13 +40,22 @@
      </tbody>
   </table>
   <div class="panel-footer compact">
-    <button class="btn btn-success btn-xs pull-right btn-export" type="button"
+    <button class="btn btn-danger btn-xs pull-right btn-export" type="button"
             ng-show="!dataLoader.initialLoad()"
             ng-csv="csvData"
             csv-header="csvHeader"
-            ng-click="changeFileName()"
+            ng-click="changeFileName('followups')"
             filename="{{fileName}}.csv">
-      Export Data
+      Export Daily Visits Data
+    </button>
+
+    <button class="btn btn-success btn-xs pull-right btn-export" type="button"
+            ng-show="!dataLoader.initialLoad()"
+            ng-csv="contactView"
+            csv-header="contactsCSVHeader"
+            ng-click="changeFileName('contacts')"
+            filename="{{contactViewFileName}}.csv">
+      Export Contacts Data
     </button>
     <pagination class="pagination-sm"
                 ng-model="locals.currentPage"

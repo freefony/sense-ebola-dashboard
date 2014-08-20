@@ -15,6 +15,7 @@ angular.module('sedApp')
     var visitsByDate = [];
     var mergedData = [];
     var mapData = null;
+    var orderedByName = [];
 
     load();
 
@@ -46,6 +47,9 @@ angular.module('sedApp')
       },
       mapData: function() {
         return mapData;
+      },
+      orderedByName : function(){
+          return orderedByName;
       }
     };
 
@@ -64,7 +68,8 @@ angular.module('sedApp')
       $q.all([
           FollowUp.all(),
           contactFactory.all(),
-          contactFactory.viewByDate()
+          contactFactory.viewByDate(),
+          contactFactory.orderedByName()
         ])
         .then(function(response) {
           var updated = false;
@@ -83,6 +88,14 @@ angular.module('sedApp')
             visitsByDate = response[2].rows;
             updated = true;
           }
+          if (!angular.equals(orderedByName, response[3])) {
+            angular.forEach(response[3].rows,function(row){
+                 orderedByName.push(row.value);
+            });
+
+            updated = true;
+          }
+
 
           if (updated) {
             console.log('data updated');
@@ -309,6 +322,7 @@ angular.module('sedApp')
           missingContacts.push(f.Surname + ', ' + f.OtherNames);
         }
       });
+
 
       // return the FeatureCollection
       return {
