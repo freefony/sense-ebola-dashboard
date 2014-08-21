@@ -102,9 +102,7 @@ angular.module('sedApp')
           console.log(err);
           error = err;
           $rootScope.$emit('endLoad', err);
-          if (err.status && err.status==401) {
-            timeout = $timeout(load, RELOAD_DELAY);
-          } else {
+          if (!(err.status && err.status==401) {
             timeout = $timeout(load, ERROR_RELOAD_DELAY);
           }
         })
