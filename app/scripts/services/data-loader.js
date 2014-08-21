@@ -263,11 +263,11 @@ angular.module('sedApp')
           else if (f.status === 'active') {
             if (timeDelta >= 172800000) {
               updateStatus = 'outdated';
-              missingContacts.push(f.Surname + ', ' + f.OtherNames);
+              missingContacts.push({surname: f.Surname, otherNames: f.OtherNames});
             }
             else {
               updateStatus = 'lastTwoDays';
-              missingContacts.push(f.Surname + ', ' + f.OtherNames);
+              missingContacts.push({surname: f.Surname, otherNames: f.OtherNames});
             }
           }
           else {
@@ -306,7 +306,7 @@ angular.module('sedApp')
           }
         }
         else {
-          missingContacts.push(f.Surname + ', ' + f.OtherNames);
+          missingContacts.push({surname: f.Surname, otherNames: f.OtherNames});
         }
       });
 
@@ -318,9 +318,9 @@ angular.module('sedApp')
         },
         stats: {
           total: updatedToday + missingContacts.length,
-          updated: updatedToday,
-          missing: missingContacts
-        }
+          updated: updatedToday
+        },
+        missingContacts: missingContacts
       };
     }
   });

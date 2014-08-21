@@ -33,6 +33,10 @@ angular
         templateUrl: 'views/follow-ups.html',
         controller: 'FollowUpsCtrl'
       })
+      .when('/not-done', {
+        templateUrl: 'views/not-done.html',
+        controller: 'NotDoneCtrl'
+      })
       .when('/login', {
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl'
