@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('sedApp')
-    .controller('MapCtrl', function($rootScope, $scope, dataLoader) {
+function CommonMapController(focusArea) {
+    return function($rootScope, $scope, $element, dataLoader) {
         $scope.title = 'Map';
 
         $scope.initiateMap = function() {
@@ -13,7 +13,7 @@ angular.module('sedApp')
                 }),
                 markers = {
 
-                    Event: {
+
                         green: L.icon({
                             iconUrl: '/images/marker-green.png',
                             iconSize: [14, 14],
@@ -46,24 +46,26 @@ angular.module('sedApp')
                             shadowAnchor: [20, 7],
                             popupAnchor: [-3, -5]
                         }),
-                    }
-                };
 
-            function selectIcon(eventClass, itemProperties) {
+                },
+                mapCenter = focusArea ? [focusArea[0], focusArea[1]] : [0,0],
+                mapZoom = focusArea ? focusArea[2] : 6;
+
+            function selectIcon(itemProperties) {
                 if (itemProperties.symptomatic) {
-                    return markers[eventClass].red;
+                    return markers.red;
                 }
                 switch (itemProperties.updateStatus) {
                     case 'lastDay':
-                        return markers[eventClass].green;
+                        return markers.green;
                     case 'lastTwoDays':
-                        return markers[eventClass].gray;
+                        return markers.gray;
                     case 'outdated':
-                        return markers[eventClass].yellow;
+                        return markers.yellow;
                 }
                 // Unknown update status?
-                console.log('Unknown update status: ' + updateStatus);
-                return markers[eventClass].red;
+                console.log('Unknown update status: ' + itemProperties.updateStatus);
+                return markers.red;
 
             }
 
@@ -82,7 +84,7 @@ angular.module('sedApp')
                     },
                     pointToLayer: function(feature, latlng) {
                         var markerOptions = {
-                            icon: selectIcon('Event', feature.properties),
+                            icon: selectIcon(feature.properties),
                         };
                         if (feature.properties.symptomatic) {
                           markerOptions.zIndexOffset=1000;
@@ -129,7 +131,9 @@ angular.module('sedApp')
                     }
                     eventsLayer = createEventsLayer(events);
                     eventsLayer.addTo(map);
-                    map.fitBounds(eventsLayer.getBounds());
+                    if (!focusArea) {
+                        map.fitBounds(eventsLayer.getBounds());
+                    }
                     //if (legend) {
                     //    legend.removeFrom(map);
                     //}
@@ -142,9 +146,11 @@ angular.module('sedApp')
                 }
             }
 
-            var map = L.map('map', {
-                center: new L.LatLng(6.5959695, 3.3089232),
-                zoom: 12,
+
+
+            var map = L.map($element.next()[0].querySelector('.map'), { // TODO: Is there a more angularesque way to get to the map element inside the current controller's container element?
+                center: new L.LatLng(mapCenter[0], mapCenter[1]),
+                zoom: mapZoom,
                 minZoom: 1,
                 maxZoom: 18,
                 layers: [osm],
@@ -166,4 +172,8 @@ angular.module('sedApp')
           getData();
         };
 
-    });
+    };
+}
+
+angular.module('sedApp').controller('MapCtrl', CommonMapController());
+angular.module('sedApp').controller('LagosMapCtrl', CommonMapController([6.5959695, 3.3089232, 10]));

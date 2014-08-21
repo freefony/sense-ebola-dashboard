@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('sedApp')
   .directive('currentTime', [
     '$interval', 'dateFilter', function($interval, dateFilter) {
