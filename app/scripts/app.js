@@ -65,15 +65,19 @@ angular
             return config;
           },
           'responseError': function(response) {
-            // switch (response.status) {
-            //     case 401:
-            //         if ($location.path() !== '/login') {
-            //             $location.search('back', $location.path()).path('/login');
-            //         }
-            //         break;
-            // }
+          //    switch (response.status) {
+          //        case 401:
+          //   //         if ($location.path() !== '/login') {
+          //   //             $location.search('back', $location.path()).path('/login');
+          //   //         }
+          //           console.log('encountered 401');
+          //            return;
+          //            break;
+          //        default:
+          //            return $q.reject(response);
+          //  }
 
-            return $q.reject(response);
+          return $q.reject(response);
           }
         };
       }
