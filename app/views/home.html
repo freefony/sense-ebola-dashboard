@@ -15,9 +15,10 @@
     </div>
 </div>
 <div class="row">
-  <div class="col-md-6 panel-compressed">
-  </div>
-  <div class="col-md-6 panel-compressed last">
-    <div ng-include="'views/symptomatic.html'" ng-controller="SymptomaticCtrl"></div>
-  </div>
+<div class="col-md-6 panel-compressed" ng-if="currentUser.username==='ebola'">
+  <div ng-include="'views/lab-results.html'" ng-controller="LabResultsCtrl"></div>
+</div>
+<div class="col-md-6 panel-compressed last">
+  <div ng-include="'views/symptomatic.html'" ng-controller="SymptomaticCtrl"></div>
+</div>
 </div>

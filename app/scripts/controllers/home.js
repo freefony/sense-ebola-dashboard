@@ -1,5 +1,6 @@
 'use strict';
 
 angular.module('sedApp')
-  .controller('HomeCtrl', function ($scope) {
+  .controller('HomeCtrl', function ($rootScope, $scope) {
+  
   });

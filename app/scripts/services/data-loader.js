@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sedApp')
-  .service('dataLoader', function dataLoader($rootScope, $q, $timeout, FollowUp, contactFactory, utility) {
+  .service('dataLoader', function dataLoader($rootScope, $q, $timeout, FollowUp, contactFactory, LabResult, utility) {
     var RELOAD_DELAY = 300000;
     var ERROR_RELOAD_DELAY = 1000;
 
@@ -18,6 +18,8 @@ angular.module('sedApp')
     var mapData = null;
     var orderedByName = [];
     var contactData = null;
+    var rawLabData = [];
+    var labData = [];
 
     load();
 
@@ -58,10 +60,21 @@ angular.module('sedApp')
       },
       contactData: function() {
         return contactData;
+      },
+      labData: function() {
+        return labData;
       }
     };
 
     function load() {
+
+      if ($rootScope.currentUser === null){
+        loading = false;
+        $rootScope.$emit('endLoad');
+        timeout = $timeout(load, ERROR_RELOAD_DELAY);
+        return;
+      }
+
       if (loading)
         return;
 
@@ -77,7 +90,8 @@ angular.module('sedApp')
           FollowUp.all(),
           contactFactory.all(),
           contactFactory.viewByDate(),
-          contactFactory.orderedByName()
+          contactFactory.orderedByName(),
+          LabResult.all()
         ])
         .then(function(response) {
           var updated = false;
@@ -97,10 +111,16 @@ angular.module('sedApp')
             updated = true;
           }
 
+          if (!angular.equals(labData, response[3])) {
+            rawLabData = response[3];
+            updated = true;
+          }
+
           if (updated) {
             console.log('data updated');
             updateMergedData();
             updateContactData();
+            updateLabData();
             $rootScope.$emit('dataUpdated');
           }
 
@@ -115,14 +135,32 @@ angular.module('sedApp')
           console.log(err);
           error = err;
           $rootScope.$emit('endLoad', err);
-          if (!(err.status && err.status === 401)) {
-            timeout = $timeout(load, ERROR_RELOAD_DELAY);
-          }
+          timeout = $timeout(load, ERROR_RELOAD_DELAY);
         })
         .finally(function() {
           loading = false;
         });
     }
+
+    function updateLabData() {
+      labData = rawLabData
+        .map(function(result) {
+          return {
+            name: utility.toTitleCase(result['PatientInformation/surname'] + '  ' + result['PatientInformation/othername']),
+            time: result['_submission_time'],
+            interviewer: utility.toTitleCase(result['WELCOME/DataRecorder']),
+            temperature: result['ClinicalSignsandSymptoms/Temp_reading'],
+            type: result['LabInformation/sampletypes'],
+            collect_date: result['LabInformation/date_specimen_collected'],
+            results_date: result['LabInformation/date_of_results'],
+            results: result['LabInformation/labstatusresults'],
+            status: result['PatientInformation/status_of_patient'],
+            fever: result['ClinicalSignsandSymptoms/AnyFever'] == '1'
+          };
+        });
+    }
+
+
 
     function updateMergedData() {
       var formHubData = followUps

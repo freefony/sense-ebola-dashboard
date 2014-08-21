@@ -70,6 +70,7 @@ angular.module('sedApp')
         counts: [],
         getData: function($defer, params) {
           var data = dataLoader.mergedData();
+          
           $scope.contactView = dataLoader.orderedByName();
 
           $scope.csvData = data;

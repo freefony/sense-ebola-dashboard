@@ -21,6 +21,7 @@ angular.module('sedApp')
             $location.path(back);
           })
           .catch(function(err) {
+            console.log(err)
             _this.error = err.data.reason;
             _this.submitted = false;
             form.$setPristine();
