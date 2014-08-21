@@ -1,21 +1,23 @@
 <div class="panel panel-default">
-  <div class="panel-heading">
-
-    Not done today
-  </div>
+  <div class="panel-heading">Not followed up</div>
   <table ng-show="!dataLoader.initialLoad()" ng-table="locals.tableParams" class="table table-condensed">
-     <thead>
-       <tr>
-         <th title="Surname">Surname</th>
-         <th title="Other Names">Other Names</th>
-       </tr>
-     </thead>
-     <tbody>
-        <tr ng-repeat="item in $data" >
-          <td data-title="'surname'" sortable="'surname'">{{item.surname}}</td>
-          <td data-title="'otherNames'" sortable="'otherNames'">{{item.otherNames}}</td>
-        </tr>
-     </tbody>
+    <thead>
+    <tr>
+      <th title="Name">Name</th>
+      <th title="Last Visit">Last Visit</th>
+      <th title="Supervisor">Supervisor</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="item in $data"
+        ng-class="{'warning': item.timeDelta >= 172800000, 'success': item.timeDelta < 86400000}">
+      <td data-title="'Name'" sortable="'name'">{{item.name}}</td>
+      <td data-title="'Last Visit'" sortable="'lastVisit'">
+        {{(item.lastVisit | date:SETTINGS.dateFormat) || 'never'}}
+      </td>
+      <td data-title="'Supervisor'" sortable="'supervisor'">{{item.supervisor || '-'}}</td>
+    </tr>
+    </tbody>
   </table>
   <div class="panel-footer compact">
     <pagination class="pagination-sm"
