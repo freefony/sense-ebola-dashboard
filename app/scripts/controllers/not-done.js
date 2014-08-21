@@ -13,10 +13,10 @@ angular.module('sedApp')
         total: 0,
         counts: [],
         getData: function($defer, params) {
-          var mapData = dataLoader.mapData();
-          console.log(mapData);
+          var contactData = dataLoader.contactData();
+          console.log(contactData);
 
-          var data = mapData ? mapData.contactsInfo : [];
+          var data = contactData ? contactData.contactsInfo : [];
           locals.totalItems = data.length;
           $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         }
