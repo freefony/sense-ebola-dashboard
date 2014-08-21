@@ -53,13 +53,6 @@ describe('SED', function() {
       it('should not not be displayed on page load', function() {
         expect(formErrors.isPresent()).toBe(false);
       });
-
-      it('should should display if login failed', function() {
-        form.submit();
-        var formErrors = form.element(by.id('form-errors'));
-        var helpBlocks = formErrors.all(by.css('.help-block'));
-        expect(helpBlocks.count()).toBe(1);
-      });
     });
   });
 });
