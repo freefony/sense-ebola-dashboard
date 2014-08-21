@@ -113,7 +113,7 @@ function CommonMapController(focusArea) {
                 eventsLayer;//, legend;
 
             function getData() {
-                var newData = dataLoader.mapData();
+                var newData = dataLoader.contactData();
                 if (!newData) return;
 
                 if (!(_.isEqual(clonedEvents, newData.events))) {
