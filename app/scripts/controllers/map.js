@@ -114,7 +114,7 @@ function CommonMapController(focusArea) {
 
             function getData() {
                 var newData = dataLoader.contactData();
-                if (!newData) return;
+                if (!newData) { return; }
 
                 if (!(_.isEqual(clonedEvents, newData.events))) {
                     $scope.contacts = {
@@ -173,5 +173,5 @@ function CommonMapController(focusArea) {
     };
 }
 
-angular.module('sedApp').controller('MapCtrl', CommonMapController());
-angular.module('sedApp').controller('LagosMapCtrl', CommonMapController([6.5959695, 3.3089232, 10]));
+angular.module('sedApp').controller('MapCtrl', new CommonMapController());
+angular.module('sedApp').controller('LagosMapCtrl', new CommonMapController([6.5959695, 3.3089232, 10]));
