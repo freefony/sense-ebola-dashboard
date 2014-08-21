@@ -8,21 +8,17 @@ angular.module('sedApp')
       currentPage: 1,
       tableParams: new ngTableParams({
         page: 1,
-        count: 10,
-        sorting: {
-          surname: 'asc'
-        }
+        count: 10
       }, {
         total: 0,
         counts: [],
         getData: function($defer, params) {
-          var data = [], contactData = dataLoader.contactData(), orderedData;
-          if (contactData && contactData.missingContacts) {
-            data = contactData.missingContacts;
-          }
-          orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
-          locals.totalItems = orderedData.length;
-          $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+          var mapData = dataLoader.mapData();
+          console.log(mapData);
+
+          var data = mapData ? mapData.contactsInfo : [];
+          locals.totalItems = data.length;
+          $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         }
       })
     };
