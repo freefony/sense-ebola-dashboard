@@ -23,7 +23,6 @@ angular.module('sedApp')
             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
           }
 
-
       })
     };
       $rootScope.$on('dataUpdated', function() {
