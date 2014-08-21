@@ -49,8 +49,9 @@ angular.module('sedApp')
       mapData: function() {
         return mapData;
       },
-      orderedByName : function(){
+      orderedByName : function() {
           return orderedByName;
+      },
       contactData: function() {
         return contactData;
       }
