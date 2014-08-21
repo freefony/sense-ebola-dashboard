@@ -54,6 +54,14 @@ angular.module('sedApp')
     };
 
     function load() {
+
+      if ($rootScope.currentUser === null){
+        loading = false;
+        $rootScope.$emit('endLoad');
+        timeout = $timeout(load, ERROR_RELOAD_DELAY);
+        return;
+      }
+
       if (loading)
         return;
 
@@ -106,9 +114,7 @@ angular.module('sedApp')
           console.log(err);
           error = err;
           $rootScope.$emit('endLoad', err);
-          if (!(err.status && err.status === 401)) {
-            timeout = $timeout(load, ERROR_RELOAD_DELAY);
-          }
+          timeout = $timeout(load, ERROR_RELOAD_DELAY);
         })
         .finally(function() {
           loading = false;
