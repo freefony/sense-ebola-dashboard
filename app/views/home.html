@@ -2,9 +2,9 @@
   <div class="col-md-6 panel-compressed">
     <div ng-include="'views/map.html'" ng-controller="MapCtrl"></div>
   </div>
-<div class="col-md-6 panel-compressed">
-  <div ng-include="'views/not-done.html'" ng-controller="NotDoneCtrl"></div>
-</div>
+  <div class="col-md-6 panel-compressed">
+    <div ng-include="'views/not-done.html'" ng-controller="NotDoneCtrl"></div>
+  </div>
 </div>
 <div class="row">
   <div class="col-md-6 panel-compressed">
@@ -13,9 +13,11 @@
 <div class="col-md-6 panel-compressed">
   <div ng-include="'views/follow-ups.html'" ng-controller="FollowUpsCtrl"></div>
 </div>
+<div class="row">
+<div class="col-md-6 panel-compressed" ng-if="currentUser.username==='ebola'">
+  <div ng-include="'views/lab-results.html'" ng-controller="LabResultsCtrl"></div>
 </div>
-<div class="row" ng-if="currentUser.username==='ebola'">
-  <div class="col-md-6 panel-compressed last">
-    <div ng-include="'views/lab-results.html'" ng-controller="LabResultsCtrl"></div>
-  </div>
+<div class="col-md-6 panel-compressed last">
+  <div ng-include="'views/symptomatic.html'" ng-controller="SymptomaticCtrl"></div>
+</div>
 </div>
