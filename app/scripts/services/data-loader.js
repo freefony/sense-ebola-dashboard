@@ -14,6 +14,7 @@ angular.module('sedApp')
     var contacts = [];
     var visitsByDate = [];
     var mergedData = [];
+    var symptomatic = [];
     var contactData = null;
 
     load();
@@ -43,6 +44,9 @@ angular.module('sedApp')
       },
       mergedData: function() {
         return mergedData;
+      },
+      symptomatic: function() {
+        return symptomatic;
       },
       contactData: function() {
         return contactData;
@@ -184,6 +188,27 @@ angular.module('sedApp')
           if (a.time < b.time) return 1;
           return 0;
         });
+
+      symptomatic = mergedData.filter(function(data) {
+        var symptoms = [
+          'diarrhoea',
+          'pharyngitis',
+          'haemorrhagic',
+          'headache',
+          'maculopapular',
+          'malaise',
+          'musclePain',
+          'vomiting'
+        ];
+
+        var symptomatic = (data.temperature >= 38);
+        var i = 0;
+
+        while (!symptomatic && i < symptoms.length)
+          symptomatic = data[symptoms[i++]];
+
+        return symptomatic;
+      });
     }
 
     function updateContactData() {
