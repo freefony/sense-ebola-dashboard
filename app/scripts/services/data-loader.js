@@ -16,6 +16,7 @@ angular.module('sedApp')
     var mergedData = [];
     var mapData = null;
     var orderedByName = [];
+    var contactData = null;
 
     load();
 
@@ -50,6 +51,8 @@ angular.module('sedApp')
       },
       orderedByName : function(){
           return orderedByName;
+      contactData: function() {
+        return contactData;
       }
     };
 
@@ -99,7 +102,7 @@ angular.module('sedApp')
           if (updated) {
             console.log('data updated');
             updateMergedData();
-            updateMapData();
+            updateContactData();
             $rootScope.$emit('dataUpdated');
           }
 
@@ -114,8 +117,9 @@ angular.module('sedApp')
           console.log(err);
           error = err;
           $rootScope.$emit('endLoad', err);
-
-          timeout = $timeout(load, ERROR_RELOAD_DELAY);
+          if (!(err.status && err.status===401)) {
+            timeout = $timeout(load, ERROR_RELOAD_DELAY);
+          }
         })
         .finally(function() {
           loading = false;
@@ -191,7 +195,7 @@ angular.module('sedApp')
         });
     }
 
-    function updateMapData() {
+    function updateContactData() {
       var i, fullName, couchContact,
         couchData = _.where(_.pluck(contacts, 'doc'), {
           doc_type: 'contact'
@@ -240,7 +244,7 @@ angular.module('sedApp')
         }
       }
 
-      mapData = parseResponseJsonData(couchData);
+      contactData = parseResponseJsonData(couchData);
     }
 
     function parseResponseJsonData(data) {
