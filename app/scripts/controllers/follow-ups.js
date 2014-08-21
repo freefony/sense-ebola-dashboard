@@ -50,6 +50,7 @@ angular.module('sedApp')
         counts: [],
         getData: function($defer, params) {
           var data = dataLoader.mergedData();
+          
           $scope.csvData = data;
 
           var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;

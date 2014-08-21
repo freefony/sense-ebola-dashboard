@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sedApp')
-  .service('dataLoader', function dataLoader($rootScope, $q, $timeout, FollowUp, contactFactory, utility) {
+  .service('dataLoader', function dataLoader($rootScope, $q, $timeout, FollowUp, contactFactory, LabResult, utility) {
     var RELOAD_DELAY = 300000;
     var ERROR_RELOAD_DELAY = 1000;
 
@@ -16,6 +16,8 @@ angular.module('sedApp')
     var mergedData = [];
     var symptomatic = [];
     var contactData = null;
+    var rawLabData = [];
+    var labData = [];
 
     load();
 
@@ -50,6 +52,9 @@ angular.module('sedApp')
       },
       contactData: function() {
         return contactData;
+      },
+      labData: function() {
+        return labData;
       }
     };
 
@@ -76,7 +81,8 @@ angular.module('sedApp')
       $q.all([
           FollowUp.all(),
           contactFactory.all(),
-          contactFactory.viewByDate()
+          contactFactory.viewByDate(),
+          LabResult.all()
         ])
         .then(function(response) {
           var updated = false;
@@ -96,10 +102,16 @@ angular.module('sedApp')
             updated = true;
           }
 
+          if (!angular.equals(labData, response[3])) {
+            rawLabData = response[3];
+            updated = true;
+          }
+
           if (updated) {
             console.log('data updated');
             updateMergedData();
             updateContactData();
+            updateLabData();
             $rootScope.$emit('dataUpdated');
           }
 
@@ -120,6 +132,26 @@ angular.module('sedApp')
           loading = false;
         });
     }
+
+    function updateLabData() {
+      labData = rawLabData
+        .map(function(result) {
+          return {
+            name: utility.toTitleCase(result['PatientInformation/surname'] + '  ' + result['PatientInformation/othername']),
+            time: result['_submission_time'],
+            interviewer: utility.toTitleCase(result['WELCOME/DataRecorder']),
+            temperature: result['ClinicalSignsandSymptoms/Temp_reading'],
+            type: result['LabInformation/sampletypes'],
+            collect_date: result['LabInformation/date_specimen_collected'],
+            results_date: result['LabInformation/date_of_results'],
+            results: result['LabInformation/labstatusresults'],
+            status: result['PatientInformation/status_of_patient'],
+            fever: result['ClinicalSignsandSymptoms/AnyFever'] == '1'
+          };
+        });
+    }
+
+
 
     function updateMergedData() {
       var formHubData = followUps
