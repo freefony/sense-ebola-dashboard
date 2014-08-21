@@ -16,10 +16,12 @@ angular.module('sedApp')
         total: 0,
         counts: [],
         getData: function($defer, params) {
-          console.log(dataLoader.mapData())
-          var data = dataLoader.mapData().missingContacts;
+          var data = [], mapData = dataLoader.mapData(), orderedData;
+          if (mapData && mapData.missingContacts) {
+            data = mapData.missingContacts;
+          }
 
-          var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+          orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
           locals.totalItems = orderedData.length;
           $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
         }

@@ -22,6 +22,7 @@ angular.module('sedApp')
           })
           .catch(function(err) {
             _this.error = err.data.reason;
+            _this.submitted = false;
             form.$setPristine();
           });
       }

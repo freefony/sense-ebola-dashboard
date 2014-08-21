@@ -99,11 +99,15 @@ angular.module('sedApp')
           timeout = $timeout(load, RELOAD_DELAY);
         })
         .catch(function(err) {
+          console.log('---')
           console.log(err);
           error = err;
           $rootScope.$emit('endLoad', err);
-
-          timeout = $timeout(load, ERROR_RELOAD_DELAY);
+          if (err.status && err.status==401) {
+            timeout = $timeout(load, RELOAD_DELAY);
+          } else {
+            timeout = $timeout(load, ERROR_RELOAD_DELAY);
+          }
         })
         .finally(function() {
           loading = false;
