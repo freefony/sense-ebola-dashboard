@@ -12,43 +12,41 @@ function CommonMapController(focusArea) {
                     attribution: false
                 }),
                 markers = {
-
-
-                        green: L.icon({
-                            iconUrl: '/images/marker-green.png',
-                            iconSize: [14, 14],
-                            shadowSize: [20, 14],
-                            iconAnchor: [10, 7],
-                            shadowAnchor: [20, 7],
-                            popupAnchor: [-3, -5]
-                        }),
-                        red: L.icon({
-                            iconUrl: '/images/marker-red.png',
-                            iconSize: [14, 14],
-                            shadowSize: [20, 14],
-                            iconAnchor: [10, 7],
-                            shadowAnchor: [20, 7],
-                            popupAnchor: [-3, -5]
-                        }),
-                        gray: L.icon({
-                            iconUrl: '/images/marker-gray.png',
-                            iconSize: [14, 14],
-                            shadowSize: [20, 14],
-                            iconAnchor: [10, 7],
-                            shadowAnchor: [20, 7],
-                            popupAnchor: [-3, -5]
-                        }),
-                        yellow: L.icon({
-                            iconUrl: '/images/marker-yellow.png',
-                            iconSize: [14, 14],
-                            shadowSize: [20, 14],
-                            iconAnchor: [10, 14],
-                            shadowAnchor: [20, 7],
-                            popupAnchor: [-3, -5]
-                        }),
+                    green: L.icon({
+                        iconUrl: '/images/marker-green.png',
+                        iconSize: [14, 14],
+                        shadowSize: [20, 14],
+                        iconAnchor: [10, 7],
+                        shadowAnchor: [20, 7],
+                        popupAnchor: [-3, -5]
+                    }),
+                    red: L.icon({
+                        iconUrl: '/images/marker-red.png',
+                        iconSize: [14, 14],
+                        shadowSize: [20, 14],
+                        iconAnchor: [10, 7],
+                        shadowAnchor: [20, 7],
+                        popupAnchor: [-3, -5]
+                    }),
+                    gray: L.icon({
+                        iconUrl: '/images/marker-gray.png',
+                        iconSize: [14, 14],
+                        shadowSize: [20, 14],
+                        iconAnchor: [10, 7],
+                        shadowAnchor: [20, 7],
+                        popupAnchor: [-3, -5]
+                    }),
+                    yellow: L.icon({
+                        iconUrl: '/images/marker-yellow.png',
+                        iconSize: [14, 14],
+                        shadowSize: [20, 14],
+                        iconAnchor: [10, 14],
+                        shadowAnchor: [20, 7],
+                        popupAnchor: [-3, -5]
+                    }),
 
                 },
-                mapCenter = focusArea ? [focusArea[0], focusArea[1]] : [0,0],
+                mapCenter = focusArea ? focusArea.slice(0,2) : [0,0],
                 mapZoom = focusArea ? focusArea[2] : 6;
 
             function selectIcon(itemProperties) {
@@ -115,7 +113,7 @@ function CommonMapController(focusArea) {
                 eventsLayer;//, legend;
 
             function getData() {
-                var newData = dataLoader.mapData();
+                var newData = dataLoader.contactData();
                 if (!newData) return;
 
                 if (!(_.isEqual(clonedEvents, newData.events))) {
