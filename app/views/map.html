@@ -1,9 +1,9 @@
 <div class="panel panel-default" ng-init="initiateMap()">
   <div class="panel-heading">Follow Ups</div>
-  <div id="map" style="height: 299px;">
-    <div id="map-legend">
+  <div class="map" style="height: 299px;">
+    <div class="map-legend">
       <p>
-        <p id="map-legend-header"><b>Last followup</b></p>
+        <p class="map-legend-header"><b>Last followup</b></p>
         <img src="/images/marker-green.png">
         Today
       </p>
@@ -26,14 +26,5 @@
     <span>/</span>
     <span ng-bind="contacts.total"></span>
     <span>followed up today.</span>
-  </div>
-</div>
-
-<div class="panel panel-default">
-  <div class="panel-heading">Not Done Today</div>
-  <div id="missing-contacts">
-    <div ng-repeat="missing in contacts.missing track by $index">
-      <p ng-bind="missing"></p>
-    </div>
   </div>
 </div>

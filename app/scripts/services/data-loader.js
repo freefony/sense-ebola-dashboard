@@ -12,9 +12,9 @@ angular.module('sedApp')
     var lastUpdate = null;
     var followUps = [];
     var contacts = [];
-    var contactsByDate = [];
+    var visitsByDate = [];
     var mergedData = [];
-    var mapData = null;
+    var contactData = null;
 
     load();
 
@@ -38,14 +38,14 @@ angular.module('sedApp')
       contacts: function() {
         return contacts;
       },
-      contactsByDate: function() {
-        return contactsByDate;
+      visitsByDate: function() {
+        return visitsByDate;
       },
       mergedData: function() {
         return mergedData;
       },
-      mapData: function() {
-        return mapData;
+      contactData: function() {
+        return contactData;
       }
     };
 
@@ -87,15 +87,15 @@ angular.module('sedApp')
             updated = true;
           }
 
-          if (!angular.equals(contactsByDate, response[2].rows)) {
-            contactsByDate = response[2].rows;
+          if (!angular.equals(visitsByDate, response[2].rows)) {
+            visitsByDate = response[2].rows;
             updated = true;
           }
 
           if (updated) {
             console.log('data updated');
             updateMergedData();
-            updateMapData();
+            updateContactData();
             $rootScope.$emit('dataUpdated');
           }
 
@@ -110,8 +110,9 @@ angular.module('sedApp')
           console.log(err);
           error = err;
           $rootScope.$emit('endLoad', err);
-
-          timeout = $timeout(load, ERROR_RELOAD_DELAY);
+          if (!(err.status && err.status===401)) {
+            timeout = $timeout(load, ERROR_RELOAD_DELAY);
+          }
         })
         .finally(function() {
           loading = false;
@@ -146,7 +147,10 @@ angular.module('sedApp')
           };
         });
 
-      var couchdbData = contactsByDate
+      var couchdbData = visitsByDate
+        .filter(function(item) {
+          return (item.value.doc_type == 'contact');
+        })
         .map(function(senseData) {
           var value = senseData.value;
           var coords = value.visitData.geoInfo ? value.visitData.geoInfo.coords : undefined;
@@ -184,9 +188,11 @@ angular.module('sedApp')
         });
     }
 
-    function updateMapData() {
+    function updateContactData() {
       var i, fullName, couchContact,
-        couchData = _.pluck(contacts, 'doc');
+        couchData = _.where(_.pluck(contacts, 'doc'), {
+          doc_type: 'contact'
+        });
 
       for (i = 0; i < followUps.length; i++) {
         fullName = followUps[i]['ContactInformation/contact_name'].split('  ');
@@ -231,49 +237,57 @@ angular.module('sedApp')
         }
       }
 
-      mapData = parseResponseJsonData(couchData);
+      contactData = parseResponseJsonData(couchData);
     }
 
     function parseResponseJsonData(data) {
       var items = [],
-        totalContacts = 0,
         updatedToday = 0,
-        missingContacts = [];
-      data = _.where(data, {
-        status: 'active',
-        doc_type: 'contact'
-      });
+        contactsInfo = [];
+
       data = _.sortBy(data, function(contact) {
         return [contact.Surname, contact.OtherNames].join("_");
       });
+
       // data = _.pluck(data.rows,'doc');
       data.forEach(function(f) {
-        totalContacts++;
+        var currentDate = moment().startOf('day').toDate(),
+          lastDailyVisit = null,
+          visitDate = null,
+          timeDelta = Infinity;
 
         if (f.dailyVisits && f.dailyVisits.length > 0) {
-          var item = {},
-            lastDailyVisit = _.last(_.sortBy(f.dailyVisits, 'dateOfVisit')),
-            currentDate = new Date(),
-            visitDate = new Date(lastDailyVisit.dateOfVisit),
-            updateStatus = 'outdated',
-            timeDelta;
-          // Set the hour, minute and second of the current and visit date to zero before comparing.
-          // That way markers will only turn green if they are from the same day instead of being from in-between 24 h.
-          currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-          visitDate = new Date(visitDate.getFullYear(), visitDate.getMonth(), visitDate.getDate());
+          lastDailyVisit = _.last(_.sortBy(f.dailyVisits, 'dateOfVisit'));
+          visitDate = moment(lastDailyVisit.dateOfVisit).startOf('day').toDate();
           timeDelta = currentDate - visitDate;
-          if (timeDelta >= 172800000) {
+        }
+
+        if (f.status === 'active' || timeDelta < 86400000) {
+          contactsInfo.push({
+            name: utility.toTitleCase(f.Surname + ' ' + f.OtherNames),
+            lastVisit: visitDate,
+            timeDelta: timeDelta,
+            supervisor: f.supervisor || (lastDailyVisit ? lastDailyVisit.interviewer : null)
+          });
+        }
+
+        if (lastDailyVisit) {
+          var item = {},
             updateStatus = 'outdated';
-            missingContacts.push(f.Surname + ', ' + f.OtherNames);
-          }
-          else if (timeDelta >= 86400000) {
-            updateStatus = 'lastTwoDays';
-            missingContacts.push(f.Surname + ', ' + f.OtherNames);
-          }
-          else {
+
+          // take all items with visits today and only active items for older visits.
+          if (timeDelta < 86400000) {
             updateStatus = 'lastDay';
             updatedToday++;
           }
+          else if (f.status === 'active') {
+            if (timeDelta >= 172800000)
+              updateStatus = 'outdated';
+            else
+              updateStatus = 'lastTwoDays';
+          }
+          else
+            return;
 
           if (lastDailyVisit.geoInfo && lastDailyVisit.geoInfo.coords && lastDailyVisit.geoInfo.coords.longitude) {
             item.properties = {
@@ -281,7 +295,7 @@ angular.module('sedApp')
               timestamp: lastDailyVisit.dateOfVisit,
               updateStatus: updateStatus,
               symptomatic: false,
-              temperature: lastDailyVisit.symptoms.temperature,
+              temperature: lastDailyVisit.symptoms.temperature
             };
 
             if (lastDailyVisit.symptoms.temperature > 38 ||
@@ -306,9 +320,6 @@ angular.module('sedApp')
             items.push(item);
           }
         }
-        else {
-          missingContacts.push(f.Surname + ', ' + f.OtherNames);
-        }
       });
 
       // return the FeatureCollection
@@ -318,10 +329,15 @@ angular.module('sedApp')
           features: items
         },
         stats: {
-          total: totalContacts,
-          updated: updatedToday,
-          missing: missingContacts
-        }
+          total: contactsInfo.length,
+          updated: updatedToday
+        },
+        contactsInfo: contactsInfo.sort(function(a, b) {
+          // do not use 'a.timeDelta - b.timeDelta' because timeDelta can be 'Infinity'.
+          if (a.timeDelta < b.timeDelta) return 1;
+          if (a.timeDelta > b.timeDelta) return -1;
+          return 0;
+        })
       };
     }
   });

@@ -13,8 +13,11 @@ after_success:
   - scripts/deploy.sh
 notifications:
   flowdock: 232485f7661e644ae5878944c2597042
+addons:
+  sauce_connect: true
 env:
   global:
+    # Deploy
     - secure: a/FYXFMHuvfeBZnPak/C26d/nE7OBf9gWTZHoYkeS+VrVBFDeHcDZ4pU0l5CrUWMCm9cBuMJc0f6PaCrgSuXRHp/D+Cg1PVXifRWb7M4iFrE+MX7485ps8g85O3WlA6S0Mh4NmYeE6E7busKZGOsFE/DVV/f3WMG3VBuzUr5nMA=
     - secure: d9iwrdxzVLYt3OoJCObki1EwK7sy/dkb0zlxWmhipyMQaNwW/99r5MnjGpfjIk788Z8Sp+F7oqCQnf1FMWas8jjCIXZ4T79C/MsvX2wPg/trtnTXvcKSe8ETPwBZSWdWBkblp/7Wasc7zbHYD3bXtoGW83A62Xwqr4G9CpGoRYs=
     - secure: nX1jcGzmplq9DdV0f1rK24kXHMYyzJ2DBCH7CkJ2u5qZVDCu9UpyMX4/Ab/tlVaXqGTIkrlDRWWSig5Bty4Fg8zjsb0yw0UCboybuwSPkivXGEux3ovT6lrEEG+nMZq55pcZ9jEemrI8SOPc6o2K+V+wdgDQ4OnNf4uF0qtl7b0=
@@ -38,3 +41,6 @@ env:
     - secure: TwNr9KutALZWwo8KHDkAVwi3SFbqGRR354VxEm+NTxBlroWD587SJaXkXDmlhcx/zaoQDkXfkpdP9eU2pepONV08IaGIfT1me9UxDRn1k/2FpUc7Xikbr+lZww7BT2v8yRLnlOtIzvrgsPUmZI3ejbHo5e3NSlBbBskcbXIsurc=
     - secure: jCm3dGPPzsEPvOWkx6oeXdemS5NN9AGXeWLkpojc9Yheg82F5M//Dqgy5/quSQZqGcUBioJX4MMpoxxNzfOSWkWbVkiW/l/rNbE8QX/G1Ltu5FSmo5nhUUoxQXYRzL825Csg/ut3I6IU/lqjhuCwCO8iNgaCCNqPNNYA857Zvtc=
     - secure: gMH3S1tarBKvtAvUmDZdNCEqeuiZkzyezE1LR3ceksfa9t8J/zRYcKHj9yK09rC5g4hsedGlbBPPxlqYOmtkF3ZHB2AnVhNmyQFVxfBC1MnqEODTsJvn/wcFlx12jLB10o2Jmh5gHRnWI/eZPdOL2hKNT3++R/i7idRBAhwpla0=
+    # Tests
+    - secure: TLHA9aLAPKSdbrQhHSqBjylZ5BD9gscVr6i25EKl+155wh+i5gQANNjM5U/nHH9pNB4VfpyTTFw5OjYRi2Q2kFDzsuOBZxQBDJzUbTncU6X9dLD045sbkw2M/1agQ8uymVr1rqc/7CMG+07o/6oeJSOXJI53N0T/H/OZJE3QKVs=
+    - secure: IyHuRNuLsSYgrc09q/FhAS9oQ7L51xnIbFPeNwrM/dciC1ebI782+2USUvYjD6R1WLR0U9kqQhvWlG128vtAQSpDz80Jig0YkPTIqRkheWXQm7zbQ2QGBLRJp0FI6rPMOVfDdKeX5ouZTtC5T4xshEeS7bV95wPtTBaqFE5TMfo=

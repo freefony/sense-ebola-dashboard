@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="bower_components/ng-table/ng-table.css" />
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
-  <link rel="stylesheet" href="bower_components/leaflet-fullscreen/Control.FullScreen.css" />
+  <link rel="stylesheet" href="bower_components/leaflet-fullscreen/styles/Control.FullScreen.css" />
   <!-- endbower -->
   <!-- endbuild -->
   <!-- build:css({.tmp,app}) styles/main.css -->
@@ -38,6 +38,10 @@
           </ul>
         </li>
       </ul>
+
+      <p ng-if="currentUser && dataLoader.loading()" class="navbar-preloader navbar-right">
+        <img class="preloader preloader-height" src="../images/preloader.gif" alt="preloader">
+      </p>
       <p ng-if="currentUser && !dataLoader.loading()" class="navbar-text navbar-right">
         <span class="navbar-hour" current-time="SETTINGS.timeFormat"></span>
         <br>
@@ -55,11 +59,6 @@
       </ul>
     </div>
   </nav>
-  
-  <p ng-if="currentUser && dataLoader.loading()" class="preloader-container">
-      <img class="preloader" src="../images/preloader.gif" alt="preloader">
-  </p>
-  
   <div ng-show="app.init" class="container-fluid" ng-view></div>
   <footer class="footer">
     <div class="container">
@@ -80,7 +79,7 @@
   <script src="bower_components/moment/moment.js"></script>
   <script src="bower_components/pouchdb/dist/pouchdb-nightly.js"></script>
   <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
-  <script src="bower_components/underscore/underscore.js"></script>
+  <script src="bower_components/lodash/dist/lodash.js"></script>
   <script src="bower_components/ng-table/ng-table.js"></script>
   <script src="bower_components/ngstorage/ngStorage.js"></script>
   <script src="bower_components/leaflet-fullscreen/Control.FullScreen.js"></script>
@@ -104,6 +103,7 @@
   <script src="scripts/controllers/map.js"></script>
   <script src="scripts/controllers/follow-ups.js"></script>
   <script src="scripts/controllers/lab-results.js"></script>
+  <script src="scripts/controllers/not-done.js"></script>  
   <script src="scripts/services/utility.js"></script>
   <!-- endbuild -->
 </body>

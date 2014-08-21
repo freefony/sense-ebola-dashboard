@@ -1,0 +1,9 @@
+{
+  "extends": "../.jshintrc",
+  "globals": {
+    "protractor": false,
+    "browser": false,
+    "element": false,
+    "by": false
+  }
+}
