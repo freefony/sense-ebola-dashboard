@@ -267,7 +267,7 @@ angular.module('sedApp')
     function parseResponseJsonData(data) {
       var items = [],
         updatedToday = 0,
-        missingContacts = [];
+        contactsInfo = [];
 
       data = _.sortBy(data, function(contact) {
         return [contact.Surname, contact.OtherNames].join("_");
@@ -275,18 +275,29 @@ angular.module('sedApp')
 
       // data = _.pluck(data.rows,'doc');
       data.forEach(function(f) {
+        var currentDate = moment().startOf('day').toDate(),
+          lastDailyVisit = null,
+          visitDate = null,
+          timeDelta = Infinity;
+
         if (f.dailyVisits && f.dailyVisits.length > 0) {
-          var item = {},
-            lastDailyVisit = _.last(_.sortBy(f.dailyVisits, 'dateOfVisit')),
-            currentDate = new Date(),
-            visitDate = new Date(lastDailyVisit.dateOfVisit),
-            updateStatus = 'outdated',
-            timeDelta;
-          // Set the hour, minute and second of the current and visit date to zero before comparing.
-          // That way markers will only turn green if they are from the same day instead of being from in-between 24 h.
-          currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
-          visitDate = new Date(visitDate.getFullYear(), visitDate.getMonth(), visitDate.getDate());
+          lastDailyVisit = _.last(_.sortBy(f.dailyVisits, 'dateOfVisit'));
+          visitDate = moment(lastDailyVisit.dateOfVisit).startOf('day').toDate();
           timeDelta = currentDate - visitDate;
+        }
+
+        if (f.status === 'active' || timeDelta < 86400000) {
+          contactsInfo.push({
+            name: utility.toTitleCase(f.Surname + ' ' + f.OtherNames),
+            lastVisit: visitDate,
+            timeDelta: timeDelta,
+            supervisor: f.supervisor || (lastDailyVisit ? lastDailyVisit.interviewer : null)
+          });
+        }
+
+        if (lastDailyVisit) {
+          var item = {},
+            updateStatus = 'outdated';
 
           // take all items with visits today and only active items for older visits.
           if (timeDelta < 86400000) {
@@ -294,18 +305,13 @@ angular.module('sedApp')
             updatedToday++;
           }
           else if (f.status === 'active') {
-            if (timeDelta >= 172800000) {
+            if (timeDelta >= 172800000)
               updateStatus = 'outdated';
-              missingContacts.push({surname: f.Surname, otherNames: f.OtherNames});
-            }
-            else {
+            else
               updateStatus = 'lastTwoDays';
-              missingContacts.push({surname: f.Surname, otherNames: f.OtherNames});
-            }
           }
-          else {
+          else
             return;
-          }
 
           if (lastDailyVisit.geoInfo && lastDailyVisit.geoInfo.coords && lastDailyVisit.geoInfo.coords.longitude) {
             item.properties = {
@@ -313,7 +319,7 @@ angular.module('sedApp')
               timestamp: lastDailyVisit.dateOfVisit,
               updateStatus: updateStatus,
               symptomatic: false,
-              temperature: lastDailyVisit.symptoms.temperature,
+              temperature: lastDailyVisit.symptoms.temperature
             };
 
             if (lastDailyVisit.symptoms.temperature > 38 ||
@@ -338,9 +344,6 @@ angular.module('sedApp')
             items.push(item);
           }
         }
-        else {
-          missingContacts.push({surname: f.Surname, otherNames: f.OtherNames});
-        }
       });
 
       // return the FeatureCollection
@@ -350,10 +353,15 @@ angular.module('sedApp')
           features: items
         },
         stats: {
-          total: updatedToday + missingContacts.length,
+          total: contactsInfo.length,
           updated: updatedToday
         },
-        missingContacts: missingContacts
+        contactsInfo: contactsInfo.sort(function(a, b) {
+          // do not use 'a.timeDelta - b.timeDelta' because timeDelta can be 'Infinity'.
+          if (a.timeDelta < b.timeDelta) return 1;
+          if (a.timeDelta > b.timeDelta) return -1;
+          return 0;
+        })
       };
     }
   });
